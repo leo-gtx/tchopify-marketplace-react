@@ -16,7 +16,8 @@ const auth = firebase.auth()
 // auth.useEmulator('http://localhost:9099')
 const firestore = firebase.firestore()
 firestore.settings({
-  cacheSizeBytes: 1000 * 1000 * 15
+  cacheSizeBytes: 1000 * 1000 * 15,
+  merge: true
 })
 firestore.enablePersistence().catch((err)=>console.error(err))
 // firestore.useEmulator('localhost', 8081)
