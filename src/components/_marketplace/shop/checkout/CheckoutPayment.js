@@ -61,20 +61,45 @@ export default function CheckoutPayment({coupon}) {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const [open, setOpen] = useState(false);
+  const [options, setOption] = useState([]);
   const { checkout } = useSelector((state) => state.app);
   const { total, discount, subtotal, billing, cart, deliveryTime, deliveryCost } = checkout;
   const { enqueueSnackbar } = useSnackbar();
   const cookingTime = sumBy(cart,'cookingTime');
-  const DELIVERY_OPTIONS = [
-    {
-      value: deliveryCost,
-      title: t('checkout.deliveryTitle', {value: fCurrency(deliveryCost)}),
-      description: t('checkout.deliveryDescription',{value: Math.round(deliveryTime / 60) + cookingTime}),
-    },
-  ];
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
-  },[dispatch])
+    if(from){
+      if(from.mode.includes('DELIVERY')){
+        options.push(
+          { 
+            id: 'DELIVERY',
+            value: deliveryCost,
+            title: t('checkout.deliveryTitle', {value: fCurrency(deliveryCost)}),
+            description: t('checkout.deliveryDescription',{value: Math.round(deliveryTime / 60) + cookingTime}),
+          })
+      }
+
+      if(from.mode.includes('TAKEAWAY')){
+        options.push(
+          {
+            id: 'TAKEAWAY',
+            value: 0,
+            title: t('checkout.takeawayTitle'),
+            description: t('checkout.takeawayDescription',{value: cookingTime}),
+          })
+      }
+
+      if(from.mode.includes('DINE')){
+        options.push(
+          {
+            id: 'DINE',
+            value: 0,
+            title: t('checkout.dineTitle'),
+            description: t('checkout.dineDescription',{value: cookingTime}),
+          })
+      }
+    }
+  },[dispatch, setFrom, from?.mode])
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -97,10 +122,7 @@ export default function CheckoutPayment({coupon}) {
   const PaymentSchema = Yup.object().shape({
     payment: Yup.mixed().required(t('forms.paymentRequired')),
     delivery: Yup.mixed().required(t('forms.deliveryOptionRequired')),
-    phoneNumber: Yup.string().when("payment",{
-      is: (payment) => payment !== 'pay_at_delivery',
-      then: Yup.string().required(t('forms.phoneNumberRequired'))
-    })
+    phoneNumber: Yup.string().required(t('forms.phoneNumberRequired'))
   });
 
   const formik = useFormik({
@@ -130,7 +152,8 @@ export default function CheckoutPayment({coupon}) {
 
       const data = {
         payment: values.payment,
-        shipping: values.delivery,
+        shipping: options.find((item)=>item.id === values.delivery)?.value,
+        mode: values.delivery,
         billing,
         cart,
         discount,
@@ -169,7 +192,7 @@ export default function CheckoutPayment({coupon}) {
             <CheckoutDelivery
               formik={formik}
               onApplyShipping={handleApplyShipping}
-              deliveryOptions={DELIVERY_OPTIONS}
+              deliveryOptions={options}
             />
             <CheckoutPaymentMethods formik={formik}  paymentOptions={PAYMENT_OPTIONS} />
             <Button
@@ -190,7 +213,7 @@ export default function CheckoutPayment({coupon}) {
               total={total}
               subtotal={subtotal}
               discount={discount}
-              shipping={values.delivery}
+              shipping={options.find((item)=>item.id === values.delivery)?.value}
               onEdit={() => handleGotoStep(0)}
             />
             <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting}>

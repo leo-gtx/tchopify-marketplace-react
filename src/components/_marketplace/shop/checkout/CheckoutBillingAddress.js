@@ -97,7 +97,9 @@ export default function CheckoutBillingAddress() {
   const service = new window.google.maps.DistanceMatrixService();
   const distanceMatrixCallback = (result, status) => {
     if (status === "OK" ) {
-      dispatch(setDeliveryCost(shippingCost(result.rows[0].elements[0].distance.value)))
+      console.log(result.rows[0].elements[0].distance.value)
+      console.log(shop.kmCost)
+      dispatch(setDeliveryCost(shippingCost(result.rows[0].elements[0].distance.value, shop.kmCost)))
       dispatch(setDeliveryTime(result.rows[0].elements[0].duration.value))
       handleNextStep()
       setLoading(false)

@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import React, { useRef, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack5';
 import { useDispatch  } from 'react-redux';
@@ -9,6 +10,7 @@ import { OutlinedInput, FormHelperText, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // actions
 import { handleGetUser  } from '../../../redux/actions/authedUser';
+
 
 
 // ----------------------------------------------------------------------
@@ -28,6 +30,12 @@ export default function VerifyCodeForm({ onConfirmation }) {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const inputRefs = useRef([]);
+  if(inputRefs.current.length !== 6){
+    inputRefs.current = Array(6).fill().map((ref, index)=> inputRefs.current[index] || createRef() )
+  }
+
+    
   const VerifyCodeSchema = Yup.object().shape({
     code1: Yup.number().required(t('forms.codeRequired')),
     code2: Yup.number().required(t('forms.codeRequired')),
@@ -70,16 +78,38 @@ export default function VerifyCodeForm({ onConfirmation }) {
     }
   });
 
-  const { values, errors, isValid, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { values, errors, isValid, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+
+  const handleChange = (e)=>{
+    if(!values[e.currentTarget.name] && e.currentTarget.value){
+      setFieldValue(e.currentTarget.name, e.currentTarget.value)
+      const nextRef = Number(e.currentTarget.name.charAt(e.currentTarget.name.length - 1))
+      if(nextRef < 6){
+        inputRefs.current[nextRef].current.focus()
+        setFieldValue(inputRefs.current[nextRef].current.name, '')
+      }
+    }
+    if(values[e.currentTarget.name]  && !e.currentTarget.value){
+      setFieldValue(e.currentTarget.name, e.currentTarget.value)
+      const prevRef = Number(e.currentTarget.name.charAt(e.currentTarget.name.length - 1)) - 2
+      if(prevRef >= 0){
+        inputRefs.current[prevRef].current.focus()
+      }
+    }
+    
+  }
+  
 
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack direction="row" spacing={2} justifyContent="center">
-          {Object.keys(values).map((item) => (
+          {Object.keys(values).map((item, index) => (
             <OutlinedInput
               key={item}
+              inputRef={inputRefs.current[index]}
               {...getFieldProps(item)}
+              onChange={handleChange}
               type="number"
               placeholder="-"
               onInput={maxLength}

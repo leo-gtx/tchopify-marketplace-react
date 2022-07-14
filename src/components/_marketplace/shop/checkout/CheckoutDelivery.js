@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
+import { useTranslation } from 'react-i18next';
 // material
 import { styled } from '@material-ui/core/styles';
 import {
@@ -38,10 +39,10 @@ CheckoutDelivery.propTypes = {
 
 export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, ...other }) {
   const { values, setFieldValue, errors, touched } = formik;
-
+  const {t} = useTranslation();
   return (
     <Card {...other}>
-      <CardHeader title="Delivery options" />
+      <CardHeader title={t('checkout.deliveryOptions')} />
       <CardContent>
         <RadioGroup
           name="delivery"
@@ -53,19 +54,19 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
           }}
         >
           <Grid container spacing={2}>
-            {deliveryOptions.map((delivery) => {
-              const { value, title, description } = delivery;
+            {deliveryOptions.map((delivery, index) => {
+              const { value, title, description, id } = delivery;
               return (
-                <Grid key={value} item xs={12} md={6}>
+                <Grid key={id} item xs={12} md={6}>
                   <OptionStyle
                     sx={{
-                      ...(values.delivery === value && {
+                      ...(values.delivery === id && {
                         boxShadow: (theme) => theme.customShadows.z8
                       })
                     }}
                   >
                     <FormControlLabel
-                      value={value}
+                      value={id}
                       control={<Radio checkedIcon={<Icon icon={checkmarkCircle2Fill} />} />}
                       label={
                         <Box sx={{ ml: 1 }}>

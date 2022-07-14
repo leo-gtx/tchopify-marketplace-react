@@ -4,7 +4,7 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack5';
 import { useTranslation } from 'react-i18next'; 
 // material
-import { TextField, Alert, Stack } from '@material-ui/core';
+import { TextField, Alert, Stack, Autocomplete } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -12,30 +12,35 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // firebase
 import firebase from '../../../firebase';
 // ----------------------------------------------------------------------
+const COUNTRIES = [
+  { code: 'CM', label: 'Cameroon', phone: '+237' }
+]
 
 PhoneNumberForm.propTypes = {
   onGetPhoneNumber: PropTypes.func,
   onGetConfirmation: PropTypes.func,
 };
-const phoneRegExp = /^\s*(?:\+?(\d{1,3}))?[\W\D\s]^|()*(\d[\W\D\s]*?\d[\D\W\s]*?\d)[\W\D\s]*(\d[\W\D\s]*?\d[\D\W\s]*?\d)[\W\D\s]*(\d[\W\D\s]*?\d[\D\W\s]*?\d[\W\D\s]*?\d)(?: *x(\d+))?\s*$/
+const phoneRegExp = /^[\d\s]+$/
 
 export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation }) {
   const {t} = useTranslation();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
   const ResetPasswordSchema = Yup.object().shape({
-    phoneNumber: Yup.string().matches(phoneRegExp, t('forms.phoneNumberInvalid')).required(t('forms.phoneNumberRequired'))
+    phoneNumber: Yup.string().matches(phoneRegExp, t('forms.phoneNumberInvalid')).required(t('forms.phoneNumberRequired')),
+    code: Yup.string().required(t('forms.countryRequired'))
   });
 
   const formik = useFormik({
     initialValues: {
+      code: undefined,
       phoneNumber: ''
     },
     validationSchema: ResetPasswordSchema,
     onSubmit: (values, { setErrors, setSubmitting }) => {
 
         if (isMountedRef.current) {
-          const {phoneNumber} = values;
+          const phoneNumber = values.code + values.phoneNumber;
           window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
           const appVerifier = window.recaptchaVerifier;
           firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
@@ -62,20 +67,31 @@ export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation })
     }
   });
 
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
-
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue, values } = formik;
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
-
+          <Autocomplete
+                freeSolo={false}
+                fullWidth
+                options={COUNTRIES}
+                getOptionLabel={(option)=>`${option.label} (${option.phone})`}
+                onSelect={(e)=>{
+                        setFieldValue('code', COUNTRIES.find((item)=>e.target.value.includes(item.label))?.phone)  
+                }}
+                renderInput={(params)=> <TextField
+                {...params}
+                label={t('forms.countryLabel')}
+                />}
+          />
           <TextField
             fullWidth
             {...getFieldProps('phoneNumber')}
             type="phone"
             label={t('forms.phoneNumberLabel')}
-            placeholder='+237...'
+            placeholder={t('forms.phoneNumberLabel')}
             error={Boolean(touched.phoneNumber && errors.phoneNumber)}
             helperText={touched.phoneNumber && errors.phoneNumber}
           />

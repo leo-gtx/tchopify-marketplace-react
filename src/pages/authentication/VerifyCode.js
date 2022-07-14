@@ -27,7 +27,7 @@ VerifyCode.propTypes= {
 export default function VerifyCode({ resetPhoneNumber, confirmation }) {
   const {t} = useTranslation();
   return (
-    <RootStyle title="Verify | Tchopify">
+    <RootStyle title="Code OTP | Tchopify">
 
       <Container>
         <Box sx={{ maxWidth: 480, mx: 'auto' }}>

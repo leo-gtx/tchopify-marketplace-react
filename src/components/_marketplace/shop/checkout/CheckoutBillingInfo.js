@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import editFill from '@iconify/icons-eva/edit-fill';
+import { useTranslation } from 'react-i18next';
 // material
 import { Card, Button, Typography, CardHeader, CardContent } from '@material-ui/core';
 // redux
@@ -16,14 +17,14 @@ export default function CheckoutBillingInfo({ onBackStep }) {
   // const { receiver, phone, addressType, fullAddress } = billing;
   const { checkout } = useSelector((state) => state.app);
   const { billing } = checkout;
-
+  const { t } = useTranslation();
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
-        title="Billing Address"
+        title={t('checkout.billingAddress')}
         action={
           <Button size="small" type="button" startIcon={<Icon icon={editFill} />} onClick={onBackStep}>
-            Edit
+            {t('actions.edit')}
           </Button>
         }
       />

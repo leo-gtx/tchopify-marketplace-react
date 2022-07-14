@@ -114,12 +114,15 @@ export function convertToKm(value){
     return `${Math.ceil(value/1000)} km`
 }
 
-export function shippingCost(value){
+export function shippingCost(value, kmCost){
     const distance = Math.ceil(value/1000)
-    if(distance <= 1){
-        return 100 * 2
+    if(distance * kmCost < 500){
+        return 500
     }
-    return 50 * distance * 2
+    if(distance * kmCost > 2000 ){
+        return 2000
+    }
+    return kmCost * distance
 }
 
 export function getOptionsPrice(value){

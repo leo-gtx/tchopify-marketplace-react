@@ -58,7 +58,7 @@ ShopCover.propTypes = {
 
 export default function ShopCover({ myShop, deliveryLocation }) {
   const { t } = useTranslation();
-  const { image, name, businessHours, rating, location} = myShop;
+  const { image, name, businessHours, rating, location, kmCost} = myShop;
   const [distance, setDistance] = useState();
   const [duration, setDuration] = useState();
 
@@ -118,7 +118,7 @@ export default function ShopCover({ myShop, deliveryLocation }) {
                   { !duration || !distance ?
                     <Skeleton variant='text' width={200} />
                     :
-                    <Typography sx={{ opacity: 0.72 }}>{`${duration?.text} • ${fCurrency(shippingCost(distance?.value))}`}</Typography>
+                    <Typography sx={{ opacity: 0.72 }}>{`${duration?.text} • ${fCurrency(shippingCost(distance?.value, kmCost))}`}</Typography>
                   }
                   
                 </Stack>

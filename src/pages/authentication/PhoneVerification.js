@@ -31,6 +31,9 @@ export default function PhoneVerification() {
   const [phone, setPhone] = useState('');
   const [confirmationID, setConfirmation] = useState();
   const { pathname } = useLocation();
+
+  const handleGetPhoneNumber = (value)=>setPhone(value)
+
   if(isAuthenticated && pathname.includes('phone-verification')){
     return <Navigate to={PATH_MARKETPLACE.home.root} />
   }
@@ -38,6 +41,8 @@ export default function PhoneVerification() {
   if(phone){
     return <VerifyCode resetPhoneNumber={()=> setPhone('')} confirmation={confirmationID}/>
   }
+
+  
 
   return (
     <RootStyle title="Phone number verification | Tchopify">
@@ -52,7 +57,7 @@ export default function PhoneVerification() {
                 {t('phoneVerification.subtitle')}
               </Typography>
 
-              <PhoneNumberForm  onGetPhoneNumber={(value) => setPhone(value)} onGetConfirmation={(value)=> setConfirmation(value)} />
+              <PhoneNumberForm  onGetPhoneNumber={handleGetPhoneNumber} onGetConfirmation={(value)=> setConfirmation(value)} />
             </>
         </Box>
       </Container>

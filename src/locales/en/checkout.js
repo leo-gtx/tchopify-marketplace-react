@@ -12,5 +12,11 @@ export default {
     deliveryDescription: 'Delivered on {{value}} minutes',
     cart: 'Cart',
     billing: 'Billing & address',
-    payment: 'Payment'
+    payment: 'Payment',
+    takeawayTitle: 'Take Away (Free)',
+    takeawayDescription: 'Could be ready on {{value}} minutes',
+    dineTitle: 'Dine In (Free)',
+    dineDescription: 'Could be ready on {{value}} minutes',
+    deliveryOptions: 'Delivery Options',
+    billingAddress: 'Billing Address'
 }

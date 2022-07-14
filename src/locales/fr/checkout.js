@@ -12,5 +12,11 @@ export default {
     deliveryDescription: 'Livrable en {{value}} minutes',
     cart: 'Panier',
     billing: 'Facturation & Adresse',
-    payment: 'Paiement'
+    payment: 'Paiement',
+    takeawayTitle: 'A Emporter (Gratuit)',
+    takeawayDescription: 'Peut être prêt dans {{value}} minutes',
+    dineTitle: 'Diné à l\'intérieur (Gratuit)',
+    dineDescription: 'Peut être prêt dans {{value}} minutes',
+    deliveryOptions: 'Options de livraison',
+    billingAddress: 'Adresse de livraison'
 }
