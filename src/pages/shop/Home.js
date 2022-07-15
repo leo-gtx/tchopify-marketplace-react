@@ -46,7 +46,7 @@ export default function Home() {
   
   useEffect(()=>{
     handleGetStores({status: 'activated'}, (data)=>{
-      setStores(applySort(Object.values(data).filter((item)=>item.location.includes(deliveryLocation.split(',')[0])), sortByStore))
+      setStores(applySort(Object.values(data).filter((item)=>item.location.includes(deliveryLocation?.split(',')[0])), sortByStore))
     })
   },[setStores, deliveryLocation, sortByStore])
 

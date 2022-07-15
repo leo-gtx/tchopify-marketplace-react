@@ -52,6 +52,6 @@ export default {
     resendEmail: 'Renvoyer l\'email',
     confirm: 'Confirmer',
     shipping: 'Livraison en cours',
-    rate: 'Taux',
+    rate: 'Notez',
     chooseTable: 'Renseignez la table'
 }

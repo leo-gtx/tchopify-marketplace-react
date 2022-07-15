@@ -17,121 +17,250 @@ import { fToNow } from '../../../../utils/formatTime';
 
 
 const ORDER_HIERARCHIES = {
-  new: [
-    {
-      id: 1,
-      title: 'Order placed',
-      type: 'order4',
-      time: 'orderAt'
-    }
-  ],
-  rejected: [
-    {
-      id: 1,
-      title: 'Order placed',
-      type: 'order4',
-      time: 'orderAt'
-    },
-    {
-      id: 2,
-      title: 'Order rejected',
-      type: 'order1',
-      time: 'rejectedDate'
-    }
-  ],
-  accepted: [
-    {
-      id: 1,
-      title: 'Order placed',
-      type: 'order4',
-      time: 'orderAt'
-    },
-    {
-      id: 2,
-      title: 'Order accepted',
-      type: 'order3',
-      time: 'acceptedDate'
-    }
-  ],
-  ready: [
-    {
-      id: 1,
-      title: 'Order placed',
-      type: 'order4',
-      time: 'orderAt'
-    },
-    {
-      id: 2,
-      title: 'Order accepted',
-      type: 'order3',
-      time: 'acceptedDate'
-    },
-    {
-      id: 3,
-      title: 'Order ready',
-      type: 'order4',
-      time: 'readyDate'
-    }
-  ],
-  shipping: [
-    {
-      id: 1,
-      title: 'Order placed',
-      type: 'order4',
-      time: 'orderAt'
-    },
-    {
-      id: 2,
-      title: 'Order accepted',
-      type: 'order3',
-      time: 'acceptedDate'
-    },
-    {
-      id: 3,
-      title: 'Order ready',
-      type: 'order4',
-      time: 'readyDate'
-    },
-    {
-      id: 4,
-      title: 'Order on the way',
-      type: 'order3',
-      time: 'shippingDate'
-    }
-  ],
-  completed: [
-    {
-      id: 1,
-      title: 'Order placed',
-      type: 'order4',
-      time: 'orderAt'
-    },
-    {
-      id: 2,
-      title: 'Order accepted',
-      type: 'order3',
-      time: 'acceptedDate'
-    },
-    {
-      id: 3,
-      title: 'Order ready',
-      type: 'order4',
-      time: 'readyDate'
-    },
-    {
-      id: 4,
-      title: 'Order on the way',
-      type: 'order3',
-      time: 'shippingDate'
-    },
-    {
-      id: 5,
-      title: 'Order delivered',
-      type: 'order2',
-      time: 'completedDate'
-    }
-  ]
-
+  DELIVERY: {
+    new: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      }
+    ],
+    rejected: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order rejected',
+        type: 'order1',
+        time: 'rejectedDate'
+      }
+    ],
+    accepted: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      }
+    ],
+    ready: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      },
+      {
+        id: 3,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      }
+    ],
+    shipping: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      },
+      {
+        id: 3,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      },
+      {
+        id: 4,
+        title: 'Order on the way',
+        type: 'order3',
+        time: 'shippingDate'
+      }
+    ],
+    completed: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      },
+      {
+        id: 3,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      },
+      {
+        id: 4,
+        title: 'Order on the way',
+        type: 'order3',
+        time: 'shippingDate'
+      },
+      {
+        id: 5,
+        title: 'Order delivered',
+        type: 'order2',
+        time: 'completedDate'
+      }
+    ]
+  },
+  TAKEAWAY: {
+    new: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      }
+    ],
+    rejected: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order rejected',
+        type: 'order1',
+        time: 'rejectedDate'
+      }
+    ],
+    accepted: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      }
+    ],
+    ready: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      },
+      {
+        id: 3,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      }
+    ],
+    completed: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order accepted',
+        type: 'order3',
+        time: 'acceptedDate'
+      },
+      {
+        id: 3,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      },
+      {
+        id: 4,
+        title: 'Order delivered',
+        type: 'order2',
+        time: 'completedDate'
+      }
+    ]
+  },
+  DINE: {
+    new: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      }
+    ],
+    ready: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 2,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      }
+    ],
+    completed: [
+      {
+        id: 1,
+        title: 'Order placed',
+        type: 'order4',
+        time: 'orderAt'
+      },
+      {
+        id: 3,
+        title: 'Order ready',
+        type: 'order4',
+        time: 'readyDate'
+      },
+      {
+        id: 4,
+        title: 'Order served',
+        type: 'order2',
+        time: 'completedDate'
+      }
+    ]
+  }
 }
 
 
@@ -145,7 +274,6 @@ OrderItem.propTypes = {
 
 function OrderItem({ item, isLast, order }) {
   const { type, title, time } = item;
-  console.log(order[time])
   return (
     <TimelineItem>
       <TimelineSeparator>
@@ -163,7 +291,7 @@ function OrderItem({ item, isLast, order }) {
       <TimelineContent>
         <Typography variant="subtitle2">{title}</Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {fToNow(order[time])}
+          {fToNow(order[time]|| null)}
           </Typography>
       </TimelineContent>
     </TimelineItem>
@@ -171,7 +299,7 @@ function OrderItem({ item, isLast, order }) {
 }
 
 export default function AnalyticsOrderTimeline({order}) {
-  const {status} = order;
+  const {status, mode} = order;
   const {t} = useTranslation();
   return (
     <Card
@@ -184,8 +312,8 @@ export default function AnalyticsOrderTimeline({order}) {
       <CardHeader title={t('tracking.timelineTitle')} />
       <CardContent>
         <Timeline>
-          {ORDER_HIERARCHIES[status].map((item, index) => (
-            <OrderItem key={item.title} order={order} item={item} isLast={index === ORDER_HIERARCHIES[status].length - 1} />
+          {ORDER_HIERARCHIES[mode][status].map((item, index) => (
+            <OrderItem key={item.title} order={order} item={item} isLast={index === ORDER_HIERARCHIES[mode][status].length - 1} />
           ))}
         </Timeline>
       </CardContent>

@@ -11,6 +11,7 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
+import NotificationsPopover from './NotificationsPopover';
 import LogoFull from '../../components/LogoFull';
 import LocationPopup from './LocationPopup';
 // routes
@@ -73,6 +74,7 @@ export default function ShopNavbar({ onOpenSidebar }) {
           {
             isAuthenticated ? 
               <>
+                <NotificationsPopover/>
                 <AccountPopover />
               </>
               :

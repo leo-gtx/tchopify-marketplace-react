@@ -1,4 +1,4 @@
 export default {
     mapTitle: 'Sur la map',
-    timelineTitle: 'calendrier de la commande'
+    timelineTitle: 'Calendrier de la commande'
 }

@@ -4,5 +4,5 @@ export default{
     oldest: 'Ancien',
     newest: 'Récent',
     emptyContentTitle: 'Nous arrivons prochainement',
-    emptyContentDescription: 'Service n\'est pas encore disponible ici, {location}',
+    emptyContentDescription: 'Service n\'est pas encore disponible à {{location}}',
 }

@@ -52,7 +52,7 @@ function applyFilter(products, sortBy, filters) {
     products = orderBy(products, ['price'], ['asc']);
   }
   // FILTER PRODUCTS
-  if (filters.category !== 'All') {
+  if (filters?.category !== 'All') {
     products = filter(products, (_product) => _product.category === filters.category);
   }
   if (filters.priceRange) {

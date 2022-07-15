@@ -46,7 +46,7 @@ export default function ProductList({ products, isLoad, ...other }) {
     { !isLoad && products.length < 1 && (
         <EmptyContent
          title={t('home.emptyContentTitle')}
-         description={t('home.emptyContentTitle',{location:deliveryLocation})}
+         description={t('home.emptyContentDescription',{location:deliveryLocation})}
          img='/static/illustrations/illustration_empty_content.svg'
         />
       )}

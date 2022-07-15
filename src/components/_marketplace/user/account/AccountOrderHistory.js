@@ -38,6 +38,7 @@ import {
 
 const TABLE_HEAD = [
   { id: 'from', label: 'table.store', alignRight: false },
+  { id: 'type', label: 'table.type', alignRight: false },
   { id: 'total', label: 'table.amount', alignRight: false },
   { id: 'orderAt', label: 'table.orderAt', alignRight: false },
   { id: 'status', label: 'table.status', alignRight: false },
@@ -175,7 +176,7 @@ export default function AccountOrderHistory() {
                 />
                 <TableBody>
                   {filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, total, from, status, orderAt } = row;
+                    const { id, total, from, status, orderAt, mode } = row;
                     const isItemSelected = selected.indexOf(id) !== -1;
                     let statusColor = ''
                     if(status === 'new' || status === 'ready' || status === 'shipping' || status === 'accepted'){
@@ -211,6 +212,7 @@ export default function AccountOrderHistory() {
                             </Typography>
                           </Box>
                         </TableCell>
+                        <TableCell style={{ minWidth: 160 }}>{mode}</TableCell>
                         <TableCell style={{ minWidth: 160 }}>{fCurrency(total)}</TableCell>
                         <TableCell style={{ minWidth: 160 }}>{fDate(orderAt)}</TableCell>
                         <TableCell style={{ minWidth: 160 }}>

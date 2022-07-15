@@ -23,6 +23,7 @@ import invoice from './invoice';
 import navbar from './navbar';
 import tracking from './tracking';
 import rating from './rating';
+import notification from './notification';
 
 export default {
   actions,
@@ -49,4 +50,5 @@ export default {
   navbar,
   tracking,
   rating,
+  notification
 };

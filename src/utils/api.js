@@ -12,7 +12,7 @@ export function pay({amount, wallet, currency, service}){
             "Content-Type": "application/json"
         };
         axios.post(`${process.env.REACT_APP_SOPAY_API_BASE_URL}/api/agent/bills`,
-        {wallet, amount, currency},
+        {wallet, amount, currency, description: 'Payment On Tchopify'},
         {headers})
         .then((res)=>{
             if (res.data.success){
@@ -40,7 +40,7 @@ export function withdraw({amount, wallet, service}){
             "Authorization": `Bearer ${res.data.token}`
         };
         axios.post(`${process.env.REACT_APP_SOPAY_API_BASE_URL}/api/user/proceeds`,
-        {wallet, amount},
+        {wallet, amount, description: 'Withdraw From Tchopify'},
         {headers})
         .then((res)=>{
             if (res.data.success){

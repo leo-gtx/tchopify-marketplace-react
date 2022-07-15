@@ -55,7 +55,7 @@ export function handlePlaceOrder({cart, subtotal, discount, billing, shipping, p
 export function handlePayAndPlaceOrder({cart, subtotal, discount, billing, shipping, payment, from, total, wallet, service, deliveryTime, coupon, mode}, callback, onError){
     return (dispatch) => RequestTimeout(1000*60*5, pay({amount: total, wallet, currency: 'xaf', service})
     .then((res)=>{
-        const id = uuidv4()
+        const id = uniqueId()
         const data = {
             id,
             cart,
@@ -195,7 +195,7 @@ export function handleGetOrders(userId){
     .collection('orders')
     .where('billing.userId', '==', userId)
     .onSnapshot((documentSnapshot)=>{
-        if(!documentSnapshot.empty) dispatch(setOrders(formattedOrders(documentSnapshot.docs)))
+        dispatch(setOrders(formattedOrders(documentSnapshot.docs)))
     })
 }
 

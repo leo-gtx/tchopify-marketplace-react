@@ -60,7 +60,7 @@ export default function Tracking() {
     )
   }
 
-  const {billing, from } = order;
+  const {billing, from, mode } = order;
 
   return (
     <Page title="Marketplace: Order Tracking | Tchopify">
@@ -83,11 +83,16 @@ export default function Tracking() {
                   <OrderTimeline order={order}/>
                 </Box>
               </Grid>
-            <Grid item xs={12} >
-              <Box sx={{ margin: 1 }}>
-                <MapRoute travelMode="DRIVING" origin={from.location} destination={billing.fullAddress} />
-              </Box>
-            </Grid>
+            {
+              ['DELIVERY','TAKEAWAY'].includes(mode) && (
+                <Grid item xs={12} >
+                  <Box sx={{ margin: 1 }}>
+                    <MapRoute travelMode="DRIVING" origin={from.location} destination={billing.fullAddress} />
+                  </Box>
+                </Grid>
+              )
+            }
+              
           </Grid>
       </Container>
     </Page>

@@ -29,6 +29,7 @@ export default {
     mode: 'Mode',
     createAt: 'Create At',
     published: 'Published',
-    dish: 'Dish'
+    dish: 'Dish',
+    type: 'Type'
     
 }

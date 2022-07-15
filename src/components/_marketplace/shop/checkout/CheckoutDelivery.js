@@ -46,11 +46,11 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
       <CardContent>
         <RadioGroup
           name="delivery"
-          value={Number(values.delivery)}
+          value={values.delivery}
           onChange={(event) => {
             const { value } = event.target;
-            setFieldValue('delivery', Number(value));
-            onApplyShipping(Number(value));
+            setFieldValue('delivery', value);
+            onApplyShipping(Number(deliveryOptions.find((item)=>item.id === value).value));
           }}
         >
           <Grid container spacing={2}>
