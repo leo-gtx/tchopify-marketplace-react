@@ -31,7 +31,7 @@ export default function ProductList({ products, isLoad, ...other }) {
     <>
     {isLoad && SkeletonLoad }
     
-    { !isLoad && products.length > 1 && (
+    { !isLoad && products.length > 0 && (
       <Grid container spacing={3} {...other}>
         { products.map((product) => (
           <Grid key={product.id} item xs={12} sm={6} md={2}>

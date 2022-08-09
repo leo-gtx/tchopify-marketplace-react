@@ -109,7 +109,7 @@ export default function Checkout() {
 
   
   return (
-    <Page title="Marketplace: Checkout | Tchopify">
+    <Page title={t('titles.checkout')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading={t('checkout.title')}

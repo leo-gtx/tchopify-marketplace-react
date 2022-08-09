@@ -105,7 +105,7 @@ export default function ShopCover({ myShop, deliveryLocation }) {
                   <Typography variant='h4'>{`${name} (${t('common.closed').toUpperCase()})`}</Typography>
                </Stack>
                <Rating size='small' value={rating || 0} readOnly/>
-               <Typography>{`Open on ${getNextOpenDay(businessHours)}`}</Typography>
+               <Typography>{t(getNextOpenDay(businessHours).t, { day: getNextOpenDay(businessHours).day})}</Typography>
              </Stack>
             
           ):(

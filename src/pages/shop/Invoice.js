@@ -81,7 +81,7 @@ export default function Invoice() {
     statusColor = 'success'
   }
   return (
-    <Page title="Marketplace: Order Details | Tchopify">
+    <Page title={t('titles.orderDetail')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
       <HeaderBreadcrumbs
           heading={t('invoice.title')}

@@ -1,8 +1,8 @@
 export default{
-    title: 'MarketPlace',
+    title: 'Commander à {{location}}',
     sortBy: 'Trier Par',
     oldest: 'Ancien',
     newest: 'Récent',
     emptyContentTitle: 'Nous arrivons prochainement',
-    emptyContentDescription: 'Service n\'est pas encore disponible à {{location}}',
+    emptyContentDescription: 'Ce service n\'est pas encore disponible à {{location}}',
 }

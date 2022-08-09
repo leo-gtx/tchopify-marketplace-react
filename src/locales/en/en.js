@@ -24,6 +24,7 @@ import navbar from './navbar';
 import tracking from './tracking';
 import rating from './rating';
 import notification from './notification';
+import titles from './titles';
 
 export default {
   actions,
@@ -50,5 +51,6 @@ export default {
   navbar,
   tracking,
   rating,
-  notification
+  notification,
+  titles
 };

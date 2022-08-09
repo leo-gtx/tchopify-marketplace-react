@@ -16,7 +16,7 @@ export default {
     newCategory: 'New Category',
     user: 'User',
     accountSettings: 'Account Settings',
-    marketplace: 'Marketplace',
+    marketplace: 'Home',
     checkout: 'Checkout',
     home: 'Home',
     myOrders: 'My Orders',

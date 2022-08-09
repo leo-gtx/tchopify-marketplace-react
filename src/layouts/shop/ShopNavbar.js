@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, Button, Link } from '@material-ui/core';
+import { Box, Stack, AppBar, Toolbar, Button, Link, IconButton } from '@material-ui/core';
 import { useSelector} from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Icon } from '@iconify/react';
+import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 
 // components
+import { MHidden } from '../../components/@material-extend';
 // import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
@@ -49,6 +53,7 @@ ShopNavbar.propTypes = {
 };
 
 export default function ShopNavbar({ onOpenSidebar }) {
+  const { t } = useTranslation();
   const { isCollapse } = useCollapseDrawer();
   const {isAuthenticated} = useSelector(state=>state.authedUser)
   return (
@@ -60,6 +65,12 @@ export default function ShopNavbar({ onOpenSidebar }) {
       }}
     >
       <ToolbarStyle>
+        <MHidden width="lgUp">
+          <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
+            <Icon icon={menu2Fill} />
+          </IconButton>
+        </MHidden>
+        
         <Stack direction="row" alignItems="flex-start" spacing={{ xs: 0.5, sm: 1.5 }}>
           <Link to={PATH_MARKETPLACE.home.root} component={RouterLink}>
            <LogoFull />
@@ -75,10 +86,9 @@ export default function ShopNavbar({ onOpenSidebar }) {
             isAuthenticated ? 
               <>
                 <NotificationsPopover/>
-                <AccountPopover />
               </>
               :
-                <Button variant='text' href={PATH_AUTH.phoneLogin} >Sign In</Button>
+                <Button variant='text' href={PATH_AUTH.phoneLogin} >{t('common.signin')}</Button>
             
           }
           

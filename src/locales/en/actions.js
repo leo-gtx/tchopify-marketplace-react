@@ -53,5 +53,6 @@ export default {
     confirm: 'Confirm',
     shipping: 'Delivering',
     rate: 'Rate',
-    chooseTable: 'Set a table'
+    chooseTable: 'Set a table',
+    payOrder: 'Pay Order'
 }

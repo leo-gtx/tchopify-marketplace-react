@@ -1,8 +1,9 @@
 
 import PropTypes from 'prop-types';
+import BlockImage from 'react-block-image';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
 
 
 // ----------------------------------------------------------------------
@@ -36,7 +37,23 @@ LargeItem.propTypes = {
 function LargeItem({ item }) {
   return (
     <Box sx={{ paddingTop: '100%', position: 'relative' }}>
-      <LargeImgStyle alt="large image" src={item} />
+      <BlockImage
+            style={{
+              top: 0,
+              maxHeight: 625,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              position: 'absolute',
+            }}
+            src={item}
+            showPreview
+            loader={
+              <center style={{marginTop: '45%'}}>
+                <CircularProgress/>
+              </center>
+          }
+          />
     </Box>
   );
 }

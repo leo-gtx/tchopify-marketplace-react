@@ -174,16 +174,21 @@ export function isStoreOpen(schedules){
 }
 
 export function getNextOpenDay(schedules){
-    let currentDay = new Date().getDay()
+    const options = { weekday: 'long'};
+    let currentDay = new Date().getDay() + 1;
     const now = new Date()
     for (let index = 0; index <= 6; index+=1) {
         if(schedules[currentDay].isOpen){
-            return `${schedules[currentDay].title} at ${new Date(`${now.toDateString()} ${schedules[currentDay].startTime}`).toLocaleTimeString()}`
+            now.setDate(currentDay)
+            return {
+                t: 'common.openAt',
+                day: new Date(`${now.toDateString()} ${schedules[currentDay].startTime}`).toLocaleTimeString(localStorage.getItem('i18nextLng'), options)
+            }
         }
-        if (currentDay > 6) currentDay = 0 
+        if (currentDay === 6) currentDay = 0 
         else currentDay+=1
     }
-    return null;
+    return {t: 'common.closedAlways'}
 }
 
 export const ROLES = {
@@ -273,7 +278,8 @@ export function RequestTimeout(ms, promise){
 }
 
 export function uniqueId(){
-    const dateString = Date.now().toString().substr(0, 3);
-    const randomness = Math.floor(Math.random() * 10000).toString().substr(0, 3);
+    let dateString = Date.now().toString();
+    dateString = dateString.substr(dateString.length - 3, 2);
+    const randomness = Math.floor(Math.random() * 10000).toString().substr(0, 4);
     return dateString + randomness;
 };

@@ -21,7 +21,8 @@ import {
     SET_DELIVERY_COST,
     SET_DELIVERY_TIME,
     SET_DELIVERY_LOCATION,
-    TOGGLE_DISH_MODAL
+    TOGGLE_DISH_MODAL,
+    SET_ORDER_ID
 } from '../actions/app';
 
 const initialState = {
@@ -36,6 +37,7 @@ const initialState = {
         priceRange: ''
     },
     checkout: {
+        orderId: '',
         from: '',
         cart: [],
         step: 0,
@@ -256,6 +258,7 @@ export default function app(state = initialState, action){
             return {
                 ...state,
                 checkout:{
+                    orderId: '',
                     cart: [],
                     step: 0,
                     billing: null,
@@ -272,6 +275,14 @@ export default function app(state = initialState, action){
                     ...state.checkout,
                     shipping: action.payload,
                     total: state.checkout.subtotal - state.checkout.discount + action.payload
+                }
+            }
+        case SET_ORDER_ID:
+            return {
+                ...state,
+                checkout: {
+                    ...state.checkout,
+                    orderId: action.payload
                 }
             }
         default:

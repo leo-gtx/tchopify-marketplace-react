@@ -53,6 +53,7 @@ export function handleGetDishesByShop(shop, callback){
     .firestore()
     .collection('dishes')
     .where('owner', '==', shop)
+    .where('isPublished', '==', true)
     .get()
     .then((documentSnapshot) =>{
         if(!documentSnapshot.empty) callback(formattedDishes(documentSnapshot.docs))

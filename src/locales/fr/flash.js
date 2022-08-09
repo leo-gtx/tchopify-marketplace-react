@@ -26,5 +26,7 @@ export default {
     error: 'Une erreur est survenue',
     markDelivered: 'Signalez comme livré',
     rateSuccess: 'Note Sauvegader',
-    rateFailure: 'Note Echoué'
+    rateFailure: 'Note Echoué',
+    orderPaySuccess: 'Commande Payé',
+    orderPayFailure: 'Paiement Commande Echouée'
 }

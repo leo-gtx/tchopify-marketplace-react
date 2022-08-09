@@ -63,7 +63,7 @@ export default function Tracking() {
   const {billing, from, mode } = order;
 
   return (
-    <Page title="Marketplace: Order Tracking | Tchopify">
+    <Page title={t('titles.tracking')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
       <HeaderBreadcrumbs
           heading={t('invoice.title')}

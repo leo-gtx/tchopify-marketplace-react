@@ -51,11 +51,11 @@ export default function Home() {
   },[setStores, deliveryLocation, sortByStore])
 
   return (
-    <Page title="MarketPlace | Tchopify">
+    <Page title={t('titles.home')}>
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={t('home.title')}
+          heading={t('home.title',{location: deliveryLocation})}
           links={[
             { name: t('links.home'), href: PATH_MARKETPLACE.home.root },
           ]}

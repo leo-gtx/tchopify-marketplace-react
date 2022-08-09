@@ -178,7 +178,7 @@ export default function ShopDetails() {
   }
 
   return (
-    <Page title="Marketplace: Shop | Tchopify">
+    <Page title={t('titles.shopDetail')}>
       {values && (
         <Backdrop open={isSubmitting} sx={{ zIndex: 9999 }}>
           <CircularProgress />

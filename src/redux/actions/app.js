@@ -20,6 +20,14 @@ export const SET_DELIVERY_COST = 'SET_DELIVERY_COST';
 export const SET_DELIVERY_TIME = 'SET_DELIVERY_TIME';
 export const SET_DELIVERY_LOCATION = 'SET_DELIVERY_LOCATION';
 export const TOGGLE_DISH_MODAL = 'TOGGLE_DISH_MODAL';
+export const SET_ORDER_ID = 'SET_ORDER_ID';
+
+export function setOrderId(value){
+    return {
+        type: SET_ORDER_ID,
+        payload: value
+    }
+}
 
 export function toggleDishModal(value){
     return {

@@ -21,35 +21,76 @@ function setOrders(orders){
     }
 }
 
-export function handlePlaceOrder({cart, subtotal, discount, billing, shipping, payment, from, total, deliveryTime}, callback, onError){
+export function handlePlaceOrder({cart, subtotal, discount, billing, shipping, payment, from, mode, coupon, total, deliveryTime}, callback, onError){
     const id = uniqueId()
-    const data = {
-        id,
-        cart,
-        subtotal,
-        discount,
-        shipping,
-        payment,
-        from,
-        billing,
-        total,
-        deliveryTime,
-        orderAt: Date.now(),
-        status: 'new',
-        paymentStatus: 'unpaid',
-    };
-    return (dispatch) => firebase
-    .firestore()
-    .collection('orders')
-    .doc(id)
-    .set(data)
-    .then(()=>{
-        dispatch(addOrder(data))
-        callback()
+        const data = {
+            id,
+            cart,
+            subtotal,
+            discount,
+            shipping,
+            payment,
+            mode,
+            from,
+            billing,
+            total,
+            deliveryTime,
+            orderAt: Date.now(),
+            status: 'new',
+            paymentStatus: 'unpaid',
+        };
+        return (dispatch) => firebase
+        .firestore()
+        .collection('orders')
+        .doc(id)
+        .set(data)
+        .then(()=>{
+            if(coupon){
+               firebase
+                .firestore()
+                .collection('coupons')
+                .doc(coupon.id)
+                .update({remainUse: coupon.remainUse -1, blacklisted:[...coupon.blacklisted, billing.userId]}) 
+                .then(()=>{
+                    dispatch(addOrder(data))
+                    callback(id)
+                })
+            }else{
+                dispatch(addOrder(data))
+                callback(id)
+            }
+            
+            
+        })
+        .catch((err)=>{
+            onError(err)
+        })
+}
+
+export function handlePayOrder({orderId, total, wallet, service}, callback, onError){
+    return (dispatch) => RequestTimeout(1000*60*5, pay({amount: total, wallet, currency: 'xaf', service})
+    .then((res)=>{
+        const data = {
+            paymentStatus: 'paid',
+            paymentFeedback: res.data
+        };
+        firebase
+        .firestore()
+        .collection('orders')
+        .doc(orderId)
+        .update(data)
+        .then(()=>{
+                dispatch(addOrder(data))
+                callback()
+        })
+        .catch((err)=>{
+            onError(err)
+        })
     })
     .catch((err)=>{
         onError(err)
-    })
+    }))
+    
 }
 
 export function handlePayAndPlaceOrder({cart, subtotal, discount, billing, shipping, payment, from, total, wallet, service, deliveryTime, coupon, mode}, callback, onError){
@@ -207,7 +248,7 @@ export function GetOrder(orderId,callback){
     .collection('orders')
     .doc(orderId)
     .onSnapshot((documentSnapshot)=>{
-        if(documentSnapshot.exists) callback(documentSnapshot.data())
+        callback(documentSnapshot.data())
     })
 }
 

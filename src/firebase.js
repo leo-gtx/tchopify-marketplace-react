@@ -9,10 +9,10 @@ import { firebaseConfig } from './config';
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
-
 const analytics = firebase.analytics()
 
 const auth = firebase.auth()
+auth.languageCode = localStorage.getItem('i18nextLng') || 'en';
 // auth.useEmulator('http://localhost:9099')
 const firestore = firebase.firestore()
 firestore.settings({

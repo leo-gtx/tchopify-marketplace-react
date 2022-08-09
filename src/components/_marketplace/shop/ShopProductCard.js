@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import clock from '@iconify/icons-eva/clock-outline';
+import BlockImage from 'react-block-image';
 // material
-import { Box, Card, Link, Typography, Stack, Rating } from '@material-ui/core';
+import { Box, Card, Link, Typography, Stack, Rating, CircularProgress } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
@@ -32,7 +33,22 @@ export default function ShopProductCard({ product }) {
     <Link to={linkTo} color="inherit" underline='none' component={RouterLink}>
       <Card>
         <Box sx={{ pt: '100%', position: 'relative' }}>
-          <ProductImgStyle alt={name} src={image} />
+          <BlockImage
+            style={{
+              top: 0,
+              width: '100%',
+              height: '100%',
+              position: 'absolute'
+            }}
+            src={image}
+            showPreview
+            loader={
+              <center style={{marginTop: '45%'}}>
+                <CircularProgress/>
+              </center>
+            
+          }
+          />
         </Box>
 
         <Stack spacing={2} sx={{ p: 3 }}>

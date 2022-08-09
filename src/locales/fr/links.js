@@ -16,7 +16,7 @@ export default {
     newCategory: 'Nouvelle Catégorie',
     user: 'Utilisateur',
     accountSettings: 'Paramètres de compte',
-    marketplace: 'Marketplace',
+    marketplace: 'Accueil',
     checkout: 'Commandez',
     home: 'Accueil',
     myOrders: 'Mes Commandes',

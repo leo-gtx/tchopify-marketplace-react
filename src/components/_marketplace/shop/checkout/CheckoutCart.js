@@ -83,7 +83,7 @@ export default function CheckoutCart({handleGetCoupon}) {
               <CardHeader
                 title={
                   <Typography variant="h6">
-                    Card
+                    {t('checkout.cart')}
                     <Typography component="span" sx={{ color: 'text.secondary' }}>
                       &nbsp;({totalItems} item)
                     </Typography>

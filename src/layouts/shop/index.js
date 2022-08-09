@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 // material
 import { styled, useTheme } from '@material-ui/core/styles';
@@ -6,6 +6,7 @@ import { styled, useTheme } from '@material-ui/core/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // component
 import ShopNavbar from './ShopNavbar';
+import ShopSidebar from './ShopSidebar';
 
 
 
@@ -38,9 +39,11 @@ const MainStyle = styled('div')(({ theme }) => ({
 export default function ShopLayout() {
   const theme = useTheme();
   const { collapseClick } = useCollapseDrawer();
+  const [open, setOpen] = useState(false);
   return (
     <RootStyle>
-      <ShopNavbar  />
+      <ShopNavbar onOpenSidebar={() => setOpen(true)} />
+      <ShopSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle
         sx={{
           transition: theme.transitions.create('margin', {

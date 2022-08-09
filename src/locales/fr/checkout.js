@@ -18,5 +18,7 @@ export default {
     dineTitle: 'Diné à l\'intérieur (Gratuit)',
     dineDescription: 'Peut être prêt dans {{value}} minutes',
     deliveryOptions: 'Options de livraison',
-    billingAddress: 'Adresse de livraison'
+    billingAddress: 'Adresse de livraison',
+    greating: 'Merci pour votre achat!',
+    greating2: 'Merci d\'avoir passer la commande'
 }

@@ -57,7 +57,7 @@ export default function UserAccount() {
   },[queryParams.get('tabName')])
 
   return (
-    <Page title="Marketplace: Profile | Tchopify">
+    <Page title={t('titles.account')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Account"

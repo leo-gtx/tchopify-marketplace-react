@@ -62,7 +62,7 @@ export default function AccountPopover() {
         }}
       >
         <Icon icon={location} width={22} height={22} />
-        <Typography variant='subtitle2' maxWidth={100} noWrap>{currentLocation}</Typography>
+        {/* <Typography variant='subtitle2' maxWidth={100} noWrap>{currentLocation}</Typography> */}
       </MIconButton>
       
     </Tooltip>
@@ -74,6 +74,7 @@ export default function AccountPopover() {
               <Stack sx={{ my: 2}}>
                 <Autocomplete
                 freeSolo={false}
+                autoComplete
                 fullWidth
                 loading={isPlacePredictionsLoading}
                 options={placePredictions}

@@ -26,5 +26,7 @@ export default {
     error: 'Something Wrong',
     markDelivered: 'Mars As Delivered',
     rateSuccess: 'Rate Save',
-    rateFailure: 'Rate Failed'
+    rateFailure: 'Rate Failed',
+    orderPaySuccess: 'Order Paid',
+    orderPayFailure: 'Pay Order Failed'
 }

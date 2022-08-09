@@ -1,5 +1,5 @@
 export default{
-    title: 'MarketPlace',
+    title: 'Ordering from {{location}}',
     sortBy: 'Sort By',
     oldest: 'Oldest',
     newest: 'Newest',
