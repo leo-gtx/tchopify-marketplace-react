@@ -5,20 +5,12 @@ import { Icon } from '@iconify/react';
 import clock from '@iconify/icons-eva/clock-outline';
 import BlockImage from 'react-block-image';
 // material
-import { Box, Card, Link, Typography, Stack, Rating, CircularProgress } from '@material-ui/core';
+import { Box, Card, Link, Typography, Stack, Rating, CircularProgress, Grid } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
-
-const ProductImgStyle = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute'
-});
 
 // ----------------------------------------------------------------------
 
@@ -52,25 +44,32 @@ export default function ShopProductCard({ product }) {
         </Box>
 
         <Stack spacing={2} sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="subtitle1" noWrap>
+          <Grid container direction="row"  alignItems="center" justifyContent="space-between">
+            <Grid item>
+              <Typography variant="subtitle1" noWrap>
                 {name}
               </Typography>
-              <Rating value={rating} readOnly/>
-          </Stack>
+            </Grid>
+            <Grid>
+               <Rating value={rating} readOnly/>
+            </Grid>
+          </Grid>
            
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="subtitle1">
+          <Grid container direction="row" alignItems="center" justifyContent="space-between">
+            <Grid item>
+              <Typography variant="subtitle1">
               {fCurrency(price)}
-            </Typography>
-            <Stack direction="row"  alignItems="center" justifyContent="space-between">
-              <Icon icon={clock} width={16} height={16}/>
-              <Typography variant="subtitle2">
-                {`${cookingTime} min`}
               </Typography>
-            </Stack>
-            
-          </Stack>
+            </Grid>
+            <Grid item>
+              <Stack direction="row"  alignItems="center" justifyContent="space-between">
+                <Icon icon={clock} width={16} height={16}/>
+                <Typography variant="subtitle2">
+                  {`${cookingTime} min`}
+                </Typography>
+              </Stack>
+            </Grid>
+          </Grid>
         </Stack>
       </Card>
     </Link>

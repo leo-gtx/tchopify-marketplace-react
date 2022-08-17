@@ -35,7 +35,7 @@ const sidebarConfig = [
   {
     subheader: '',
     items: [
-      { title: 'My Orders', icon: ICONS.order, path: PATH_MARKETPLACE.home.orders },
+      { title: 'menu.myOrders', icon: ICONS.order, path: PATH_MARKETPLACE.home.orders },
 
     ]
   }

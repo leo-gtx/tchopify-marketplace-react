@@ -1,3 +1,5 @@
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 // scroll bar
 import 'simplebar/src/simplebar.css';
 // slick-carousel

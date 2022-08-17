@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.17.0",
+    "@babel/polyfill": "^7.12.1",
     "@date-io/date-fns": "^2.11.0",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
@@ -71,6 +72,7 @@
     "axios": "^0.21.4",
     "axios-mock-adapter": "^1.20.0",
     "change-case": "^4.1.2",
+    "core-js": "3.24.1",
     "d3-array": "^3.0.2",
     "d3-scale": "^4.0.0",
     "date-fns": "^2.23.0",
@@ -126,6 +128,7 @@
     "redux": "^4.1.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "regenerator-runtime": "^0.13.9",
     "rehype-highlight": "^5.0.0",
     "rehype-raw": "^6.0.0",
     "simplebar": "^5.3.5",

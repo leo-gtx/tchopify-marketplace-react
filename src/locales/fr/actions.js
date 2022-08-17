@@ -54,5 +54,6 @@ export default {
     shipping: 'Livraison en cours',
     rate: 'Notez',
     chooseTable: 'Renseignez la table',
-    payOrder: 'Payez la commande'
+    payOrder: 'Payez la commande',
+    becomePartner: 'Ajouter votre restaurant'
 }

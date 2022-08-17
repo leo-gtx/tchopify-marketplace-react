@@ -13,17 +13,15 @@ import ErrorBoundary from './components/ErrorBoundary';
 // hook
 import useAuth from './hooks/useAuth';
 import useNotification from './hooks/useNotification';
-//
 
 
 
 // ----------------------------------------------------------------------
 
 export default function App() {
+  const {initializing} = useAuth();
   useNotification();
   
-  const {initializing} = useAuth();
-
   return (
     <ThemeConfig>
       <ThemePrimaryColor>

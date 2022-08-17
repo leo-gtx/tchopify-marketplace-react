@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getToken, onMessageListener } from '../firebase';
+import firebase, { getToken, onMessageListener } from '../firebase';
 import { handleSetRegistrationToken } from '../redux/actions/authedUser';
 
 export default function useNotification(){
     const dispatch = useDispatch();
     const { authedUser } = useSelector((state)=>state);
-    const { notifications } = authedUser;
     const [token, setToken] = useState();
+    useEffect(()=>{
+        if(authedUser.isAuthenticated && token){
+            dispatch(handleSetRegistrationToken(authedUser.id, token))
+        }
+    },[token, authedUser.token])
+    
+    if(!firebase.messaging.isSupported()){
+        return null
+    }
     getToken((value)=>setToken(value));
     onMessageListener()
     .then((payload)=>{
@@ -16,11 +24,7 @@ export default function useNotification(){
     })
     .catch((err)=>console.error(err))
 
-    useEffect(()=>{
-        if(authedUser.isAuthenticated && token){
-            dispatch(handleSetRegistrationToken(authedUser.id, token))
-        }
-    },[token, authedUser.token])
+   
     
     return null
 }

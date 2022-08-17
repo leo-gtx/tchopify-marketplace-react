@@ -175,9 +175,11 @@ export function isStoreOpen(schedules){
 
 export function getNextOpenDay(schedules){
     const options = { weekday: 'long'};
-    let currentDay = new Date().getDay() + 1;
+    let currentDay = new Date().getDay();
     const now = new Date()
     for (let index = 0; index <= 6; index+=1) {
+        if(currentDay >= 6) currentDay = 0 
+        else currentDay+=1;
         if(schedules[currentDay].isOpen){
             now.setDate(currentDay)
             return {
@@ -185,8 +187,7 @@ export function getNextOpenDay(schedules){
                 day: new Date(`${now.toDateString()} ${schedules[currentDay].startTime}`).toLocaleTimeString(localStorage.getItem('i18nextLng'), options)
             }
         }
-        if (currentDay === 6) currentDay = 0 
-        else currentDay+=1
+        
     }
     return {t: 'common.closedAlways'}
 }

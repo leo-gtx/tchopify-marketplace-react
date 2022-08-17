@@ -54,5 +54,6 @@ export default {
     shipping: 'Delivering',
     rate: 'Rate',
     chooseTable: 'Set a table',
-    payOrder: 'Pay Order'
+    payOrder: 'Pay Order',
+    becomePartner: 'Add your restaurant'
 }

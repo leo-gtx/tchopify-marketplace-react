@@ -27,12 +27,12 @@ const storage = firebase.storage()
 
 const functions = firebase.functions()
 // functions.useEmulator('localhost', 5001)
+let messaging = null;
+if(firebase.messaging.isSupported()){
+  messaging = firebase.messaging()
+}
 
-const messaging = firebase.messaging()
-
-
-
-export const getToken = (callback)=>messaging
+export const getToken = (callback)=> messaging && messaging
 .getToken({vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY})
 .then((currentToken)=>{
     if(currentToken){
@@ -42,11 +42,11 @@ export const getToken = (callback)=>messaging
     }
 })
 
-export const onMessageListener = () =>
-  new Promise((resolve) => {
+export const onMessageListener = () => messaging && new Promise((resolve) => {
     messaging.onMessage((payload) => {
       resolve(payload);
     });
 });
+
 
 export default firebase

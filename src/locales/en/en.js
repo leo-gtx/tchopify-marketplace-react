@@ -25,8 +25,10 @@ import tracking from './tracking';
 import rating from './rating';
 import notification from './notification';
 import titles from './titles';
+import menu from './menu';
 
 export default {
+  menu,
   actions,
   forms,
   flash,

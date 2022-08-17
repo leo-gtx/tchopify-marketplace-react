@@ -10,7 +10,7 @@ import EmptyContent from '../../EmptyContent';
 const SkeletonLoad = (
   <Grid container spacing={3}>
     {[...Array(12)].map((_, index) => (
-      <Grid item xs={12} sm={6} md={3} key={index}>
+      <Grid item xs={12} sm={6} md={2} key={index}>
         <Skeleton variant="rectangular" width="100%" sx={{ paddingTop: '115%', borderRadius: 2 }} />
       </Grid>
     ))}
@@ -30,7 +30,7 @@ export default function ProductList({ products, isLoad, isClosed, handleSelectPr
       {isLoad && SkeletonLoad}
       <Grid container spacing={3} {...other}>
         {products.map((product) => (
-          <Grid key={product.id} item xs={12} sm={6} md={3} sx={{opacity: isClosed? 0.70: 1}}>
+          <Grid key={product.id} item xs={12} sm={6} md={2} sx={{opacity: isClosed? 0.70: 1}}>
             <ShopProductCard product={product} handleSelectProduct={handleSelectProduct} />
           </Grid>
         ))}

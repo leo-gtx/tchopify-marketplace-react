@@ -63,7 +63,7 @@ export default function Tracking() {
   const {billing, from, mode } = order;
 
   return (
-    <Page title={t('titles.tracking')}>
+    <Page title={t('titles.orderTracking')}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
       <HeaderBreadcrumbs
           heading={t('invoice.title')}

@@ -167,18 +167,19 @@ export default function ShopSidebar({ isOpenSidebar, onCloseSidebar }) {
           ))}
 
         { !isAuthenticated && (
-          <Button variant='outlined' href={PATH_AUTH.phoneLogin} >{t('common.signin')}</Button>
+          <Button variant='outlined'  href={PATH_AUTH.phoneLogin} >{t('common.signin')}</Button>
         )}
         
       </Stack>
       {isAuthenticated && (
         <>
         <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
-        <Button fullWidth  variant="text" onClick={handleLogout} >
+        <Button fullWidth  variant="text" color='inherit' onClick={handleLogout} >
         {t('common.logout')}
         </Button>
         </>
       )}
+      <Button variant='text' color='inherit' href='https://restaurant.tchopify.com' >{t('actions.becomePartner')}</Button>
     </Scrollbar>
   );
 

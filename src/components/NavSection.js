@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
+import { useTranslation } from 'react-i18next';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListSubheader, ListItemButton } from '@material-ui/core';
@@ -63,6 +64,7 @@ function NavItem({ item, active, isShow }) {
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
   const [open, setOpen] = useState(isActiveRoot);
+  const {t} = useTranslation();
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
@@ -93,7 +95,7 @@ function NavItem({ item, active, isShow }) {
 
           {isShow && (
             <>
-              <ListItemText disableTypography primary={title} />
+              <ListItemText disableTypography primary={t(title)} />
               {info && info}
               <Box
                 component={Icon}
@@ -139,7 +141,7 @@ function NavItem({ item, active, isShow }) {
                         }}
                       />
                     </ListItemIconStyle>
-                    <ListItemText disableTypography primary={title} />
+                    <ListItemText disableTypography primary={t(title)} />
                   </ListItemStyle>
                 );
               })}
@@ -161,7 +163,7 @@ function NavItem({ item, active, isShow }) {
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
       {isShow && (
         <>
-          <ListItemText disableTypography primary={title} />
+          <ListItemText disableTypography primary={t(title)} />
           {info && info}
         </>
       )}
@@ -176,6 +178,7 @@ NavSection.propTypes = {
 
 export default function NavSection({ navConfig, isShow = true, ...other }) {
   const { pathname } = useLocation();
+  const {t} = useTranslation();
   const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false);
 
   return (
@@ -184,7 +187,7 @@ export default function NavSection({ navConfig, isShow = true, ...other }) {
         const { subheader, items } = list;
         return (
           <List key={subheader} disablePadding>
-            {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
+            {isShow && <ListSubheaderStyle>{t(subheader)}</ListSubheaderStyle>}
             {items.map((item) => (
               <NavItem key={item.title} item={item} active={match} isShow={isShow} />
             ))}

@@ -187,11 +187,11 @@ export default function ShopDetails() {
 
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={`${jsUcfirst(name)}'s Shop`}
+          heading={shop.name || ''}
           links={[
             { name: t('links.marketplace'), href: PATH_MARKETPLACE.home.root },
             {
-              name,
+              name: shop.name,
             }
           ]}
         />

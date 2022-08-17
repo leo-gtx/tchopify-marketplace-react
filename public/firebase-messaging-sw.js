@@ -16,18 +16,20 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Retrieve firebase messaging
-const messaging = firebase.messaging();
-// eslint-disable-next-line
-messaging.onBackgroundMessage(function(payload) {
+  if(firebase.messaging.isSupported()){
+    // Retrieve firebase messaging
+  const messaging = firebase.messaging();
+  // eslint-disable-next-line
+  messaging.onBackgroundMessage(function(payload) {
 
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    image: payload.notification.image,
-    icon: '/favicon/android-chrome-192x192.png'
-  };
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      image: payload.notification.image,
+      icon: '/favicon/android-chrome-192x192.png'
+    };
 
-  self.registration.showNotification(notificationTitle,
-    notificationOptions);
-});
+    self.registration.showNotification(notificationTitle,
+      notificationOptions);
+  });
+}
