@@ -24,6 +24,7 @@ import {
   ProductDetailsCarousel
 } from '../../components/_marketplace/shop/product-details';
 import { DialogAnimate}  from '../../components/animate';
+import Scrollbar from '../../components/Scrollbar';
 
 
 
@@ -64,10 +65,10 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 const SkeletonLoad = (
   <Grid container spacing={3}>
-    <Grid item xs={12} md={6} lg={7}>
+    <Grid item xs={12} >
       <Skeleton variant="rectangular" width="100%" sx={{ paddingTop: '100%', borderRadius: 2 }} />
     </Grid>
-    <Grid item xs={12} md={6} lg={5}>
+    <Grid item xs={12}>
       <Skeleton variant="text" height={240} />
       <Skeleton variant="text" height={40} />
       <Skeleton variant="text" height={40} />
@@ -117,7 +118,9 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
       onToggleModal(false);
   }
   return (
+
       <Container maxWidth='xl'>
+        
         <DialogAnimate open={app.isCheckoutViolation}>
           <DialogTitle>{t('dishDetails.modalTitle')}</DialogTitle>
           <DialogContent>
@@ -131,14 +134,16 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
             <Button variant='contained' type="submit" onClick={procceedToAction}>{t('actions.yes')}</Button>
           </DialogActions>
         </DialogAnimate>
+
         {product && (
           <Box sx={{ my: 3}}>
+            
             <Card>
               <Grid container>
-                <Grid item xs={12} md={6} lg={7}>
+                <Grid item xs={12} >
                   <ProductDetailsCarousel image={product?.image} />
                 </Grid>
-                <Grid item xs={12} md={6} lg={5}>
+                <Grid item xs={12}>
                   <ProductDetailsSumary product={product} shopId={shopId} onToggleModal={onToggleModal} />
                 </Grid>
               </Grid>
@@ -175,7 +180,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
 
             <Grid container sx={{ my: 8 }}>
               {PRODUCT_DESCRIPTION.map((item) => (
-                <Grid item xs={12} md={4} key={item.title}>
+                <Grid item xs={12} key={item.title}>
                   <Box sx={{ my: 2, mx: 'auto', maxWidth: 280, textAlign: 'center' }}>
                     <IconWrapperStyle>
                       <Icon icon={item.icon} width={36} height={36} />
@@ -188,12 +193,16 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
                 </Grid>
               ))}
             </Grid>
+            
           </Box>
         )}
+        
+        
 
         {!product && SkeletonLoad}
 
         {product?.id === 'undefined' && <Typography variant="h6">{t('dishDetails.notFound')}</Typography>}
       </Container>
+      
   );
 }

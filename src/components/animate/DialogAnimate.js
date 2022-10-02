@@ -5,6 +5,7 @@ import { Dialog } from '@material-ui/core';
 //
 import { varFadeInUp } from './variants';
 
+
 // ----------------------------------------------------------------------
 
 DialogAnimate.propTypes = {
@@ -27,14 +28,15 @@ export default function DialogAnimate({ open = false, animate, onClose, children
           PaperProps={{
             sx: {
               borderRadius: 2,
-              bgcolor: 'background.paper'
+              bgcolor: 'background.paper',
             },
             ...(animate || varFadeInUp)
           }}
           {...other}
         >
-          {children}
+            {children}
         </Dialog>
+        
       )}
     </AnimatePresence>
   );

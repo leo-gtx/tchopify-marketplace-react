@@ -122,6 +122,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
   const {
     id,
     name,
+    description,
     price,
     image,
     cookingTime,
@@ -205,7 +206,9 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
           <Typography variant="h4" sx={{ mb: 3 }}>
             {fCurrency(values.price)}
           </Typography>
-
+          <Typography variant="body2" sx={{ mb: 3 }}>
+            {description}
+          </Typography>
           <Divider sx={{ borderStyle: 'dashed' }} />
           <Stack spacing={3} sx={{ my: 3 }}>
            
@@ -257,7 +260,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
           </Stack>
           <Divider sx={{ borderStyle: 'dashed' }} />
 
-          <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ mt: 5 }}>
+          <Stack spacing={2} direction={{ xs: 'column', sm: 'column' }} sx={{ mt: 5 }}>
             <Button
               fullWidth
               size="large"

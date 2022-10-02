@@ -26,6 +26,8 @@ import {
 import { CartWidget } from '../../components/_marketplace/marketplace';
 import { DialogAnimate}  from '../../components/animate';
 import DishDetails from './DishDetails';
+import Scrollbar from '../../components/Scrollbar';
+
 // utils
 import fakeRequest from '../../utils/fakeRequest';
 import { isStoreOpen, jsUcfirst } from '../../utils/utils';
@@ -185,13 +187,13 @@ export default function ShopDetails() {
         </Backdrop>
       )}
 
-      <Container maxWidth={themeStretch ? false : 'lg'}>
+      <Container maxWidth={themeStretch ? false : 'lg'} >
         <HeaderBreadcrumbs
           heading={shop.name || ''}
           links={[
             { name: t('links.marketplace'), href: PATH_MARKETPLACE.home.root },
             {
-              name: shop.name,
+              name: shop.name ? shop.name:<Skeleton variant='text' width={60} /> ,
             }
           ]}
         />
@@ -250,27 +252,27 @@ export default function ShopDetails() {
         </Stack>
 
         <ShopProductList products={filteredProducts || []} isLoad={!dishes} handleSelectProduct={handleOpenModal} isClosed={shop.businessHours && !isStoreOpen(shop.businessHours)} />
-        <DialogAnimate open={isOpen} onClose={handleCloseModal} fullScreen>
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-          <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleCloseModal}
-              aria-label="close"
-            >
-              <Icon icon={close} width={25} height={25} />
-            </IconButton>
-            {
-              dishes && dishId?
-              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {dishes.find((item)=> item.id === dishId).name}
-              </Typography>:
-               <Skeleton variant='text' width={200} />
-            }
-          </Toolbar>
-        </AppBar>
-          <DishDetails dishId={dishId} shopId={id} onToggleModal={handleToggleModal} />
+        <DialogAnimate open={isOpen} onClose={handleCloseModal}>
+          <AppBar sx={{ position: 'relative' }}>
+            <Toolbar>
+              {
+                dishes && dishId?
+                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                {dishes.find((item)=> item.id === dishId).name}
+                </Typography>:
+                <Skeleton variant='text' width={200} />
+              }
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={handleCloseModal}
+                aria-label="close"
+              >
+                <Icon icon={close} width={25} height={25} />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+            <DishDetails dishId={dishId} shopId={id} onToggleModal={handleToggleModal} />
         </DialogAnimate>
         <CartWidget/>
       </Container>

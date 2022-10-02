@@ -73,7 +73,7 @@ export default function AccountPopover() {
           <DialogContent>
               <Stack sx={{ my: 2}}>
                 <Autocomplete
-                freeSolo={false}
+                freeSolo
                 autoComplete
                 fullWidth
                 loading={isPlacePredictionsLoading}
@@ -81,12 +81,11 @@ export default function AccountPopover() {
                 getOptionLabel={(option)=>option.description}
                 onSelect={(e)=>{
                         setLocation(e.target.value)  
-                        // console.log(placePredictions.find((item)=>item.description === e.target.value))
                 }}
+                autoSelect
                 renderInput={(params)=> <TextField
                 {...params}
                 label={currentLocation || 'Find your location'}
-                
                 onChange={(evt) => {
                         getPlacePredictions({ input: evt.target.value })
                 }}
@@ -95,7 +94,7 @@ export default function AccountPopover() {
               </Stack>
           </DialogContent>
           <DialogActions>
-            <Button type="button" color="primary" variant="contained" disabled={!deliveryLocation} onClick={handleSubmitDeliveryLocation}>
+            <Button type="button" color="primary" variant="contained" disabled={!deliveryLocation || placePredictions.find((item)=>item.description === deliveryLocation) === undefined} onClick={handleSubmitDeliveryLocation}>
               {t('actions.confirm')}
             </Button>
           </DialogActions>
