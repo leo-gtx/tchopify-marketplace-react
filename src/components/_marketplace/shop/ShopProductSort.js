@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import chevronUpFill from '@iconify/icons-eva/chevron-up-fill';
 import chevronDownFill from '@iconify/icons-eva/chevron-down-fill';
 // material
@@ -11,23 +12,24 @@ import { setSortByDish } from '../../../redux/actions/app';
 // ----------------------------------------------------------------------
 
 const SORT_BY_OPTIONS = [
-  { value: 'newest', label: 'Newest' },
-  { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' }
+  { value: 'newest', label: 'shopDetails.newest' },
+  { value: 'priceDesc', label: 'shopDetails.priceDesc' },
+  { value: 'priceAsc', label: 'shopDetails.priceAsc' }
 ];
 
 function renderLabel(label) {
   if (label === 'newest') {
-    return 'Newest';
+    return 'shopDetails.newest';
   }
   if (label === 'priceDesc') {
-    return 'Price: High-Low';
+    return 'shopDetails.priceDesc';
   }
-  return 'Price: Low-High';
+  return 'shopDetails.priceAsc';
 }
 
 export default function ShopProductSort() {
   const dispatch = useDispatch();
+  const {t} = useTranslation();
   const [open, setOpen] = useState(null);
   const sortBy = useSelector((state) => state.app.sortByDish);
 
@@ -52,9 +54,9 @@ export default function ShopProductSort() {
         onClick={handleOpen}
         endIcon={<Icon icon={open ? chevronUpFill : chevronDownFill} />}
       >
-        Sort By:&nbsp;
+        {t('shopDetails.sortBy')}:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          {renderLabel(sortBy)}
+          {t(renderLabel(sortBy))}
         </Typography>
       </Button>
       <Menu
@@ -72,7 +74,7 @@ export default function ShopProductSort() {
             onClick={() => handleSortBy(option.value)}
             sx={{ typography: 'body2' }}
           >
-            {option.label}
+            {t(option.label)}
           </MenuItem>
         ))}
       </Menu>

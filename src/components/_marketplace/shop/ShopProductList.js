@@ -25,6 +25,7 @@ ProductList.propTypes = {
 
 export default function ProductList({ products, isLoad, isClosed, handleSelectProduct, ...other }) {
   const {t} = useTranslation();
+  console.log(isLoad)
   return (
     <>
       {isLoad && SkeletonLoad}
