@@ -8,9 +8,9 @@ import { TextField, Alert, Stack, Autocomplete } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-
 // firebase
 import firebase from '../../../firebase';
+import { RequestTimeout } from '../../../utils/utils';
 // ----------------------------------------------------------------------
 const COUNTRIES = [
   { code: 'CM', label: 'Cameroon', phone: '+237' }
@@ -33,7 +33,7 @@ export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation })
 
   const formik = useFormik({
     initialValues: {
-      code: undefined,
+      code: '',
       phoneNumber: ''
     },
     validationSchema: ResetPasswordSchema,
@@ -43,7 +43,8 @@ export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation })
           const phoneNumber = values.code + values.phoneNumber;
           window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
           const appVerifier = window.recaptchaVerifier;
-          firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+          RequestTimeout(1000 * 60 * 5,
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
               .then((confirmationResult) => {
                 // SMS sent. Prompt user to type the code from the message, then sign the
                 // user in with confirmationResult.confirm(code).
@@ -56,12 +57,15 @@ export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation })
                 console.error(error);
                 setErrors({ afterSubmit: error.message });
                 enqueueSnackbar(t('flash.smsFailure'), {variant: 'error'});
+                window.recaptchaVerifier.clear();
                 // grecaptcha.reset(appVerifier);
               })
-              .finally(()=>{
-                setSubmitting(false);
-              })
-          
+              
+          )
+          .finally(()=>{
+            setSubmitting(false);
+          })
+
         }
 
     }
@@ -82,10 +86,13 @@ export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation })
                         setFieldValue('code', COUNTRIES.find((item)=>e.target.value.includes(item.label))?.phone)  
                 }}
                 renderInput={(params)=> <TextField
-                {...params}
-                label={t('forms.countryLabel')}
-                />}
-          />
+                  {...params}
+                  label={t('forms.countryLabel')}
+                  error={Boolean(touched.code && errors.code)}
+                  helperText={touched.code && errors.code}
+                  />
+                }
+           />
           <TextField
             fullWidth
             {...getFieldProps('phoneNumber')}

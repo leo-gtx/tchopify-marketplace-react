@@ -205,15 +205,18 @@ export default function app(state = initialState, action){
                     billing: action.payload
                 }
             }
-        case APPLY_DISCOUNT: 
-            return {
+        case APPLY_DISCOUNT: {
+            const total = state.checkout.total - action.payload;
+             return {
                 ...state,
                 checkout: {
                     ...state.checkout,
                     discount: action.payload,
-                    total: state.checkout.total - action.payload
+                    total: total < 0 ? 0 : total
                 }
             }
+        }
+           
         case DECREASE_QUANTITY: {
             const {id, options} = action.payload;
             const updateCart = map(state.checkout.cart, (product) => {
@@ -268,15 +271,17 @@ export default function app(state = initialState, action){
                     total: 0,
                 }
             }
-        case APPLY_SHIPPING:
+        case APPLY_SHIPPING:{
+            const total = state.checkout.subtotal - state.checkout.discount + action.payload;
             return {
                 ...state,
                 checkout: {
                     ...state.checkout,
                     shipping: action.payload,
-                    total: state.checkout.subtotal - state.checkout.discount + action.payload
+                    total:  total <0 ? 0 : total
                 }
             }
+        }
         case SET_ORDER_ID:
             return {
                 ...state,

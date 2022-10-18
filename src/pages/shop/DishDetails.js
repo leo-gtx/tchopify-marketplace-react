@@ -24,7 +24,6 @@ import {
   ProductDetailsCarousel
 } from '../../components/_marketplace/shop/product-details';
 import { DialogAnimate}  from '../../components/animate';
-import Scrollbar from '../../components/Scrollbar';
 
 
 

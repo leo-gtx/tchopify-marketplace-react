@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Box,  Container, Typography } from '@material-ui/core';
-
+// hooks
+import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Page from '../../components/Page';
 import { PhoneNumberForm } from '../../components/authentication/phone-verification';
@@ -31,6 +32,7 @@ export default function PhoneVerification() {
   const [phone, setPhone] = useState('');
   const [confirmationID, setConfirmation] = useState();
   const { pathname } = useLocation();
+  const isMountedRef = useIsMountedRef();
 
   const handleGetPhoneNumber = (value)=>setPhone(value)
 
@@ -38,9 +40,10 @@ export default function PhoneVerification() {
     return <Navigate to={PATH_MARKETPLACE.home.root} />
   }
 
-  if(phone){
+  if(isMountedRef.current && phone){
     return <VerifyCode resetPhoneNumber={()=> setPhone('')} confirmation={confirmationID}/>
   }
+
 
   
 
@@ -57,7 +60,7 @@ export default function PhoneVerification() {
                 {t('phoneVerification.subtitle')}
               </Typography>
 
-              <PhoneNumberForm  onGetPhoneNumber={handleGetPhoneNumber} onGetConfirmation={(value)=> setConfirmation(value)} />
+              { isMountedRef.current && <PhoneNumberForm  onGetPhoneNumber={handleGetPhoneNumber} onGetConfirmation={(value)=> setConfirmation(value)} /> }
             </>
         </Box>
       </Container>

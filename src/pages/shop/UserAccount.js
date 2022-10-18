@@ -26,7 +26,7 @@ export default function UserAccount() {
   const { themeStretch } = useSettings();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  const [currentTab, setCurrentTab] = useState('');
+  const [currentTab, setCurrentTab] = useState('general');
   const navigate = useNavigate();
   const { t }  = useTranslation();
   const ACCOUNT_TABS = [

@@ -7,7 +7,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 // material
-import { Grid, Button, DialogContent, DialogActions, DialogContentText, DialogTitle, Typography } from '@material-ui/core';
+import { Backdrop, CircularProgress, Grid, Button, DialogContent, DialogActions, DialogContentText, DialogTitle, Typography, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ import CheckoutSummary from './CheckoutSummary';
 import CheckoutDelivery from './CheckoutDelivery';
 import CheckoutBillingInfo from './CheckoutBillingInfo';
 import CheckoutPaymentMethods from './CheckoutPaymentMethods';
+import CheckoutOrderRejected from './CheckoutOrderRejected';
 import { DialogAnimate } from '../../../animate';
 
 
@@ -187,12 +188,13 @@ export default function CheckoutPayment({coupon}) {
           dispatch(handlePayOrder(data, onSuccess, onError))
           setText(t(paymentOption.note))
           handleOpenDialog()
+        }else if(order?.status === 'rejected'){
+          const onError = (error)=>{
+            setSubmitting(false);
+            enqueueSnackbar(t('flash.orderRejected'), {variant: 'error'})
+          };
+          onError();
         }
-
-       
-        
-        
-
     }
   });
 
@@ -202,8 +204,13 @@ export default function CheckoutPayment({coupon}) {
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
       setFieldValue('delivery',data.mode)
+      setFieldValue('payment', data.payment)
     })
   },[orderId])
+
+  if(order?.status === 'rejected'){
+    return <CheckoutOrderRejected open/>
+  }
 
   return (
     <FormikProvider value={formik}>
@@ -246,7 +253,20 @@ export default function CheckoutPayment({coupon}) {
               shipping={options.find((item)=>item.id === values.delivery)?.value}
               onEdit={() => handleGotoStep(0)}
             />
-            { order?.status === 'new' && (<Typography variant='subtitle2' sx={{textAlign: 'center'}} > Waiting for restaurant confirmation... </Typography>)}
+            {
+              order?.status === 'new' && (
+                <Backdrop open={order?.status === 'new'} sx={{ zIndex: 9999 }}>
+                  <Stack justifyContent='center' alignItems='center'>
+                    <Stack>
+                      <CircularProgress />
+                    </Stack>
+                    <Stack>
+                      <Typography variant='subtitle2' sx={{textAlign: 'center', color: '#fff'}} > {t('checkout.waitingRestaurant')} </Typography>
+                    </Stack>
+                  </Stack>
+                </Backdrop>
+              )
+            }
             <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
               {storeOpen && !order && t('actions.completeOrder')}
               {!storeOpen && t('actions.shopClosed')}

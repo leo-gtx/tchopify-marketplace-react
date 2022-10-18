@@ -10,6 +10,8 @@ import { OutlinedInput, FormHelperText, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // actions
 import { handleGetUser  } from '../../../redux/actions/authedUser';
+// utils
+import { RequestTimeout } from '../../../utils/utils';
 
 
 
@@ -55,9 +57,9 @@ export default function VerifyCodeForm({ onConfirmation }) {
       code6: ''
     },
     validationSchema: VerifyCodeSchema,
-    onSubmit:() => {
+    onSubmit:(values, {setSubmitting}) => {
       const code = `${values.code1}${values.code2}${values.code3}${values.code4}${values.code5}${values.code6}`
-      onConfirmation.confirm(code)
+      RequestTimeout(1000*60*4, onConfirmation.confirm(code)
       .then((result)=>{
         const data = {
           id: result.user.uid,
@@ -74,6 +76,10 @@ export default function VerifyCodeForm({ onConfirmation }) {
         console.error(err);
         enqueueSnackbar(t('flash.verifyFailure'), { variant: 'error' });
       })
+      )
+      .finally(()=>{
+        setSubmitting(false)
+      })
       
     }
   });
@@ -86,17 +92,24 @@ export default function VerifyCodeForm({ onConfirmation }) {
       const nextRef = Number(e.currentTarget.name.charAt(e.currentTarget.name.length - 1))
       if(nextRef < 6){
         inputRefs.current[nextRef].current.focus()
-        setFieldValue(inputRefs.current[nextRef].current.name, '')
       }
     }
-    if(values[e.currentTarget.name]  && !e.currentTarget.value){
-      setFieldValue(e.currentTarget.name, e.currentTarget.value)
-      const prevRef = Number(e.currentTarget.name.charAt(e.currentTarget.name.length - 1)) - 2
-      if(prevRef >= 0){
-        inputRefs.current[prevRef].current.focus()
-      }
+    if(values[e.currentTarget.name]){
+        setFieldValue(e.currentTarget.name, e.currentTarget.value)
     }
     
+  }
+
+  const handleKeyDown = (e)=>{
+    const {key} = e;
+      if (key === "Backspace" || key === "Delete") {
+        if(!e.currentTarget.value){
+          const prevRef = Number(e.currentTarget.name.charAt(e.currentTarget.name.length - 1)) - 2
+          if(prevRef >= 0){
+            inputRefs.current[prevRef].current.focus()
+          }
+        }
+      }
   }
   
 
@@ -110,6 +123,7 @@ export default function VerifyCodeForm({ onConfirmation }) {
               inputRef={inputRefs.current[index]}
               {...getFieldProps(item)}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               type="number"
               placeholder="-"
               onInput={maxLength}

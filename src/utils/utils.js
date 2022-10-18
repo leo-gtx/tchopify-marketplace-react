@@ -264,6 +264,7 @@ export function RequestTimeout(ms, promise){
         const timeoutId = setTimeout(() => {
             // eslint-disable-next-line
           reject({message: "Bad Network"})
+          alert("Bad Network");
         }, ms);
         promise.then(
           (res) => {
