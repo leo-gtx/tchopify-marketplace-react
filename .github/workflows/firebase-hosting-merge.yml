@@ -19,3 +19,5 @@ jobs:
           channelId: live
           projectId: tchopify
           node-version: 16
+env:
+  CI: false

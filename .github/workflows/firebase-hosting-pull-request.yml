@@ -16,4 +16,6 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TCHOPIFY }}'
           projectId: tchopify
           node-version: 16
+env:
+  CI: true
 
