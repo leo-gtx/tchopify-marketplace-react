@@ -12,7 +12,7 @@
   "hosting": [
     {
       "target": "marketplace",
-      "public": "public/",
+      "public": "public/marketplace",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -29,5 +29,4 @@
   "storage": {
     "rules": "storage.rules"
   }
- 
 }
