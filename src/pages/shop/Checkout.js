@@ -9,7 +9,7 @@ import { Box, Grid, Step, Stepper, Container, StepLabel, StepConnector } from '@
 import { withStyles } from '@material-ui/styles';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { getCart, createBilling } from '../../redux/actions/app';
+import { getCart, createBilling, gotoStep } from '../../redux/actions/app';
 
 // routes
 import { PATH_MARKETPLACE } from '../../routes/paths';
@@ -105,7 +105,6 @@ export default function Checkout() {
       dispatch(createBilling(null));
     }
   }, [dispatch, step]);
-
 
   
   return (

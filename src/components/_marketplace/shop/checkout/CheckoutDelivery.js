@@ -14,7 +14,9 @@ import {
   CardHeader,
   CardContent,
   FormHelperText,
-  FormControlLabel
+  FormControlLabel,
+  Skeleton,
+  Collapse,
 } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -37,7 +39,7 @@ CheckoutDelivery.propTypes = {
   onApplyShipping: PropTypes.func
 };
 
-export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, ...other }) {
+export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, cardsAddress, btnAddAddress, ...other }) {
   const { values, setFieldValue, errors, touched } = formik;
   const {t} = useTranslation();
   return (
@@ -54,6 +56,21 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
           }}
         >
           <Grid container spacing={2}>
+            {
+              deliveryOptions.length < 1 && (
+                <>
+                  <Grid item xs={12} md={6}>
+                    <Skeleton variant='rectangular' width='100%' height={80} style={{borderRadius: 5}} />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Skeleton variant='rectangular' width='100%' height={80} style={{borderRadius: 5}} />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Skeleton variant='rectangular' width='100%' height={80} style={{borderRadius: 5}} />
+                  </Grid>
+                </>
+              )
+            }
             {deliveryOptions.map((delivery, index) => {
               const { value, title, description, id } = delivery;
               return (
@@ -92,6 +109,17 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
             )}
           </Grid>
         </RadioGroup>
+        <Collapse in={values.delivery === 'DELIVERY'} sx={{ width: '100%', marginTop: 5 }}>
+        { errors.address && (
+          <FormHelperText error>
+            <Box component="span" sx={{ px: 2 }}>
+              {touched.address && errors.address}
+            </Box>
+          </FormHelperText>
+        ) }
+          {cardsAddress}
+          {btnAddAddress}
+        </Collapse>
       </CardContent>
     </Card>
   );

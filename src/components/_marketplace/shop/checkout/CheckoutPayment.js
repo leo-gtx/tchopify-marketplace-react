@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { sumBy, isEqual } from 'lodash';
+import { sumBy } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -63,47 +63,13 @@ export default function CheckoutPayment({coupon}) {
   const [text, setText] = useState('');
   const [order, setOrder] = useState();
   const [open, setOpen] = useState(false);
-  const [options, setOption] = useState([]);
   const { checkout } = useSelector((state) => state.app);
-  const { total, discount, subtotal, billing, cart, deliveryTime, deliveryCost, orderId } = checkout;
+  const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId } = checkout;
   const { enqueueSnackbar } = useSnackbar();
-  const cookingTime = sumBy(cart,'cookingTime');
+
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
-    if(from){
-      if(from.mode.includes('DELIVERY')){
-        options.push(
-          { 
-            id: 'DELIVERY',
-            value: deliveryCost,
-            title: t('checkout.deliveryTitle', {value: fCurrency(deliveryCost)}),
-            description: t('checkout.deliveryDescription',{value: Math.round(deliveryTime / 60) + cookingTime}),
-          })
-      }
-
-      if(from.mode.includes('TAKEAWAY')){
-        options.push(
-          {
-            id: 'TAKEAWAY',
-            value: 0,
-            title: t('checkout.takeawayTitle'),
-            description: t('checkout.takeawayDescription',{value: cookingTime}),
-          })
-      }
-
-      if(from.mode.includes('DINE')){
-        options.push(
-          {
-            id: 'DINE',
-            value: 0,
-            title: t('checkout.dineTitle'),
-            description: t('checkout.dineDescription',{value: cookingTime}),
-          })
-      }
-    }
   },[dispatch, setFrom, from?.mode])
-
-
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -125,13 +91,11 @@ export default function CheckoutPayment({coupon}) {
 
   const PaymentSchema = Yup.object().shape({
     payment: Yup.mixed().required(t('forms.paymentRequired')),
-    delivery: Yup.mixed().required(t('forms.deliveryOptionRequired')),
     phoneNumber: Yup.string().required(t('forms.phoneNumberRequired'))
   });
 
   const formik = useFormik({
     initialValues: {
-      delivery: undefined,
       payment: '',
       phoneNumber: ''
     },
@@ -141,7 +105,7 @@ export default function CheckoutPayment({coupon}) {
       const data = {
         orderId,
         payment: values.payment,
-        shipping: options.find((item)=>item.id === values.delivery)?.value,
+        shipping ,
         mode: values.delivery,
         billing,
         cart,
@@ -203,7 +167,6 @@ export default function CheckoutPayment({coupon}) {
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
-      setFieldValue('delivery',data.mode)
       setFieldValue('payment', data.payment)
     })
   },[orderId])
@@ -226,11 +189,6 @@ export default function CheckoutPayment({coupon}) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <CheckoutDelivery
-              formik={formik}
-              onApplyShipping={handleApplyShipping}
-              deliveryOptions={options}
-            />
             <CheckoutPaymentMethods formik={formik}  paymentOptions={PAYMENT_OPTIONS} />
             <Button
               type="button"
@@ -250,7 +208,7 @@ export default function CheckoutPayment({coupon}) {
               total={total}
               subtotal={subtotal}
               discount={discount}
-              shipping={options.find((item)=>item.id === values.delivery)?.value}
+              shipping={shipping}
               onEdit={() => handleGotoStep(0)}
             />
             {

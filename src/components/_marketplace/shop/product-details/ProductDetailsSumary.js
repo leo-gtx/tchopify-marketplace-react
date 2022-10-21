@@ -48,10 +48,6 @@ const SOCIALS = [
     icon: <Icon icon={instagramFilled} width={20} height={20} color="#D7336D" />
   },
   {
-    name: 'Linkedin',
-    icon: <Icon icon={linkedinFill} width={20} height={20} color="#006097" />
-  },
-  {
     name: 'Twitter',
     icon: <Icon icon={twitterFill} width={20} height={20} color="#1C9CEA" />
   }
@@ -214,7 +210,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
            
 
            { options.length > 0 && (
-             <Stack direction="row" justifyContent="space-between">
+             <Stack direction="column" justifyContent="space-between">
              <Typography variant="subtitle1" sx={{ mt: 0.5 }}>
                {t('forms.optionsLabel')}
              </Typography>
@@ -222,7 +218,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
                select
                SelectProps={{
                  multiple: true,
-                 displayEmpty: false
+                 displayEmpty: true
                }}
                size="small"
                {...getFieldProps('options')}

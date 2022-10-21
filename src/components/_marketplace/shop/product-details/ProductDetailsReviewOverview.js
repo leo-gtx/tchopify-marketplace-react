@@ -72,7 +72,7 @@ export default function ProductDetailsReviewOverview({ product, onOpen }) {
   const ratings = formattedRatings(reviews);
   return (
     <Grid container>
-      <GridStyle item xs={12} md={4}>
+      <GridStyle item xs={12}>
         <Typography variant="subtitle1" gutterBottom>
           Average rating
         </Typography>
@@ -86,7 +86,7 @@ export default function ProductDetailsReviewOverview({ product, onOpen }) {
         </Typography>
       </GridStyle>
 
-      <GridStyle item xs={12} md={4}>
+      <GridStyle item xs={12}>
         <Stack spacing={1.5} sx={{ width: 1 }}>
           {ratings
             .slice(0)
@@ -97,7 +97,7 @@ export default function ProductDetailsReviewOverview({ product, onOpen }) {
         </Stack>
       </GridStyle>
 
-      <GridStyle item xs={12} md={4}>
+      <GridStyle item xs={12}>
         <ScrollLink to="move_add_review" spy smooth offset={-200}>
           <Button size="large" onClick={onOpen} variant="outlined" startIcon={<Icon icon={edit2Fill} />}>
             Write your review
