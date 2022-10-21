@@ -17,5 +17,4 @@ jobs:
           projectId: tchopify
           node-version: 16
 env:
-  CI: true
-
+  CI: false
