@@ -1,0 +1,15 @@
+{
+    "projects": {
+      "default": "tchopify"
+    },
+    "targets": {
+      "tchopify": {
+        "hosting": {
+          "marketplace": [
+            "tchopify"
+          ]
+        }
+      }
+    }
+  }
+  
