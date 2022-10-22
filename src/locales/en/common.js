@@ -4,5 +4,5 @@ export default{
     closedAlways: 'Closed all this week',
     logout: 'Logout',
     signin: 'Sign In',
-    seeAccount: 'See account'
+    seeAccount: 'See account',
 }

@@ -16,6 +16,7 @@ auth.languageCode = localStorage.getItem('i18nextLng') || 'en';
 // auth.useEmulator('http://localhost:9099')
 const firestore = firebase.firestore()
 firestore.settings({
+  // host: process.env.REACT_APP_HOST,
   cacheSizeBytes: 1000 * 1000 * 15,
   merge: true
 })

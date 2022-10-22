@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-
 import { Link as RouterLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import clock from '@iconify/icons-eva/clock-outline';
 import BlockImage from 'react-block-image';
 // material
 import { Box, Card, Link, Typography, Stack, Rating, CircularProgress, Grid } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 
@@ -32,7 +30,7 @@ export default function ShopProductCard({ product }) {
               height: '100%',
               position: 'absolute'
             }}
-            src={image}
+            src={ image || '/static/illustrations/illustration_no_dish_image.png' }
             showPreview
             loader={
               <center style={{marginTop: '45%'}}>

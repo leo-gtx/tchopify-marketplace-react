@@ -17,14 +17,6 @@ import { isStoreOpen } from '../../../utils/utils';
 
 // ----------------------------------------------------------------------
 
-const ProductImgStyle = styled('img')({
-  top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute'
-});
-
 // ----------------------------------------------------------------------
 
 ShopProductCard.propTypes = {
@@ -63,7 +55,7 @@ export default function ShopProductCard({ product }) {
               height: '100%',
               position: 'absolute'
             }}
-            src={image}
+            src={image || '/static/illustrations/illustration_no_store_image.jpg'}
             showPreview
             loader={
               <center style={{marginTop: '45%'}}>

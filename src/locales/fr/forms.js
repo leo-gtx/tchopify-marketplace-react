@@ -20,7 +20,7 @@ export default {
     endDateinvalid: 'La date de fin doit être supérieur à la date de début',
     openTime: 'Heure d\'ouverture',
     closeTime: 'Heure de fermeture',
-    paymentRequired: 'Methode de Paiement requis',
+    paymentRequired: 'Méthode de Paiement requise',
     amountMin: 'Le montant doit être >= 500XAF',
     amountMax: 'Le montant doit être <= 30000XAF',
     amountRequired: 'Montant requis',

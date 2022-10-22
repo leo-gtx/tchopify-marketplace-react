@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import { useSelector } from 'react-redux';
 import { Form, FormikProvider } from 'formik';
+import { useTranslation } from 'react-i18next';
 import closeFill from '@iconify/icons-eva/close-fill';
 import roundClearAll from '@iconify/icons-ic/round-clear-all';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
@@ -51,11 +51,12 @@ ShopFilterSidebar.propTypes = {
 };
 
 export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenFilter, onCloseFilter, formik, categories }) {
+  const {t} = useTranslation();
   const { values, getFieldProps, handleChange } = formik;
   return (
     <>
       <Button disableRipple color="inherit" endIcon={<Icon icon={roundFilterList} />} onClick={onOpenFilter}>
-        Filters&nbsp;
+      {t('shopDetails.filters')}&nbsp;
       </Button>
 
       <FormikProvider value={formik}>
@@ -70,7 +71,7 @@ export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenF
           >
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 1, py: 2 }}>
               <Typography variant="subtitle1" sx={{ ml: 1 }}>
-                Filters
+                {t('shopDetails.filters')}
               </Typography>
               <MIconButton onClick={onCloseFilter}>
                 <Icon icon={closeFill} width={20} height={20} />
@@ -84,10 +85,10 @@ export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenF
 
                 <div>
                   <Typography variant="subtitle1" gutterBottom>
-                    Category
+                    {t('shopDetails.category')}
                   </Typography>
                   <RadioGroup {...getFieldProps('category')}>
-                  <FormControlLabel value='All' control={<Radio />} label='All' />
+                  <FormControlLabel value='All' control={<Radio />} label={t('shopDetails.all')} />
                     {categories.map((item) => (
                       <FormControlLabel key={item.id} value={item.name} control={<Radio />} label={item.name} />
                     ))}
@@ -97,7 +98,7 @@ export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenF
 
                 <div>
                   <Typography variant="subtitle1" gutterBottom>
-                    Price
+                  {t('shopDetails.price')}
                   </Typography>
                   <RadioGroup {...getFieldProps('priceRange')}>
                     {FILTER_PRICE_OPTIONS.map((item) => (
@@ -108,7 +109,7 @@ export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenF
 
                 <div>
                   <Typography variant="subtitle1" gutterBottom>
-                    Rating
+                  {t('shopDetails.rating')}
                   </Typography>
                   <RadioGroup {...getFieldProps('rating')}>
                     {FILTER_RATING_OPTIONS.map((item, index) => (
@@ -152,7 +153,7 @@ export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenF
                 onClick={onResetFilter}
                 startIcon={<Icon icon={roundClearAll} />}
               >
-                Clear All
+                {t('shopDetails.clearAll')}
               </Button>
             </Box>
           </Drawer>

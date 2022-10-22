@@ -28,5 +28,6 @@ export default {
     rateSuccess: 'Note Sauvegader',
     rateFailure: 'Note Echoué',
     orderPaySuccess: 'Commande Payé',
-    orderPayFailure: 'Paiement Commande Echouée'
+    orderPayFailure: 'Paiement Commande Echouée',
+    orderRejected: 'Commande rejetée'
 }

@@ -56,7 +56,7 @@ export function handleGetDishesByShop(shop, callback){
     .where('isPublished', '==', true)
     .get()
     .then((documentSnapshot) =>{
-        if(!documentSnapshot.empty) callback(formattedDishes(documentSnapshot.docs))
+        callback(formattedDishes(documentSnapshot.docs))
     })
     .catch((err)=>console.error(err))
 }

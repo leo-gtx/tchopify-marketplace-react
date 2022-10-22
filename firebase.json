@@ -1,0 +1,19 @@
+{
+  "hosting": {
+      "target": "marketplace",
+      "public": "build",
+      "predeploy": "firebase target:apply hosting marketplace tchopify",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  
+}

@@ -99,7 +99,6 @@ export default function ShopDetails() {
   const { sortByDish, filtersDishes, deliveryLocation} =  useSelector((state) => state.app);
 
 
-
   useEffect(()=>{
     handleGetRestaurant(id, (data)=> setShop(data));
     if(shop.id) handleGetDishesByShop(shop.owner, (data)=>setDishes(Object.values(data)));

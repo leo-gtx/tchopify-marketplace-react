@@ -137,7 +137,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
   };
 
   const handleBuyNow = () => {
-    dispatch(gotoStep(0));
+      dispatch(gotoStep(0));
   };
 
   const formik = useFormik({

@@ -20,5 +20,6 @@ export default {
     deliveryOptions: 'Options de livraison',
     billingAddress: 'Adresse de livraison',
     greating: 'Merci pour votre achat!',
-    greating2: 'Merci d\'avoir passer la commande'
+    greating2: 'Merci d\'avoir passer la commande',
+    waitingRestaurant: 'SVP attendez de la confirmation du restaurant...'
 }
