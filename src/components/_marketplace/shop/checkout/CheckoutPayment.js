@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { sumBy } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -15,11 +14,9 @@ import { gotoStep, onBackStep, onNextStep, applyShipping, setOrderId } from '../
 import { handlePlaceOrder, handlePayOrder, GetOrder } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
 // utils
-import { fCurrency } from '../../../../utils/formatNumber';
 import { isStoreOpen } from '../../../../utils/utils';
 // components
 import CheckoutSummary from './CheckoutSummary';
-import CheckoutDelivery from './CheckoutDelivery';
 import CheckoutBillingInfo from './CheckoutBillingInfo';
 import CheckoutPaymentMethods from './CheckoutPaymentMethods';
 import CheckoutOrderRejected from './CheckoutOrderRejected';

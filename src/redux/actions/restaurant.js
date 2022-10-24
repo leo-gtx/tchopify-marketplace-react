@@ -1,7 +1,4 @@
-
-import { v4 as uuidv4 } from 'uuid';
 import firebase from '../../firebase';
-import {setCurrentRestaurant} from './app';
 import { formattedRestaurants } from '../../utils/utils';
 
 export const SET_RESTAURANT = 'SET_RESTAURANT';
@@ -10,20 +7,6 @@ export const UPDATE_RESTAURANT = 'UPDATE_RESTAURANT';
 export const SET_RESTAURANTS = 'SET_RESTAURANTS';
 export const UPDATE_BUSINESS_HOURS = 'UPDATE_BUSINESS_HOURS';
 
-function setRestaurant(restaurant){
-    return{
-        type: SET_RESTAURANT,
-        payload: restaurant
-    }
-}
-
-function updateRestaurant(restaurant){
-  return {
-    type: UPDATE_RESTAURANT,
-    payload: restaurant
-  }
-}
-
 export function setRestaurants(restaurants){
   return{
     type: SET_RESTAURANTS,
@@ -31,22 +14,6 @@ export function setRestaurants(restaurants){
   }
 }
 
-function removeRestaurant(restaurantId){
-  return {
-    type: REMOVE_RESTAURANT,
-    payload: restaurantId
-  }
-}
-
-function updateBusinessHours(restaurantId, businessHours){
-  return {
-      type: UPDATE_BUSINESS_HOURS,
-      payload: {
-          restaurantId,
-          businessHours
-      }
-  }
-}
 
 export function handleGetRestaurants(owner){
   return (dispatch) => firebase

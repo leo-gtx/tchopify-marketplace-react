@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect} from 'react';
 import { sumBy, isEqual } from 'lodash';
+import { LoadingButton } from '@material-ui/lab';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -109,7 +110,7 @@ export default function CheckoutBillingAddress() {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const { checkout } = useSelector((state) => state.app);
-  const { total, discount, subtotal, cart, billing, deliveryCost, deliveryTime } = checkout;
+  const { total, discount, subtotal, cart, deliveryCost, deliveryTime, shipping } = checkout;
   const authedUser = useSelector((state)=>state.authedUser);
   const {addresses, id} = authedUser;
   const [shop, setShop] = useState();
@@ -123,12 +124,16 @@ export default function CheckoutBillingAddress() {
   const formik = useFormik({
     initialValues: {
       delivery: '',
-      address: null
+      address: undefined
     },
     validationSchema: BillingSchema,
-    onSubmit: (values, { setErrors, setSubmitting }) => {}
+    onSubmit: (values, { setErrors, setSubmitting }) => {
+      handleCreateBilling(values.address);
+      handleNextStep();
+      setSubmitting(false);
+    }
   });
-  const { handleSubmit, setFieldValue, values } = formik;
+  const { handleSubmit, setFieldValue, isSubmitting, values } = formik;
 
   useEffect(()=>{
     dispatch(handleGetAddress(id))
@@ -239,7 +244,7 @@ export default function CheckoutBillingAddress() {
                     <AddressItem
                       key={index}
                       address={address}
-                      onSelectAddress={handleSelectAddress}
+                      onSelectAddress={()=>handleSelectAddress(address)}
                       onDeleteAddress={handleDelete}
                       isChecked={values.address?.id === address.id}
                     />
@@ -262,7 +267,10 @@ export default function CheckoutBillingAddress() {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <CheckoutSummary subtotal={subtotal} total={total} discount={discount} />
+            <CheckoutSummary subtotal={subtotal} shipping={shipping} total={total} discount={discount} />
+            <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+              {t('actions.finalizeOrder')}
+            </LoadingButton>
           </Grid>
         </Grid>
 

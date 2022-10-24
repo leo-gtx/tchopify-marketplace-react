@@ -55,5 +55,6 @@ export default {
     rate: 'Notez',
     chooseTable: 'Renseignez la table',
     payOrder: 'Payez la commande',
-    becomePartner: 'Ajouter votre restaurant'
+    becomePartner: 'Ajouter votre restaurant',
+    finalizeOrder: 'Finaliser la commande'
 }
