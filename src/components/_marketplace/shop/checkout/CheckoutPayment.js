@@ -61,7 +61,7 @@ export default function CheckoutPayment({coupon}) {
   const [order, setOrder] = useState();
   const [open, setOpen] = useState(false);
   const { checkout } = useSelector((state) => state.app);
-  const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId } = checkout;
+  const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId, mode  } = checkout;
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(()=>{
@@ -80,9 +80,6 @@ export default function CheckoutPayment({coupon}) {
     dispatch(gotoStep(step));
   };
 
-  const handleApplyShipping = (value) => {
-    dispatch(applyShipping(value));
-  };
   const handleCloseDialog = ()=> setOpen(false);
   const handleOpenDialog = ()=> setOpen(true);
 
@@ -103,7 +100,7 @@ export default function CheckoutPayment({coupon}) {
         orderId,
         payment: values.payment,
         shipping ,
-        mode: values.delivery,
+        mode,
         billing,
         cart,
         discount,
@@ -168,6 +165,15 @@ export default function CheckoutPayment({coupon}) {
     })
   },[orderId])
 
+
+  // This trigger a payment request when order have accepeted status
+  useEffect(()=>{
+    if(order?.status === 'accepted'){
+      handleSubmit();
+    }
+  },[order?.status])
+
+  // Display then rejected's screen
   if(order?.status === 'rejected'){
     return <CheckoutOrderRejected open/>
   }
@@ -199,7 +205,7 @@ export default function CheckoutPayment({coupon}) {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <CheckoutBillingInfo onBackStep={handleBackStep} />
+            { mode === 'DELIVERY' && <CheckoutBillingInfo onBackStep={handleBackStep} /> }
             <CheckoutSummary
               enableEdit
               total={total}

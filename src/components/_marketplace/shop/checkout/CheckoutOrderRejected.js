@@ -56,9 +56,7 @@ export default function CheckoutOrderRejected({ ...other }) {
           </Typography>
 
           <Typography align="left">
-            Sorry the restaurant is currently unable to meet your order.
-            <br /> <br /> If you have any question or queries then fell to get in contact us. <br /> <br /> All the
-            best,
+            {t('checkout.rejectedDescription')}
           </Typography>
         </Box>
 

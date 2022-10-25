@@ -21,6 +21,7 @@ export const SET_DELIVERY_TIME = 'SET_DELIVERY_TIME';
 export const SET_DELIVERY_LOCATION = 'SET_DELIVERY_LOCATION';
 export const TOGGLE_DISH_MODAL = 'TOGGLE_DISH_MODAL';
 export const SET_ORDER_ID = 'SET_ORDER_ID';
+export const CREATE_MODE = 'CREATE_MODE';
 
 export function setOrderId(value){
     return {
@@ -182,6 +183,13 @@ export function handleSetShopAndCart(shop, product){
 export function setDeliveryLocation(value){
     return {
         type: SET_DELIVERY_LOCATION,
+        payload: value
+    }
+}
+
+export function createMode(value) {
+    return {
+        type: CREATE_MODE,
         payload: value
     }
 }

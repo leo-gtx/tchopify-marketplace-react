@@ -22,4 +22,5 @@ export default {
     greating: 'Thank you for your purchase!',
     greating2: 'Thanks for placing order',
     waitingRestaurant: 'Please wait for restaurant\'s confirmation...',
+    rejectedDescription: "Sorry the restaurant is currently unable to meet your order.\n If you have any question or queries then fell to get in contact us.\n All the best,"
 }
