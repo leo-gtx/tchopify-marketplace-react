@@ -45,13 +45,13 @@ export default function CheckoutOrderRejected({ ...other }) {
       <Box sx={{ p: 4, maxWidth: 480, margin: 'auto' }}>
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="h4" paragraph>
-            {t('checkout.greating')}
+            {t('checkout.sorry')}
           </Typography>
 
           <ComingSoonIllustration sx={{ height: 260, my: 10 }} />
 
           <Typography align="left" paragraph>
-            {t('checkout.greating2')} &nbsp;
+            {t('checkout.sorry2')} &nbsp;
             <Link href={`${process.env.REACT_APP_HOST}${PATH_MARKETPLACE.home.root}orders/${orderId}/details`}>#{orderId}</Link>
           </Typography>
 

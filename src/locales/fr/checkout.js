@@ -21,5 +21,9 @@ export default {
     billingAddress: 'Adresse de livraison',
     greating: 'Merci pour votre achat!',
     greating2: 'Merci d\'avoir passer la commande',
-    waitingRestaurant: 'SVP attendez de la confirmation du restaurant...'
+    sorry : "Votre commande ne peut être honorée",
+    sorry2 : "Le restaurant n'est pas en mesure d'accepter votre commande pour le moment",
+    waitingRestaurant: 'SVP attendez de la confirmation du restaurant...',
+    description: 'Nous vous enverrons une notification dès qu\'il sera prêt.\n Si vous avez des questions ou des demandes, n\'hésitez pas à nous contacter.\n Tous les meilleurs voeux',
+    rejectedDescription: "Désolé, le restaurant n'est actuellement pas en mesure de satisfaire votre commande.\n Si vous avez des questions ou des demandes, n'hésitez pas à nous contacter.\n Tous les meilleurs voeux"
 }

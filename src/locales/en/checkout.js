@@ -21,6 +21,9 @@ export default {
     billingAddress: 'Billing Address',
     greating: 'Thank you for your purchase!',
     greating2: 'Thanks for placing order',
+    sorry: 'Your order cannot be fulfilled',
+    sorry2: 'The restaurant is unable to accept your order at this time',
     waitingRestaurant: 'Please wait for restaurant\'s confirmation...',
+    description: 'We will send you a notification when it will be ready.\n If you have any question or queries then fell to get in contact us.\n All the best',
     rejectedDescription: "Sorry the restaurant is currently unable to meet your order.\n If you have any question or queries then fell to get in contact us.\n All the best,"
 }
