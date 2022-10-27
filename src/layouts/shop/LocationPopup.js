@@ -6,7 +6,7 @@ import location from '@iconify/icons-ic/location-on';
 import { alpha } from '@material-ui/core/styles';
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 // material
-import { Tooltip, Stack, Typography, Button, TextField, DialogTitle, DialogActions, DialogContent, Autocomplete } from '@material-ui/core';
+import { Tooltip, Stack, Button, TextField, DialogTitle, DialogActions, DialogContent, Autocomplete } from '@material-ui/core';
 // components
 import { MIconButton } from '../../components/@material-extend';
 import { DialogAnimate } from '../../components/animate';

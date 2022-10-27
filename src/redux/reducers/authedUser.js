@@ -36,7 +36,7 @@ export default function authedUser(state = initialState, action){
             return {
                 ...state,
                 addresses: {
-                    ...state.address,
+                    ...state.addresses,
                     [action.payload.id]: action.payload
                 }
             };

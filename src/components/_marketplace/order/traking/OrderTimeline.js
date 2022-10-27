@@ -298,6 +298,10 @@ function OrderItem({ item, isLast, order }) {
   );
 }
 
+AnalyticsOrderTimeline.propTypes = {
+  order: PropTypes.object
+}
+
 export default function AnalyticsOrderTimeline({order}) {
   const {status, mode} = order;
   const {t} = useTranslation();

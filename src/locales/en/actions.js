@@ -55,5 +55,6 @@ export default {
     rate: 'Rate',
     chooseTable: 'Set a table',
     payOrder: 'Pay Order',
-    becomePartner: 'Add your restaurant'
+    becomePartner: 'Add your restaurant',
+    finalizeOrder: 'Finalize order'
 }

@@ -12,7 +12,7 @@ import NotistackProvider from './components/NotistackProvider';
 import ErrorBoundary from './components/ErrorBoundary';
 // hook
 import useAuth from './hooks/useAuth';
-import useNotification from './hooks/useNotification';
+// import useNotification from './hooks/useNotification';
 import useCaching from './hooks/useCaching';
 
 
@@ -21,7 +21,7 @@ import useCaching from './hooks/useCaching';
 export default function App() {
   useCaching();
   const {initializing} = useAuth();
-  useNotification();
+  // useNotification();
   
   return (
     <ThemeConfig>

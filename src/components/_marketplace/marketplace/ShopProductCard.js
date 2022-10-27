@@ -7,7 +7,6 @@ import eyeOff from '@iconify/icons-eva/eye-off-2-fill';
 import BlockImage from 'react-block-image';
 // material
 import { Box, Card, Link, Typography, Stack, Rating, CircularProgress } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 // routes
 import {PATH_MARKETPLACE } from '../../../routes/paths';
 //

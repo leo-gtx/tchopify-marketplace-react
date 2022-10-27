@@ -76,6 +76,7 @@ export default {
     ratingRequired: 'Note requise',
     tableLabel: 'Nom / numéro de table',
     tableRequired: 'Table requise',
-    amountLabel: 'Montant'
+    amountLabel: 'Montant',
+    addressRequired: 'Votre adresse est requise pour la livraison'
 
 }

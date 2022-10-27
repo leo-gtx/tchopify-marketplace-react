@@ -38,10 +38,9 @@ const OptionStyle = styled('div')(({ theme }) => ({
 CheckoutPaymentMethods.propTypes = {
   formik: PropTypes.object,
   paymentOptions: PropTypes.array,
-  cardOptions: PropTypes.array
 };
 
-export default function CheckoutPaymentMethods({ paymentOptions, cardOptions, formik }) {
+export default function CheckoutPaymentMethods({ paymentOptions, formik }) {
   const { errors, touched, values, getFieldProps } = formik;
   const {t} = useTranslation();
   return (

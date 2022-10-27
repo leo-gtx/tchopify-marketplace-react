@@ -1,17 +1,16 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useJsApiLoader, GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
 import { Card, CardHeader, CardContent, Skeleton } from '@material-ui/core';
 
 
 MapRoute.propTypes = {
-    travelMode: PropTypes.string,
     origin: PropTypes.string,
     destination: PropTypes.string,
 };
 
-export default function MapRoute({travelMode, origin, destination}){
+export default function MapRoute({ origin, destination }){
     const {t} = useTranslation();
     const [directionsResponse, setDirectionsResponse] = useState();
 
@@ -20,7 +19,7 @@ export default function MapRoute({travelMode, origin, destination}){
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_PLACE_API_KEY,
     });
 
-    const directionCallback = (response)=>{
+    const directionCallback = useCallback((response)=>{
         if (response !== null) {
             if (response.status === 'OK') {
               setDirectionsResponse(response)
@@ -28,19 +27,20 @@ export default function MapRoute({travelMode, origin, destination}){
               console.log('response: ', response)
             }
           }
-    }
+    },[])
 
-     const directionService = new window.google.maps.DirectionsService();
-    useEffect(async ()=>{
-
-        directionService.route({
+     const directionService = useMemo(()=>new window.google.maps.DirectionsService(),[]);
+    useEffect(()=>{
+        async function getDirection(){
+            directionService.route({
             origin,
             destination,
             travelMode: window.google.maps.TravelMode.DRIVING
         }, directionCallback)
-
+    }
+    getDirection()
         
-    },[origin, destination])
+    },[origin, destination, directionCallback, directionService])
 
 
 

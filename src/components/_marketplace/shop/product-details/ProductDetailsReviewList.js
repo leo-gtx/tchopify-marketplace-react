@@ -5,7 +5,7 @@ import roundVerified from '@iconify/icons-ic/round-verified';
 // material
 import { Box, List, Rating, Avatar, ListItem, Pagination, Typography } from '@material-ui/core';
 // utils
-import { fDate, fToNow } from '../../../../utils/formatTime';
+import { fToNow } from '../../../../utils/formatTime';
 
 
 // ----------------------------------------------------------------------

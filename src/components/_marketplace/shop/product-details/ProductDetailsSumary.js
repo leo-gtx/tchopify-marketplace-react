@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import minusFill from '@iconify/icons-eva/minus-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
-import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 import roundAddShoppingCart from '@iconify/icons-ic/round-add-shopping-cart';
@@ -46,10 +46,6 @@ const SOCIALS = [
   {
     name: 'Instagram',
     icon: <Icon icon={instagramFilled} width={20} height={20} color="#D7336D" />
-  },
-  {
-    name: 'Linkedin',
-    icon: <Icon icon={linkedinFill} width={20} height={20} color="#006097" />
   },
   {
     name: 'Twitter',
@@ -112,6 +108,12 @@ const Incrementer = (props) => {
     </Box>
   );
 };
+
+ProductDetailsSumary.propTypes = {
+  product: PropTypes.object,
+  shopId: PropTypes.string,
+  onToggleModal: PropTypes.func
+}
 
 export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
   const navigate = useNavigate();
@@ -185,7 +187,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
       onToggleModal(isCheckoutViolation) 
       setSubscribed(false)
     } 
-  },[isSubscribed])
+  },[isSubscribed, onToggleModal, isCheckoutViolation])
 
   return (
     <RootStyle>
@@ -214,7 +216,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
            
 
            { options.length > 0 && (
-             <Stack direction="row" justifyContent="space-between">
+             <Stack direction="column" justifyContent="space-between">
              <Typography variant="subtitle1" sx={{ mt: 0.5 }}>
                {t('forms.optionsLabel')}
              </Typography>
@@ -222,7 +224,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
                select
                SelectProps={{
                  multiple: true,
-                 displayEmpty: false
+                 displayEmpty: true
                }}
                size="small"
                {...getFieldProps('options')}

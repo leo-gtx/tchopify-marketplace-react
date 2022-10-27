@@ -14,7 +14,9 @@ import {
   CardHeader,
   CardContent,
   FormHelperText,
-  FormControlLabel
+  FormControlLabel,
+  Skeleton,
+  Collapse,
 } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -34,10 +36,12 @@ const OptionStyle = styled('div')(({ theme }) => ({
 CheckoutDelivery.propTypes = {
   formik: PropTypes.object,
   deliveryOptions: PropTypes.array,
-  onApplyShipping: PropTypes.func
+  onApplyShipping: PropTypes.func,
+  cardsAddress: PropTypes.func,
+  btnAddAddress: PropTypes.func
 };
 
-export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, ...other }) {
+export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, cardsAddress, btnAddAddress, ...other }) {
   const { values, setFieldValue, errors, touched } = formik;
   const {t} = useTranslation();
   return (
@@ -54,8 +58,23 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
           }}
         >
           <Grid container spacing={2}>
-            {deliveryOptions.map((delivery, index) => {
-              const { value, title, description, id } = delivery;
+            {
+              deliveryOptions.length < 1 && (
+                <>
+                  <Grid item xs={12} md={6}>
+                    <Skeleton variant='rectangular' width='100%' height={80} style={{borderRadius: 5}} />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Skeleton variant='rectangular' width='100%' height={80} style={{borderRadius: 5}} />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Skeleton variant='rectangular' width='100%' height={80} style={{borderRadius: 5}} />
+                  </Grid>
+                </>
+              )
+            }
+            {deliveryOptions.map((delivery) => {
+              const { title, description, id } = delivery;
               return (
                 <Grid key={id} item xs={12} md={6}>
                   <OptionStyle
@@ -92,6 +111,17 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
             )}
           </Grid>
         </RadioGroup>
+        <Collapse in={values.delivery === 'DELIVERY'} sx={{ width: '100%', marginTop: 5 }}>
+        { errors.address && (
+          <FormHelperText error>
+            <Box component="span" sx={{ px: 2 }}>
+              {touched.address && errors.address}
+            </Box>
+          </FormHelperText>
+        ) }
+          {cardsAddress}
+          {btnAddAddress}
+        </Collapse>
       </CardContent>
     </Card>
   );

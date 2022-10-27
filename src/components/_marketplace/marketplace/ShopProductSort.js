@@ -25,7 +25,7 @@ function renderLabel(label) {
   if (label === 'newest') {
     return 'home.newest';
   }
-
+  return 'home.oldest'
 }
 
 export default function ShopProductSort() {

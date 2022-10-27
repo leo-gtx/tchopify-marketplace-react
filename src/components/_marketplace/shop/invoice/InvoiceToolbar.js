@@ -33,7 +33,7 @@ export default function InvoiceToolbar({ invoice }) {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const { status, paymentStatus, id, total, from, discount, rating } = invoice;
+  const { status, paymentStatus, id, total, from, discount } = invoice;
   const { enqueueSnackbar } = useSnackbar();
   const handleOpen = () => {
     setOpen(true);
@@ -83,8 +83,8 @@ export default function InvoiceToolbar({ invoice }) {
      rating: 0
     },
     validationSchema: schema,
-    onSubmit: (values, { setErrors, setSubmitting }) => {
-      const onError = (error)=>{
+    onSubmit: (values, { setSubmitting }) => {
+      const onError = ()=>{
         setSubmitting(false);
         enqueueSnackbar(t('flash.rateFailure'), {variant: 'error'})
       };
@@ -102,7 +102,7 @@ export default function InvoiceToolbar({ invoice }) {
     }
   });
 
-  const { isSubmitting, handleSubmit, values, getFieldProps } = formik;
+  const { isSubmitting, getFieldProps } = formik;
 
 
   return (

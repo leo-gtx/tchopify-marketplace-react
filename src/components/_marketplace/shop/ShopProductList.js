@@ -20,7 +20,8 @@ const SkeletonLoad = (
 ProductList.propTypes = {
   products: PropTypes.array.isRequired,
   isLoad: PropTypes.bool,
-  isClosed: PropTypes.bool
+  isClosed: PropTypes.bool,
+  handleSelectProduct: PropTypes.func
 };
 
 export default function ProductList({ products, isLoad, isClosed, handleSelectProduct, ...other }) {

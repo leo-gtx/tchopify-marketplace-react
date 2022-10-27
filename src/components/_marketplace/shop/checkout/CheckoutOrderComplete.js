@@ -56,9 +56,7 @@ export default function CheckoutOrderComplete({ ...other }) {
           </Typography>
 
           <Typography align="left">
-            We will send you a notification when it delivers.
-            <br /> <br /> If you have any question or queries then fell to get in contact us. <br /> <br /> All the
-            best,
+           {t('checkout.description')}
           </Typography>
         </Box>
 

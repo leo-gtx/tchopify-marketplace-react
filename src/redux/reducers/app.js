@@ -22,7 +22,8 @@ import {
     SET_DELIVERY_TIME,
     SET_DELIVERY_LOCATION,
     TOGGLE_DISH_MODAL,
-    SET_ORDER_ID
+    SET_ORDER_ID,
+    CREATE_MODE
 } from '../actions/app';
 
 const initialState = {
@@ -48,11 +49,20 @@ const initialState = {
         discount: 0,
         subtotal: 0,
         total: 0,
+        mode: ''
     },
 }
 
 export default function app(state = initialState, action){
     switch (action.type) {
+        case CREATE_MODE:
+            return {
+                ...state,
+                checkout: {
+                    ...state.checkout,
+                    mode: action.payload
+                }
+            }
         case TOGGLE_DISH_MODAL:
             return {
                 ...state,

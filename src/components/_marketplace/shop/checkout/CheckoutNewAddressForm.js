@@ -27,11 +27,9 @@ import { handleAddAddress } from '../../../../redux/actions/authedUser';
 CheckoutNewAddressForm.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  onNextStep: PropTypes.func,
-  onCreateBilling: PropTypes.func
 };
 
-export default function CheckoutNewAddressForm({ open, onClose, onNextStep, onCreateBilling }) {
+export default function CheckoutNewAddressForm({ open, onClose }) {
   const dispatch = useDispatch();
   const {authedUser} = useSelector((state)=>state);
   const NewAddressSchema = Yup.object().shape({
@@ -41,7 +39,6 @@ export default function CheckoutNewAddressForm({ open, onClose, onNextStep, onCr
   });
 
   const {
-    placesService,
     placePredictions,
     getPlacePredictions,
     isPlacePredictionsLoading,
@@ -71,9 +68,8 @@ export default function CheckoutNewAddressForm({ open, onClose, onNextStep, onCr
         userId: authedUser.id
       }
       const onSuccess = ()=>{
-        onNextStep();
+        onClose();
         setSubmitting(false);
-        dispatch(onCreateBilling(data))
       }
       const onError = () => {
         setSubmitting(false);
@@ -83,7 +79,7 @@ export default function CheckoutNewAddressForm({ open, onClose, onNextStep, onCr
     }
   });
 
-  const { errors, values, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
   return (
     <DialogAnimate maxWidth="sm" open={open} onClose={onClose}>
@@ -145,7 +141,7 @@ export default function CheckoutNewAddressForm({ open, onClose, onNextStep, onCr
 
           <DialogActions>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Deliver to this Address
+              Add This Address
             </LoadingButton>
             <Button type="button" color="inherit" variant="outlined" onClick={onClose}>
               Cancel

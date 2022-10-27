@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Page500 from '../pages/Page500';
 import NetworkError from '../pages/NetworkError';
 
@@ -18,7 +19,7 @@ export default class ErrorBoundary extends React.Component {
     })
   }
   
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError() {
       return { hasError: true };
     }
 
@@ -52,4 +53,6 @@ export default class ErrorBoundary extends React.Component {
     }
   }
 
-  
+  ErrorBoundary.propTypes = {
+    children: PropTypes.object
+  }

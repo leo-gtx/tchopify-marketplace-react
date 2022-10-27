@@ -14,11 +14,10 @@ import { PATH_MARKETPLACE } from '../../../../routes/paths';
 // ----------------------------------------------------------------------
 
 OrderMoreMenu.propTypes = {
-  onDelete: PropTypes.func,
   orderId: PropTypes.string,
 };
 
-export default function OrderMoreMenu({ onDelete, orderId }) {
+export default function OrderMoreMenu({ orderId }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();

@@ -31,7 +31,7 @@ export default function Countdown({deliveryTime, cookingTime, orderAt}){
     deliveryDate.setMinutes(deliveryDate.getMinutes() + deliveryTime + cookingTime);
     const countdown = useCountdown(deliveryDate);
     const expired = (deliveryDate - new Date()) < 0; 
-    const cancel = expired && (new Date(deliveryDate - new Date()).getMinutes() > 20);
+    // const cancel = expired && (new Date(deliveryDate - new Date()).getMinutes() > 20);
     return (
         <Card>
             <CardHeader title="Countdown"/>

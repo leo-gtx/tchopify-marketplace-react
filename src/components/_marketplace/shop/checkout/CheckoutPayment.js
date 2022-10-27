@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { sumBy, isEqual } from 'lodash';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -11,15 +11,13 @@ import { Backdrop, CircularProgress, Grid, Button, DialogContent, DialogActions,
 import { LoadingButton } from '@material-ui/lab';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { gotoStep, onBackStep, onNextStep, applyShipping, setOrderId } from '../../../../redux/actions/app';
+import { gotoStep, onBackStep, onNextStep, setOrderId } from '../../../../redux/actions/app';
 import { handlePlaceOrder, handlePayOrder, GetOrder } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
 // utils
-import { fCurrency } from '../../../../utils/formatNumber';
 import { isStoreOpen } from '../../../../utils/utils';
 // components
 import CheckoutSummary from './CheckoutSummary';
-import CheckoutDelivery from './CheckoutDelivery';
 import CheckoutBillingInfo from './CheckoutBillingInfo';
 import CheckoutPaymentMethods from './CheckoutPaymentMethods';
 import CheckoutOrderRejected from './CheckoutOrderRejected';
@@ -55,6 +53,10 @@ const PAYMENT_OPTIONS = [
 ];
 
 // ----------------------------------------------------------------------
+CheckoutPayment.propTypes = {
+  coupon: PropTypes.string
+}
+// ----------------------------------------------------------------------
 
 export default function CheckoutPayment({coupon}) {
   const {t} = useTranslation();
@@ -63,47 +65,13 @@ export default function CheckoutPayment({coupon}) {
   const [text, setText] = useState('');
   const [order, setOrder] = useState();
   const [open, setOpen] = useState(false);
-  const [options, setOption] = useState([]);
   const { checkout } = useSelector((state) => state.app);
-  const { total, discount, subtotal, billing, cart, deliveryTime, deliveryCost, orderId } = checkout;
+  const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId, mode  } = checkout;
   const { enqueueSnackbar } = useSnackbar();
-  const cookingTime = sumBy(cart,'cookingTime');
+
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
-    if(from){
-      if(from.mode.includes('DELIVERY')){
-        options.push(
-          { 
-            id: 'DELIVERY',
-            value: deliveryCost,
-            title: t('checkout.deliveryTitle', {value: fCurrency(deliveryCost)}),
-            description: t('checkout.deliveryDescription',{value: Math.round(deliveryTime / 60) + cookingTime}),
-          })
-      }
-
-      if(from.mode.includes('TAKEAWAY')){
-        options.push(
-          {
-            id: 'TAKEAWAY',
-            value: 0,
-            title: t('checkout.takeawayTitle'),
-            description: t('checkout.takeawayDescription',{value: cookingTime}),
-          })
-      }
-
-      if(from.mode.includes('DINE')){
-        options.push(
-          {
-            id: 'DINE',
-            value: 0,
-            title: t('checkout.dineTitle'),
-            description: t('checkout.dineDescription',{value: cookingTime}),
-          })
-      }
-    }
-  },[dispatch, setFrom, from?.mode])
-
-
+  },[dispatch, setFrom, from?.mode, cart])
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -117,21 +85,16 @@ export default function CheckoutPayment({coupon}) {
     dispatch(gotoStep(step));
   };
 
-  const handleApplyShipping = (value) => {
-    dispatch(applyShipping(value));
-  };
   const handleCloseDialog = ()=> setOpen(false);
   const handleOpenDialog = ()=> setOpen(true);
 
   const PaymentSchema = Yup.object().shape({
     payment: Yup.mixed().required(t('forms.paymentRequired')),
-    delivery: Yup.mixed().required(t('forms.deliveryOptionRequired')),
     phoneNumber: Yup.string().required(t('forms.phoneNumberRequired'))
   });
 
   const formik = useFormik({
     initialValues: {
-      delivery: undefined,
       payment: '',
       phoneNumber: ''
     },
@@ -141,8 +104,8 @@ export default function CheckoutPayment({coupon}) {
       const data = {
         orderId,
         payment: values.payment,
-        shipping: options.find((item)=>item.id === values.delivery)?.value,
-        mode: values.delivery,
+        shipping ,
+        mode,
         billing,
         cart,
         discount,
@@ -157,7 +120,7 @@ export default function CheckoutPayment({coupon}) {
         data.service = paymentOption.service;
 
         if(!order){
-          const onError = (error)=>{
+          const onError = ()=>{
             setSubmitting(false);
             enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
           };
@@ -189,7 +152,7 @@ export default function CheckoutPayment({coupon}) {
           setText(t(paymentOption.note))
           handleOpenDialog()
         }else if(order?.status === 'rejected'){
-          const onError = (error)=>{
+          const onError = ()=>{
             setSubmitting(false);
             enqueueSnackbar(t('flash.orderRejected'), {variant: 'error'})
           };
@@ -198,16 +161,24 @@ export default function CheckoutPayment({coupon}) {
     }
   });
 
-  const { isSubmitting, handleSubmit, values, setFieldValue } = formik;
+  const { isSubmitting, handleSubmit, setFieldValue } = formik;
   const storeOpen = from ? isStoreOpen(from?.businessHours) : true;
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
-      setFieldValue('delivery',data.mode)
       setFieldValue('payment', data.payment)
     })
-  },[orderId])
+  },[orderId, setFieldValue])
 
+
+  // This trigger a payment request when order have accepeted status
+  useEffect(()=>{
+    if(order?.status === 'accepted'){
+      handleSubmit();
+    }
+  },[order?.status, handleSubmit])
+
+  // Display then rejected's screen
   if(order?.status === 'rejected'){
     return <CheckoutOrderRejected open/>
   }
@@ -226,11 +197,6 @@ export default function CheckoutPayment({coupon}) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <CheckoutDelivery
-              formik={formik}
-              onApplyShipping={handleApplyShipping}
-              deliveryOptions={options}
-            />
             <CheckoutPaymentMethods formik={formik}  paymentOptions={PAYMENT_OPTIONS} />
             <Button
               type="button"
@@ -244,13 +210,13 @@ export default function CheckoutPayment({coupon}) {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <CheckoutBillingInfo onBackStep={handleBackStep} />
+            { mode === 'DELIVERY' && <CheckoutBillingInfo onBackStep={handleBackStep} /> }
             <CheckoutSummary
               enableEdit
               total={total}
               subtotal={subtotal}
               discount={discount}
-              shipping={options.find((item)=>item.id === values.delivery)?.value}
+              shipping={shipping}
               onEdit={() => handleGotoStep(0)}
             />
             {
