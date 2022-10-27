@@ -1,7 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 import firebase from '../../firebase';
 import { formattedAddress} from '../../utils/utils';
-import { USER } from '../../utils/entities';
 import { handleEraseData } from './shared';
 
 export const SET_AUTHED_USER = 'SET_AUTHED_USER';

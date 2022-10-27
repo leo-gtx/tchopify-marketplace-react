@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import minusFill from '@iconify/icons-eva/minus-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
-import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 import roundAddShoppingCart from '@iconify/icons-ic/round-add-shopping-cart';
@@ -109,6 +109,12 @@ const Incrementer = (props) => {
   );
 };
 
+ProductDetailsSumary.propTypes = {
+  product: PropTypes.object,
+  shopId: PropTypes.string,
+  onToggleModal: PropTypes.func
+}
+
 export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
   const navigate = useNavigate();
   const {t} = useTranslation();
@@ -181,7 +187,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
       onToggleModal(isCheckoutViolation) 
       setSubscribed(false)
     } 
-  },[isSubscribed])
+  },[isSubscribed, onToggleModal, isCheckoutViolation])
 
   return (
     <RootStyle>

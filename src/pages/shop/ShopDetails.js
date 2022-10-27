@@ -26,11 +26,10 @@ import {
 import { CartWidget } from '../../components/_marketplace/marketplace';
 import { DialogAnimate}  from '../../components/animate';
 import DishDetails from './DishDetails';
-import Scrollbar from '../../components/Scrollbar';
 
 // utils
 import fakeRequest from '../../utils/fakeRequest';
-import { isStoreOpen, jsUcfirst } from '../../utils/utils';
+import { isStoreOpen } from '../../utils/utils';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // actions
@@ -86,7 +85,8 @@ export default function ShopDetails() {
   const {t} = useTranslation();
   const { pathname, search } = useLocation();
   const queryParams = new URLSearchParams(search);
-  const { name, id } = useParams();
+  const productId = queryParams.get('productId');
+  const { id } = useParams();
   const navigate = useNavigate();
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
@@ -126,7 +126,7 @@ export default function ShopDetails() {
     }
   });
 
-  const { values, handleSubmit, isSubmitting, initialValues } = formik;
+  const { values, handleSubmit, isSubmitting } = formik;
 
   const isDefault =
   !values.priceRange &&
@@ -140,15 +140,15 @@ export default function ShopDetails() {
 
   useEffect(()=>{
     
-    if(queryParams.get('productId') && shop.businessHours && isStoreOpen(shop.businessHours)){
-      setDishId(queryParams.get('productId'))
+    if(productId && shop.businessHours && isStoreOpen(shop.businessHours)){
+      setDishId(productId)
       setOpen(true)
     }
 
-    if(!queryParams.get('productId')){
+    if(!productId){
       setOpen(false)
     }
-  },[queryParams])
+  },[productId, shop.businessHours])
 
   const handleOpenFilter = () => {
     setOpenFilter(true);

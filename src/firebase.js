@@ -11,7 +11,7 @@ import { firebaseConfig } from './config';
 firebase.initializeApp(firebaseConfig)
 
 if(window.location.hostname !== 'localhost'){
-  const analytics = firebase.analytics()
+  firebase.analytics()
 }
 
 

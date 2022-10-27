@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useMemo, useCallback} from 'react';
 import { sumBy } from 'lodash';
 import { LoadingButton } from '@material-ui/lab';
 import * as Yup from 'yup';
@@ -12,7 +12,7 @@ import checkmark from '@iconify/icons-eva/checkmark-outline';
 
 // material
 import { Box, Grid, Button, Typography } from '@material-ui/core';
-import { styled, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { onBackStep, onNextStep, createBilling, setDeliveryTime, applyShipping, createMode } from '../../../../redux/actions/app';
@@ -32,21 +32,10 @@ import { fCurrency } from '../../../../utils/formatNumber';
 
 AddressItem.propTypes = {
   address: PropTypes.object,
-  onLoading: PropTypes.func,
   onSelectAddress: PropTypes.func,
   onDeleteAddress: PropTypes.func,
   isChecked: PropTypes.bool
 };
-
-const AddressItemStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 2.5),
-  justifyContent: 'space-between',
-  borderRadius: theme.shape.borderRadius,
-  transition: theme.transitions.create('all'),
-  border: `solid 1px ${theme.palette.grey[500_32]}`
-}));
 
 function AddressItem({ address, onSelectAddress, onDeleteAddress, isChecked }) {
   const { receiver, fullAddress, addressType, phone, id } = address;
@@ -130,13 +119,13 @@ export default function CheckoutBillingAddress() {
   const dispatch = useDispatch();
   const isMountedRef = useIsMountedRef();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
+  const [options] = useState([]);
   const { checkout } = useSelector((state) => state.app);
   const { total, discount, subtotal, cart, deliveryCost, deliveryTime, shipping, mode, billing } = checkout;
   const authedUser = useSelector((state)=>state.authedUser);
   const {addresses, id} = authedUser;
   const [shop, setShop] = useState();
-  const [isLoading, setLoading] = useState(true);
+//  const [isLoading, setLoading] = useState(true);
   const cookingTime = sumBy(cart,'cookingTime');
 
   const BillingSchema = Yup.object().shape({
@@ -152,11 +141,11 @@ export default function CheckoutBillingAddress() {
       address: billing || undefined
     },
     validationSchema: BillingSchema,
-    onSubmit: (values, { setErrors, setSubmitting }) => {
+    onSubmit: (values, { setSubmitting }) => {
       handleCreateBilling(values.address);
       dispatch(createMode(values.delivery));
       handleNextStep();
-      // setSubmitting(false);
+      setSubmitting(false);
     }
   });
   const { handleSubmit, setFieldValue, isSubmitting, values } = formik;
@@ -192,7 +181,7 @@ export default function CheckoutBillingAddress() {
             })
         }
 
-        if(shop.mode.includes('DINE')){
+        /* if(shop.mode.includes('DINE')){
           options.push(
             {
               id: 'DINE',
@@ -200,21 +189,34 @@ export default function CheckoutBillingAddress() {
               title: t('checkout.dineTitle'),
               description: t('checkout.dineDescription',{value: cookingTime}),
             })
-        }
+        } */
       }
     }
    
-  },[setShop, setShop, shop?.mode, shipping, deliveryTime, isMountedRef.current])
+  },
+  [
+    setShop, 
+    shop?.mode, 
+    shipping, 
+    deliveryTime, 
+    cart, 
+    options, 
+    shop, 
+    values.address, 
+    cookingTime, 
+    t, 
+    isMountedRef
+  ]);
 
-  const service = new window.google.maps.DistanceMatrixService();
-  const distanceMatrixCallback = (result, status) => {
+  const service = useMemo(()=>new window.google.maps.DistanceMatrixService(), []);
+  const distanceMatrixCallback = useCallback((result, status) => {
     if (status === "OK" ) {
       // dispatch(setDeliveryCost(shippingCost(result.rows[0].elements[0].distance.value, shop.kmCost)))
       handleApplyShipping(shippingCost(result.rows[0].elements[0].distance.value, shop.kmCost)) 
       dispatch(setDeliveryTime(result.rows[0].elements[0].duration.value))
-      setLoading(false)
+      // setLoading(false)
     }
-  };
+  },[dispatch, handleApplyShipping, shop.kmCost]);
 
   useEffect(()=>{
     if(isMountedRef.current){
@@ -227,7 +229,15 @@ export default function CheckoutBillingAddress() {
       }
     }
     
-  },[shop?.location, values.address, deliveryCost, isMountedRef.current]);
+  },
+  [
+    shop?.location, 
+    values.address, 
+    deliveryCost, 
+    isMountedRef, 
+    service, 
+    distanceMatrixCallback
+  ]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -257,9 +267,9 @@ export default function CheckoutBillingAddress() {
     setFieldValue('address', value)
   }
 
-  const handleApplyShipping = (value) => {
+  const handleApplyShipping = useCallback((value) => {
     dispatch(applyShipping(value));
-  };
+  },[dispatch]);
 
   
 

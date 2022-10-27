@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 // material
 import {
@@ -28,7 +28,7 @@ import { GetOrder } from '../../redux/actions/order';
 
 export default function Tracking() {
   const { themeStretch } = useSettings();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const {t} = useTranslation();
   const { id } = useParams();
   const [order, setOrder] = useState();
@@ -37,9 +37,9 @@ export default function Tracking() {
     GetOrder(id, (data)=>setOrder(data))
   },[setOrder, id]);
 
-  const handleBack = ()=>{
+  /* const handleBack = ()=>{
     navigate(PATH_MARKETPLACE.home.orders)
-  }
+ } */
 
   if(!order){
     return (

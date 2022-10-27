@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
 import eyeOff from '@iconify/icons-eva/eye-off-2-fill';
@@ -62,13 +62,13 @@ export default function ShopCover({ myShop, deliveryLocation }) {
   const [distance, setDistance] = useState();
   const [duration, setDuration] = useState();
 
-  const service = new window.google.maps.DistanceMatrixService();
+  const service = useMemo(()=>new window.google.maps.DistanceMatrixService(),[]);
   const distanceMatrixCallback = useCallback((result, status) => {
     if (status === "OK" ) {
       setDistance(result.rows[0].elements[0].distance)
       setDuration(result.rows[0].elements[0].duration)
     }
-  },[setDuration, setDistance]);
+  },[]);
 
   useEffect(()=>{
     if(location && deliveryLocation){
@@ -79,7 +79,7 @@ export default function ShopCover({ myShop, deliveryLocation }) {
       }, distanceMatrixCallback)
     }
    
-  },[location, deliveryLocation])
+  },[location, deliveryLocation, distanceMatrixCallback, service])
 
   
 

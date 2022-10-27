@@ -1,4 +1,5 @@
 import { sum } from 'lodash';
+import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -23,7 +24,10 @@ import CheckoutSummary from './CheckoutSummary';
 import CheckoutProductList from './CheckoutProductList';
 
 // ----------------------------------------------------------------------
-
+CheckoutCart.propTypes = {
+  handleGetCoupon: PropTypes.func
+}
+// ----------------------------------------------------------------------
 export default function CheckoutCart({handleGetCoupon}) {
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -60,7 +64,7 @@ export default function CheckoutCart({handleGetCoupon}) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { products: cart },
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
+    onSubmit: async ({ setErrors, setSubmitting }) => {
       try {
         setSubmitting(true);
         handleNextStep();

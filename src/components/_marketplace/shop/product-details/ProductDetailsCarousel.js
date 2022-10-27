@@ -2,13 +2,13 @@
 import PropTypes from 'prop-types';
 import BlockImage from 'react-block-image';
 // material
-import { alpha, styled } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import { Box, CircularProgress } from '@material-ui/core';
 
 
 // ----------------------------------------------------------------------
 
-const THUMB_SIZE = 64;
+// const THUMB_SIZE = 64;
 
 const RootStyle = styled('div')(({ theme }) => ({
   '& .slick-slide': {
@@ -17,21 +17,11 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }));
 
-const LargeImgStyle = styled('img')({
-  top: 0,
-  maxHeight: 625,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
-});
-
 
 // ----------------------------------------------------------------------
 
 LargeItem.propTypes = {
   item: PropTypes.string,
-  onOpenLightbox: PropTypes.func
 };
 
 function LargeItem({ item }) {
@@ -58,6 +48,9 @@ function LargeItem({ item }) {
   );
 }
 
+ProductDetailsCarousel.propTypes = {
+  image: PropTypes.string.isRequired
+}
 
 export default function ProductDetailsCarousel({image}) {
 

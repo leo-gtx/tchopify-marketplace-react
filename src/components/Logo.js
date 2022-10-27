@@ -8,7 +8,7 @@ Logo.propTypes = {
   sx: PropTypes.object
 };
 
-const ImgLogo = styled('img')(({ theme }) => ({
+const ImgLogo = styled('img')(() => ({
   objectFit: 'cover',
   height: 70,
   width: 'auto'

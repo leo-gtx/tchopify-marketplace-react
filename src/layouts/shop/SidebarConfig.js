@@ -1,4 +1,3 @@
-import carFill from '@iconify/icons-eva/car-fill';
 // routes
 import { PATH_MARKETPLACE } from '../../routes/paths';
 

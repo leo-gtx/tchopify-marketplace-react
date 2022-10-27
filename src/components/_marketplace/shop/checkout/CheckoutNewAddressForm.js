@@ -39,7 +39,6 @@ export default function CheckoutNewAddressForm({ open, onClose }) {
   });
 
   const {
-    placesService,
     placePredictions,
     getPlacePredictions,
     isPlacePredictionsLoading,
@@ -80,7 +79,7 @@ export default function CheckoutNewAddressForm({ open, onClose }) {
     }
   });
 
-  const { errors, values, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
   return (
     <DialogAnimate maxWidth="sm" open={open} onClose={onClose}>

@@ -1,4 +1,4 @@
-import { sumBy, sum } from 'lodash';
+import { sumBy } from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { Link as ScrollLink } from 'react-scroll';

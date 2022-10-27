@@ -71,7 +71,7 @@ export default function PhoneNumberForm({ onGetPhoneNumber, onGetConfirmation })
     }
   });
 
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue, values } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>

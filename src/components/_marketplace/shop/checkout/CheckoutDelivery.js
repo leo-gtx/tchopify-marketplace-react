@@ -36,7 +36,9 @@ const OptionStyle = styled('div')(({ theme }) => ({
 CheckoutDelivery.propTypes = {
   formik: PropTypes.object,
   deliveryOptions: PropTypes.array,
-  onApplyShipping: PropTypes.func
+  onApplyShipping: PropTypes.func,
+  cardsAddress: PropTypes.func,
+  btnAddAddress: PropTypes.func
 };
 
 export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, cardsAddress, btnAddAddress, ...other }) {
@@ -71,8 +73,8 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
                 </>
               )
             }
-            {deliveryOptions.map((delivery, index) => {
-              const { value, title, description, id } = delivery;
+            {deliveryOptions.map((delivery) => {
+              const { title, description, id } = delivery;
               return (
                 <Grid key={id} item xs={12} md={6}>
                   <OptionStyle

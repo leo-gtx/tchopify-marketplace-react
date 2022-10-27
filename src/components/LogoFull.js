@@ -8,7 +8,7 @@ LogoFull.propTypes = {
   sx: PropTypes.object
 };
 
-const ImgLogoFull = styled('img')(({ theme }) => ({
+const ImgLogoFull = styled('img')(() => ({
   objectFit: 'cover',
   height: 90,
   width: 180

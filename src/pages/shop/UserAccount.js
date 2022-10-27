@@ -26,6 +26,7 @@ export default function UserAccount() {
   const { themeStretch } = useSettings();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
+  const tabName = queryParams.get('tabName');
   const [currentTab, setCurrentTab] = useState('general');
   const navigate = useNavigate();
   const { t }  = useTranslation();
@@ -51,10 +52,10 @@ export default function UserAccount() {
   }
 
   useEffect(()=>{
-    if(queryParams.get('tabName')){
-      setCurrentTab(queryParams.get('tabName'))
+    if(tabName){
+      setCurrentTab(tabName)
     }
-  },[queryParams.get('tabName')])
+  },[tabName])
 
   return (
     <Page title={t('titles.account')}>

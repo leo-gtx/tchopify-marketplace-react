@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,7 @@ import { Backdrop, CircularProgress, Grid, Button, DialogContent, DialogActions,
 import { LoadingButton } from '@material-ui/lab';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { gotoStep, onBackStep, onNextStep, applyShipping, setOrderId } from '../../../../redux/actions/app';
+import { gotoStep, onBackStep, onNextStep, setOrderId } from '../../../../redux/actions/app';
 import { handlePlaceOrder, handlePayOrder, GetOrder } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
 // utils
@@ -52,6 +53,10 @@ const PAYMENT_OPTIONS = [
 ];
 
 // ----------------------------------------------------------------------
+CheckoutPayment.propTypes = {
+  coupon: PropTypes.string
+}
+// ----------------------------------------------------------------------
 
 export default function CheckoutPayment({coupon}) {
   const {t} = useTranslation();
@@ -66,7 +71,7 @@ export default function CheckoutPayment({coupon}) {
 
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
-  },[dispatch, setFrom, from?.mode])
+  },[dispatch, setFrom, from?.mode, cart])
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -115,7 +120,7 @@ export default function CheckoutPayment({coupon}) {
         data.service = paymentOption.service;
 
         if(!order){
-          const onError = (error)=>{
+          const onError = ()=>{
             setSubmitting(false);
             enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
           };
@@ -147,7 +152,7 @@ export default function CheckoutPayment({coupon}) {
           setText(t(paymentOption.note))
           handleOpenDialog()
         }else if(order?.status === 'rejected'){
-          const onError = (error)=>{
+          const onError = ()=>{
             setSubmitting(false);
             enqueueSnackbar(t('flash.orderRejected'), {variant: 'error'})
           };
@@ -156,14 +161,14 @@ export default function CheckoutPayment({coupon}) {
     }
   });
 
-  const { isSubmitting, handleSubmit, values, setFieldValue } = formik;
+  const { isSubmitting, handleSubmit, setFieldValue } = formik;
   const storeOpen = from ? isStoreOpen(from?.businessHours) : true;
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
       setFieldValue('payment', data.payment)
     })
-  },[orderId])
+  },[orderId, setFieldValue])
 
 
   // This trigger a payment request when order have accepeted status
@@ -171,7 +176,7 @@ export default function CheckoutPayment({coupon}) {
     if(order?.status === 'accepted'){
       handleSubmit();
     }
-  },[order?.status])
+  },[order?.status, handleSubmit])
 
   // Display then rejected's screen
   if(order?.status === 'rejected'){

@@ -52,7 +52,7 @@ ShopFilterSidebar.propTypes = {
 
 export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenFilter, onCloseFilter, formik, categories }) {
   const {t} = useTranslation();
-  const { values, getFieldProps, handleChange } = formik;
+  const { values, getFieldProps } = formik;
   return (
     <>
       <Button disableRipple color="inherit" endIcon={<Icon icon={roundFilterList} />} onClick={onOpenFilter}>
