@@ -1,7 +1,7 @@
 {
   "name": "@leo-gtx/tchopify-marketplace-react",
   "author": "Nguefack leonel",
-  "version": "1.13.17",
+  "version": "1.13.18",
   "private": true,
   "scripts": {
     "start": "react-scripts start",

@@ -104,14 +104,14 @@ export default function ShopCover({ myShop, deliveryLocation }) {
                  <Icon icon={eyeOff} height={40} width={40}/>
                   <Typography variant='h4'>{`${name} (${t('common.closed').toUpperCase()})`}</Typography>
                </Stack>
-               <Rating size='small' value={rating || 0} readOnly/>
+               {rating && rating > 0 && <Rating size='small' value={rating || 0} emptyIcon={<Icon/>} readOnly/>}
                <Typography>{t(getNextOpenDay(businessHours).t, { day: getNextOpenDay(businessHours).day})}</Typography>
              </Stack>
             
           ):(
             <>
               <Typography variant="h4">{name}</Typography>
-              <Rating size='small' value={rating || 0}  readOnly/>
+              {rating && rating > 0 && <Rating size='small' value={rating || 0} emptyIcon={<Icon/>} readOnly/>}
               <Stack direction='row' justifyContent='center'>
                 <Stack direction='row'  alignItems='center'>
                   <Icon icon='ic:baseline-delivery-dining' width={24} height={24} opacity={0.72} />
@@ -129,7 +129,7 @@ export default function ShopCover({ myShop, deliveryLocation }) {
           
         </Box>
       </InfoStyle>
-      <CoverImgStyle alt="profile cover" src={image} />
+      <CoverImgStyle alt="profile cover" src={image || '/static/illustrations/illustration_empty_content.svg'} />
     </RootStyle>
   );
 }
