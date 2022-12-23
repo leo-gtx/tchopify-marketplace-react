@@ -20,6 +20,7 @@ import { handleGetAddress, handleDeleteAddress } from '../../../../redux/actions
 import { handleGetRestaurant } from '../../../../redux/actions/restaurant';
 // hooks
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
+import useIsMobile from '../../../../hooks/useIsMobile';
 //
 import CheckoutSummary from './CheckoutSummary';
 import CheckoutNewAddressForm from './CheckoutNewAddressForm';
@@ -127,6 +128,7 @@ export default function CheckoutBillingAddress() {
   const authedUser = useSelector((state)=>state.authedUser);
   const {addresses, id} = authedUser;
   const [shop, setShop] = useState();
+  const isMobile = useIsMobile();
 //  const [isLoading, setLoading] = useState(true);
   const cookingTime = sumBy(cart,'cookingTime');
 
@@ -140,7 +142,7 @@ export default function CheckoutBillingAddress() {
   const formik = useFormik({
     initialValues: {
       delivery: mode,
-      address: billing || undefined
+      address: billing || null
     },
     validationSchema: BillingSchema,
     onSubmit: (values, { setSubmitting }) => {
@@ -211,6 +213,11 @@ export default function CheckoutBillingAddress() {
   ]);
 
   const service = useMemo(()=>new window.google.maps.DistanceMatrixService(), []);
+  
+  const handleApplyShipping = useCallback((value) => {
+    dispatch(applyShipping(value));
+  },[dispatch]);
+
   const distanceMatrixCallback = useCallback((result, status) => {
     if (status === "OK" ) {
       // dispatch(setDeliveryCost(shippingCost(result.rows[0].elements[0].distance.value, shop.kmCost)))
@@ -218,7 +225,7 @@ export default function CheckoutBillingAddress() {
       dispatch(setDeliveryTime(result.rows[0].elements[0].duration.value))
       // setLoading(false)
     }
-  },[dispatch, handleApplyShipping, shop.kmCost]);
+  },[dispatch, handleApplyShipping, shop?.kmCost]);
 
   useEffect(()=>{
     if(isMountedRef.current){
@@ -274,10 +281,6 @@ export default function CheckoutBillingAddress() {
     setFieldValue('address', value)
   }
 
-  const handleApplyShipping = useCallback((value) => {
-    dispatch(applyShipping(value));
-  },[dispatch]);
-
   
 
   return (
@@ -318,9 +321,30 @@ export default function CheckoutBillingAddress() {
 
           <Grid item xs={12} md={4}>
             <CheckoutSummary subtotal={subtotal} shipping={shipping} total={total} discount={discount} />
+            
+            {!isMobile && 
             <LoadingButton fullWidth size="large"  type="submit" variant="contained" loading={isSubmitting}>
               {t('actions.finalizeOrder')}
             </LoadingButton>
+            }
+            {isMobile && 
+              <LoadingButton 
+                size="large"  
+                type="submit" 
+                variant="contained" 
+                loading={isSubmitting}
+                sx={{
+                  width: `${window.screen.width - 40}px`,
+                  top: 'auto',
+                  bottom: 20,
+                  left: '50%',
+                  marginLeft: `-${(window.screen.width - 40)/2}px`,
+                  position: 'fixed',
+                }}
+              >
+                {t('actions.finalizeOrder')}
+              </LoadingButton>
+            }
           </Grid>
         </Grid>
 

@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { gotoStep, onBackStep, onNextStep, setOrderId } from '../../../../redux/actions/app';
 import { handlePlaceOrder, handlePayOrder, GetOrder } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
+// hooks
+import useIsMobile from '../../../../hooks/useIsMobile';
 // utils
 import { isStoreOpen } from '../../../../utils/utils';
 // components
@@ -70,6 +72,7 @@ export default function CheckoutPayment({coupon}) {
   const { checkout } = useSelector((state) => state.app);
   const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId, mode  } = checkout;
   const { enqueueSnackbar } = useSnackbar();
+  const isMobile = useIsMobile();
 
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
@@ -249,11 +252,37 @@ export default function CheckoutPayment({coupon}) {
                 </Backdrop>
               )
             }
-            <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
-              {storeOpen && !order && t('actions.completeOrder')}
-              {!storeOpen && t('actions.shopClosed')}
-              {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
-            </LoadingButton>
+            {!isMobile && (
+              <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
+                {storeOpen && !order && t('actions.completeOrder')}
+                {!storeOpen && t('actions.shopClosed')}
+                {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
+              </LoadingButton>
+            )}
+            {
+              isMobile && (
+                <LoadingButton 
+                  size="large" 
+                  disabled={!storeOpen} 
+                  type="submit" 
+                  variant="contained" 
+                  loading={isSubmitting || order?.status === 'new'}
+                  sx={{
+                    width: `${window.screen.width - 40}px`,
+                    top: 'auto',
+                    bottom: 20,
+                    left: '50%',
+                    marginLeft: `-${(window.screen.width - 40)/2}px`,
+                    position: 'fixed',
+                  }}
+                >
+                  {storeOpen && !order && t('actions.completeOrder')}
+                  {!storeOpen && t('actions.shopClosed')}
+                  {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
+                </LoadingButton>
+              )
+            }
+            
           </Grid>
         </Grid>
       </Form>
