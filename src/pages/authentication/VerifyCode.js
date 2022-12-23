@@ -8,7 +8,8 @@ import { Box, Button, Link, Container, Typography } from '@material-ui/core';
 // components
 import Page from '../../components/Page';
 import { VerifyCodeForm } from '../../components/authentication/verify-code';
-
+// firebase
+import firebase from '../../firebase';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -26,6 +27,8 @@ VerifyCode.propTypes= {
 
 export default function VerifyCode({ resetPhoneNumber, confirmation }) {
   const {t} = useTranslation();
+    // Analytic Event login
+    firebase.analytics().logEvent('login');
   return (
     <RootStyle title="Code OTP | Tchopify">
 

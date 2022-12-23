@@ -24,7 +24,8 @@ import {
   ProductDetailsCarousel
 } from '../../components/_marketplace/shop/product-details';
 import { DialogAnimate}  from '../../components/animate';
-
+// firebase
+import firebase from '../../firebase';
 
 
 // ----------------------------------------------------------------------
@@ -115,7 +116,28 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
       shop: shopId
       }))
       onToggleModal(false);
+    // Analytic Event
+    firebase.analytics().logEvent('add_to_cart', {
+      currency: 'USD',
+      value: 7.77,
+      items: [{
+        item_id: product?.id,
+        item_name: product?.name,
+        price: product?.price,
+        quantity: 1
+      }]
+    })
   }
+  // Analytics Event
+  firebase.analytics().logEvent('view_item',{
+    currency: 'USD',
+    value: 5,
+    items: [{
+      item_id: product?.id,
+      item_name: product?.name,
+      price: product?.price
+    }]
+  })
   return (
 
       <Container maxWidth='xl'>

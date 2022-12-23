@@ -25,9 +25,12 @@ import {
   FormHelperText,
   MenuItem,
 } from '@material-ui/core'; 
+
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { gotoStep, addCart} from '../../../../redux/actions/app';
+// firebase
+import firebase from '../../../../firebase';
 // routes
 import { PATH_MARKETPLACE } from '../../../../routes/paths';
 // utils
@@ -136,6 +139,16 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
 
   const onAddCart = (product) => {
     dispatch(addCart({...product, shop: shopId}));
+    firebase.analytics().logEvent('add_to_cart', {
+      currency: 'USD',
+      value: 7.77,
+      items: [{
+        item_id: product?.id,
+        item_name: product?.name,
+        price: product?.price,
+        quantity: product?.quantity
+      }]
+    })
   };
 
   const handleBuyNow = () => {

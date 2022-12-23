@@ -9,6 +9,8 @@ import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import { Grid, Card, Button, CardHeader, Typography } from '@material-ui/core';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
+// firebase
+import firebase from '../../../../firebase';
 import {
   deleteCart,
   onNextStep,
@@ -77,7 +79,17 @@ export default function CheckoutCart({handleGetCoupon}) {
 
   const { values, handleSubmit } = formik;
   const totalItems = sum(values.products.map((item) => item.quantity));
-
+  // Analytic event
+  firebase.analytics().logEvent('view_cart',{
+    currency: 'USD',
+    value: 7.77,
+    items: cart.map((item)=>({
+      item_id: item.id,
+      item_name: item.name,
+      price: item.price,
+      quantity: item.quantity
+    }))
+  })
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
