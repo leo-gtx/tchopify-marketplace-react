@@ -98,7 +98,7 @@ export default function ProductList({ formik, onDelete, onIncreaseQuantity, onDe
               <TableRow key={id}>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <ThumbImgStyle alt="product image" src={image} />
+                    <ThumbImgStyle alt="product image" src={image||'/static/illustrations/illustration_dish.jpg'} />
                     <Box>
                       <Typography noWrap variant="subtitle2" sx={{ maxWidth: 240, mb: 0.5 }}>
                         {name}

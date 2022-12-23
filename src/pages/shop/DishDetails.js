@@ -140,7 +140,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
             <Card>
               <Grid container>
                 <Grid item xs={12} >
-                  <ProductDetailsCarousel image={product?.image} />
+                  <ProductDetailsCarousel image={product?.image || '/static/illustrations/illustration_dish.jpg'} />
                 </Grid>
                 <Grid item xs={12}>
                   <ProductDetailsSumary product={product} shopId={shopId} onToggleModal={onToggleModal} />

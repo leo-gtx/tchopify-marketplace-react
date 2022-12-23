@@ -30,7 +30,7 @@ export default function ShopProductCard({ product }) {
               height: '100%',
               position: 'absolute'
             }}
-            src={ image || '/static/illustrations/illustration_no_dish_image.png' }
+            src={ image || '/static/illustrations/illustration_dish.jpg' }
             showPreview
             loader={
               <center style={{marginTop: '45%'}}>
