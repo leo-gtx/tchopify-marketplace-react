@@ -18,8 +18,8 @@ if(window.location.hostname !== 'localhost'){
 // auth setup
 const auth = firebase.auth()
 auth.languageCode = localStorage.getItem('i18nextLng') || 'en';
-if(window.location.hostname === 'localhost'){
-  auth.useEmulator('http://localhost:9099')
+ if(window.location.hostname === 'localhost'){
+   auth.useEmulator('http://localhost:9099')
 }
 
 
@@ -28,9 +28,6 @@ const firestore = firebase.firestore()
 if (window.location.hostname === 'localhost'){
   firestore.useEmulator('localhost', 8081)
 }
-
-
-
 
 // firestore.enablePersistence().catch((err)=>console.error(err))
 

@@ -65,7 +65,7 @@ export default function ShopProductCard({ product }) {
           />
         </Box>
 
-        <Stack spacing={2} sx={{ p: 3 }}>
+        <Stack spacing={2} direction='row' flexWrap='wrap' sx={{ p: 3 }}>
           
             <Typography variant="subtitle1" noWrap>
               {name}
@@ -73,7 +73,7 @@ export default function ShopProductCard({ product }) {
           { rating && rating > 0 &&
           (
             <Stack direction="column" justifyContent="flex-start">
-              <Rating name='small' value={rating} precision={0.1} emptyIcon={null} readOnly />
+              <Rating name='small' value={rating} precision={0.1} emptyIcon={<Icon/>} readOnly />
             </Stack>
           )}
           
