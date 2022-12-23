@@ -22,6 +22,8 @@ import CheckoutBillingInfo from './CheckoutBillingInfo';
 import CheckoutPaymentMethods from './CheckoutPaymentMethods';
 import CheckoutOrderRejected from './CheckoutOrderRejected';
 import { DialogAnimate } from '../../../animate';
+// firebase
+import firebase from '../../../../firebase';
 
 
 // ----------------------------------------------------------------------
@@ -158,6 +160,12 @@ export default function CheckoutPayment({coupon}) {
           };
           onError();
         }
+        // Analytic Event
+        firebase.analytics().logEvent('purchase',{
+          currency: 'USD',
+          value: 12.21,
+          coupon
+        })
     }
   });
 
@@ -182,6 +190,14 @@ export default function CheckoutPayment({coupon}) {
   if(order?.status === 'rejected'){
     return <CheckoutOrderRejected open/>
   }
+
+  // Analytics Event
+  firebase.analytics().logEvent('add_payment_info', {
+    currency: 'USD',
+    value: 7.77,
+    coupon,
+    payment_type: PAYMENT_OPTIONS.find((item)=> item.value === data.payment)
+  });
 
   return (
     <FormikProvider value={formik}>

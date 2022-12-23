@@ -26,6 +26,8 @@ import {
 import { CartWidget } from '../../components/_marketplace/marketplace';
 import { DialogAnimate}  from '../../components/animate';
 import DishDetails from './DishDetails';
+// firebase
+import firebase from '../../firebase';
 
 // utils
 import fakeRequest from '../../utils/fakeRequest';
@@ -177,7 +179,8 @@ export default function ShopDetails() {
       if (isOpen !== value) handleCloseModal()
     }
   }
-
+  // Analytic Event Shop details
+  firebase.analytics().logEvent('view_item_list');
   return (
     <Page title={t('titles.shopDetail')}>
       {values && (

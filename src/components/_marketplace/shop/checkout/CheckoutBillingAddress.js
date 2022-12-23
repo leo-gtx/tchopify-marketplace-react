@@ -27,6 +27,8 @@ import CheckoutDelivery from './CheckoutDelivery';
 // utils
 import { shippingCost } from '../../../../utils/utils'; 
 import { fCurrency } from '../../../../utils/formatNumber';
+// firebase
+import firebase from '../../../../firebase';
 
 // ----------------------------------------------------------------------
 
@@ -257,6 +259,11 @@ export default function CheckoutBillingAddress() {
 
   const handleCreateBilling = (value) => {
     dispatch(createBilling(value));
+    firebase.analytics().logEvent('add_shipping_info',{
+      currency: 'USD',
+      value: 7.77,
+      shipping_tier: 'Groud',
+    })
   };
 
   const handleDelete = (value)=>{
