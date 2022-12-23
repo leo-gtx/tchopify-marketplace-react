@@ -178,10 +178,11 @@ export function getNextOpenDay(schedules){
     let currentDay = new Date().getDay();
     const now = new Date()
     for (let index = 0; index <= 6; index+=1) {
-        if(currentDay >= 6) currentDay = 0 
+        if(currentDay > 6) currentDay = 0 
         else currentDay+=1;
         if(schedules[currentDay].isOpen){
-            now.setDate(currentDay)
+            // now.setDate(currentDay)
+            now.setDate(now.getDate() + index + 1)
             return {
                 t: 'common.openAt',
                 day: new Date(`${now.toDateString()} ${schedules[currentDay].startTime}`).toLocaleTimeString(localStorage.getItem('i18nextLng'), options)
