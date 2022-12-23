@@ -13,13 +13,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 // hook
 import useAuth from './hooks/useAuth';
 // import useNotification from './hooks/useNotification';
-import useCaching from './hooks/useCaching';
+// import useCaching from './hooks/useCaching';
 
 
 // ----------------------------------------------------------------------
 
 export default function App() {
-  useCaching();
+  // useCaching();
   const {initializing} = useAuth();
   // useNotification();
   
