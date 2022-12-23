@@ -13,6 +13,8 @@ import { PhoneNumberForm } from '../../components/authentication/phone-verificat
 import VerifyCode from './VerifyCode';
 // routes
 import { PATH_MARKETPLACE } from '../../routes/paths';
+// firebase
+import firebase from '../../firebase';
 
 // ----------------------------------------------------------------------
 
@@ -43,10 +45,8 @@ export default function PhoneVerification() {
   if(isMountedRef.current && phone){
     return <VerifyCode resetPhoneNumber={()=> setPhone('')} confirmation={confirmationID}/>
   }
-
-
-  
-
+  // Analytic Event signup
+  firebase.analytics().logEvent('sign_up', {phone_number: phone})
   return (
     <RootStyle title="Phone number verification | Tchopify">
 
