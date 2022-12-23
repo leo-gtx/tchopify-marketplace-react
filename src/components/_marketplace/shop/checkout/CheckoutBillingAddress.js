@@ -209,8 +209,8 @@ export default function CheckoutBillingAddress() {
     t, 
     isMountedRef
   ]);
-
-  const service = useMemo(()=>new window.google.maps.DistanceMatrixService(), []);
+  const {maps} = window.google;
+  const service = useMemo(()=>new maps.DistanceMatrixService(), [maps]);
   const distanceMatrixCallback = useCallback((result, status) => {
     if (status === "OK" ) {
       // dispatch(setDeliveryCost(shippingCost(result.rows[0].elements[0].distance.value, shop.kmCost)))
@@ -222,7 +222,7 @@ export default function CheckoutBillingAddress() {
 
   useEffect(()=>{
     if(isMountedRef.current){
-      if(shop?.location && values.address){
+      if(service && shop?.location && values.address){
         service.getDistanceMatrix({
         origins: [shop.location],
         destinations: [values.address?.fullAddress],

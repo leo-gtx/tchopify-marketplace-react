@@ -29,17 +29,19 @@ export default function MapRoute({ origin, destination }){
           }
     },[])
 
-     const directionService = useMemo(()=>new window.google.maps.DirectionsService(),[]);
-    useEffect(()=>{
-        async function getDirection(){
-            directionService.route({
-            origin,
-            destination,
-            travelMode: window.google.maps.TravelMode.DRIVING
-        }, directionCallback)
+    const {maps} = window.google;
+     const directionService = useMemo(()=>new window.google.maps.DirectionsService(),[maps]);
+     const getDirection = async()=>{
+        directionService.route({
+        origin,
+        destination,
+        travelMode: maps.TravelMode.DRIVING
+    }, directionCallback)
     }
-    getDirection()
-        
+    useEffect(()=>{
+        if(directionService){
+            getDirection()
+        }   
     },[origin, destination, directionCallback, directionService])
 
 
