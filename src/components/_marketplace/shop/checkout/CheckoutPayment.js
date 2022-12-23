@@ -169,7 +169,7 @@ export default function CheckoutPayment({coupon}) {
     }
   });
 
-  const { isSubmitting, handleSubmit, setFieldValue } = formik;
+  const { isSubmitting, handleSubmit, setFieldValue, values } = formik;
   const storeOpen = from ? isStoreOpen(from?.businessHours) : true;
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
@@ -196,7 +196,7 @@ export default function CheckoutPayment({coupon}) {
     currency: 'USD',
     value: 7.77,
     coupon,
-    payment_type: PAYMENT_OPTIONS.find((item)=> item.value === data.payment)
+    payment_type: PAYMENT_OPTIONS.find((item)=> item.value === values.payment)
   });
 
   return (
