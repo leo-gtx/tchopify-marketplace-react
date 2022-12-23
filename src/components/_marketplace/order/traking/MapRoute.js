@@ -31,15 +31,15 @@ export default function MapRoute({ origin, destination }){
 
     const {maps} = window.google;
      const directionService = useMemo(()=>new window.google.maps.DirectionsService(),[maps]);
+     const getDirection = async()=>{
+        directionService.route({
+        origin,
+        destination,
+        travelMode: maps.TravelMode.DRIVING
+    }, directionCallback)
+    }
     useEffect(()=>{
         if(directionService){
-            async function getDirection(){
-                directionService.route({
-                origin,
-                destination,
-                travelMode: maps.TravelMode.DRIVING
-            }, directionCallback)
-            }
             getDirection()
         }   
     },[origin, destination, directionCallback, directionService])
