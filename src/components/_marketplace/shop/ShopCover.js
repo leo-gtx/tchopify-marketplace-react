@@ -61,8 +61,9 @@ export default function ShopCover({ myShop, deliveryLocation }) {
   const { image, name, businessHours, rating, location, kmCost} = myShop;
   const [distance, setDistance] = useState();
   const [duration, setDuration] = useState();
-
-  const service = useMemo(()=>new window.google.maps.DistanceMatrixService(),[]);
+  const {maps} = window.google;
+  const service = useMemo(()=>new maps.DistanceMatrixService(),[maps]);
+  
   const distanceMatrixCallback = useCallback((result, status) => {
     if (status === "OK" ) {
       setDistance(result.rows[0].elements[0].distance)
@@ -71,7 +72,7 @@ export default function ShopCover({ myShop, deliveryLocation }) {
   },[]);
 
   useEffect(()=>{
-    if(location && deliveryLocation){
+    if(service && location && deliveryLocation){
        service.getDistanceMatrix({
       origins: [location],
       destinations: [deliveryLocation],
