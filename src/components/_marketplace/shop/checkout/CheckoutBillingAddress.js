@@ -122,7 +122,7 @@ export default function CheckoutBillingAddress() {
   const dispatch = useDispatch();
   const isMountedRef = useIsMountedRef();
   const [open, setOpen] = useState(false);
-  const [options] = useState([]);
+  const [options, setOptions] = useState([]);
   const { checkout } = useSelector((state) => state.app);
   const { total, discount, subtotal, cart, deliveryCost, deliveryTime, shipping, mode, billing } = checkout;
   const authedUser = useSelector((state)=>state.authedUser);
@@ -137,7 +137,7 @@ export default function CheckoutBillingAddress() {
     address: Yup.object().when("delivery",{
       is: (delivery)=> delivery?.includes('DELIVERY'),
       then: Yup.object().required(t('forms.addressRequired'))
-    })
+    }).nullable()
   });
   const formik = useFormik({
     initialValues: {
@@ -152,19 +152,17 @@ export default function CheckoutBillingAddress() {
       setSubmitting(false);
     }
   });
-  const { handleSubmit, setFieldValue, isSubmitting, values } = formik;
+  const { handleSubmit, setFieldValue, isSubmitting, values, errors } = formik;
 
   useEffect(()=>{
     dispatch(handleGetAddress(id))
   },[dispatch, id]);
 
-  useEffect(()=>{
-    if(isMountedRef.current){
-      handleGetRestaurant(cart[0]?.shop, (data)=>setShop(data));
-      if(shop){
-        options.splice(0,3)
-        if(shop.mode.includes('DELIVERY')){
-          options.push(
+  const getRestaurantCallback = useCallback((data)=>{
+    setShop(data)
+    const deliveryOptions = [];
+        if(shop?.mode.includes('DELIVERY')){
+          deliveryOptions.push(
             { 
               id: 'DELIVERY',
               value: shipping,
@@ -175,8 +173,8 @@ export default function CheckoutBillingAddress() {
             })
         }
 
-        if(shop.mode.includes('TAKEAWAY')){
-          options.push(
+        if(shop?.mode.includes('TAKEAWAY')){
+          deliveryOptions.push(
             {
               id: 'TAKEAWAY',
               value: 0,
@@ -184,35 +182,37 @@ export default function CheckoutBillingAddress() {
               description: t('checkout.takeawayDescription',{value: cookingTime}),
             })
         }
-
-        /* if(shop.mode.includes('DINE')){
-          options.push(
-            {
-              id: 'DINE',
-              value: 0,
-              title: t('checkout.dineTitle'),
-              description: t('checkout.dineDescription',{value: cookingTime}),
-            })
-        } */
-      }
-    }
-   
-  },
-  [
+        setOptions(deliveryOptions)
+  },[
     setShop, 
-    shop?.mode, 
     shipping, 
     deliveryTime, 
-    cart, 
     options, 
     shop, 
     values.address, 
     cookingTime, 
     t, 
-    isMountedRef
+  ])
+  const cartShop = cart[0]?.shop;
+  useEffect(()=>{
+    if(isMountedRef.current){
+        handleGetRestaurant(cart[0]?.shop, getRestaurantCallback);
+    }
+  },
+  [
+    getRestaurantCallback,
+    cart, 
+    isMountedRef,
+    cartShop
   ]);
 
-  const service = useMemo(()=>new window.google.maps.DistanceMatrixService(), []);
+    const service = useMemo(()=>{
+      if('google' in window){
+        return new window.google.maps.DistanceMatrixService()
+      }
+      return null;
+    }, []);
+  
   
   const handleApplyShipping = useCallback((value) => {
     dispatch(applyShipping(value));
@@ -226,13 +226,15 @@ export default function CheckoutBillingAddress() {
       // setLoading(false)
     }
   },[dispatch, handleApplyShipping, shop?.kmCost]);
+  const shopLocation = shop?.location;
+  const fullAddress = values.address?.fullAddress;
 
   useEffect(()=>{
     if(isMountedRef.current){
-      if(shop?.location && values.address){
+      if(shopLocation && fullAddress){
         service.getDistanceMatrix({
-        origins: [shop.location],
-        destinations: [values.address?.fullAddress],
+        origins: [shopLocation],
+        destinations: [fullAddress],
         travelMode: 'DRIVING'
         }, distanceMatrixCallback)
       }
@@ -240,8 +242,8 @@ export default function CheckoutBillingAddress() {
     
   },
   [
-    shop?.location, 
-    values.address, 
+    shopLocation, 
+    fullAddress, 
     deliveryCost, 
     isMountedRef, 
     service, 
@@ -280,8 +282,6 @@ export default function CheckoutBillingAddress() {
   const handleSelectAddress = (value)=>{
     setFieldValue('address', value)
   }
-
-  
 
   return (
     <FormikProvider value={formik}>

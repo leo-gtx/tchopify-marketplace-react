@@ -77,6 +77,7 @@ export default {
     tableLabel: 'Table name / number',
     tableRequired: 'Table is required',
     amountLabel: 'Amount',
-    addressRequired: 'Your address is required for delivery'
+    addressRequired: 'Your address is required for delivery',
+    whatsappDescription: 'Order on whatsapp'
 
 }

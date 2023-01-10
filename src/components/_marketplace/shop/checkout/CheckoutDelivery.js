@@ -37,8 +37,8 @@ CheckoutDelivery.propTypes = {
   formik: PropTypes.object,
   deliveryOptions: PropTypes.array,
   onApplyShipping: PropTypes.func,
-  cardsAddress: PropTypes.func,
-  btnAddAddress: PropTypes.func
+  cardsAddress: PropTypes.array,
+  btnAddAddress: PropTypes.object
 };
 
 export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, cardsAddress, btnAddAddress, ...other }) {
