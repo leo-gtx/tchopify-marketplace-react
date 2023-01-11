@@ -12,8 +12,10 @@ import { LoadingButton } from '@material-ui/lab';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { gotoStep, onBackStep, onNextStep, setOrderId } from '../../../../redux/actions/app';
-import { handlePlaceOrder, handlePayOrder, GetOrder } from '../../../../redux/actions/order';
+import { handlePlaceOrder, handlePayOrder, GetOrder, handlePlaceOrderWhatsapp } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
+// hooks
+import useIsMobile from '../../../../hooks/useIsMobile';
 // utils
 import { isStoreOpen } from '../../../../utils/utils';
 // components
@@ -51,6 +53,13 @@ const PAYMENT_OPTIONS = [
     service: '5',
     description: 'forms.euDescription',
     icons: ['/static/icons/ic_eu_mobile_money.png']
+  },
+  {
+      value: 'whatsapp',
+      title: 'Whatsapp',
+      service: '0',
+      description: 'forms.whatsappDescription',
+      icons: ['/static/icons/whatsapp.svg']
   }
 ];
 
@@ -70,10 +79,10 @@ export default function CheckoutPayment({coupon}) {
   const { checkout } = useSelector((state) => state.app);
   const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId, mode  } = checkout;
   const { enqueueSnackbar } = useSnackbar();
-
+  const isMobile = useIsMobile();
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
-  },[dispatch, setFrom, from?.mode, cart])
+  },[dispatch, setFrom, cart])
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -92,9 +101,11 @@ export default function CheckoutPayment({coupon}) {
 
   const PaymentSchema = Yup.object().shape({
     payment: Yup.mixed().required(t('forms.paymentRequired')),
-    phoneNumber: Yup.string().required(t('forms.phoneNumberRequired'))
+    phoneNumber: Yup.string().when('payment',{
+      is: (payment)=>payment.includes('money'),
+      then: Yup.string().required(t('forms.phoneNumberRequired'))
+    })
   });
-
   const formik = useFormik({
     initialValues: {
       payment: '',
@@ -121,7 +132,7 @@ export default function CheckoutPayment({coupon}) {
         data.wallet = values.phoneNumber;
         data.service = paymentOption.service;
 
-        if(!order){
+        if(!order && data.service !== '0'){
           const onError = ()=>{
             setSubmitting(false);
             enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
@@ -133,9 +144,22 @@ export default function CheckoutPayment({coupon}) {
           };
            // placed order
           dispatch(handlePlaceOrder(data, onSuccess, onError))
-        }else if(order?.status === 'accepted'){
+        }else if(!order && data.service ==='0'){
+          const onError = ()=>{
+            setSubmitting(false);
+            enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
+          };
+          const onSuccess = (orderId)=>{
+            dispatch(setOrderId(orderId))
+            enqueueSnackbar(t('flash.orderPlaced'), {variant: 'success'});
+            setSubmitting(false);
+            handleNextStep();
+          };
+           // placed order on whatsapp
+          dispatch(handlePlaceOrderWhatsapp(data, onSuccess, onError));
+        }
+        else if(order?.status === 'accepted'){
           const onError = (error)=>{
-            console.error(error);
             const errorMessage = error?.code ? t(`request.${error.code}`): error.message;
             setSubmitting(false);
             setErrors({ phoneNumber: errorMessage});
@@ -170,7 +194,9 @@ export default function CheckoutPayment({coupon}) {
   });
 
   const { isSubmitting, handleSubmit, setFieldValue, values } = formik;
+
   const storeOpen = from ? isStoreOpen(from?.businessHours) : true;
+  const paymentOptions = PAYMENT_OPTIONS.filter((item)=>from?.paymentOptions?.includes(item.value));
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
@@ -213,7 +239,7 @@ export default function CheckoutPayment({coupon}) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <CheckoutPaymentMethods formik={formik}  paymentOptions={PAYMENT_OPTIONS} />
+            <CheckoutPaymentMethods formik={formik}  paymentOptions={paymentOptions} />
             <Button
               type="button"
               size="small"
@@ -249,11 +275,37 @@ export default function CheckoutPayment({coupon}) {
                 </Backdrop>
               )
             }
-            <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
-              {storeOpen && !order && t('actions.completeOrder')}
-              {!storeOpen && t('actions.shopClosed')}
-              {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
-            </LoadingButton>
+            {!isMobile && (
+              <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
+                {storeOpen && !order && t('actions.completeOrder')}
+                {!storeOpen && t('actions.shopClosed')}
+                {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
+              </LoadingButton>
+            )}
+            {
+              isMobile && (
+                <LoadingButton 
+                  size="large" 
+                  disabled={!storeOpen} 
+                  type="submit" 
+                  variant="contained" 
+                  loading={isSubmitting || order?.status === 'new'}
+                  sx={{
+                    width: `${window.screen.width - 40}px`,
+                    top: 'auto',
+                    bottom: 20,
+                    left: '50%',
+                    marginLeft: `-${(window.screen.width - 40)/2}px`,
+                    position: 'fixed',
+                  }}
+                >
+                  {storeOpen && !order && t('actions.completeOrder')}
+                  {!storeOpen && t('actions.shopClosed')}
+                  {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
+                </LoadingButton>
+              )
+            }
+            
           </Grid>
         </Grid>
       </Form>

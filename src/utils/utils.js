@@ -286,3 +286,11 @@ export function uniqueId(){
     const randomness = Math.floor(Math.random() * 10000).toString().substr(0, 4);
     return dateString + randomness;
 };
+
+export function formattedMessage(shop,cart){
+    let message=`Commande chez: ${shop}, `;
+    cart.forEach((item)=>{
+        message += `${item.name} x${item.quantity} \n` 
+    })
+ return message;
+}

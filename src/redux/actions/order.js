@@ -1,6 +1,6 @@
 import firebase from '../../firebase';
-import { formattedOrders, RequestTimeout, uniqueId} from '../../utils/utils';
-import { pay } from '../../utils/api';
+import { formattedOrders, RequestTimeout, uniqueId, formattedMessage} from '../../utils/utils';
+import { pay, sendMessage } from '../../utils/api';
 
 export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS = 'SET_ORDERS';
@@ -60,6 +60,39 @@ export function handlePlaceOrder({cart, subtotal, discount, billing, shipping, p
             }
             
             
+        })
+        .catch((err)=>{
+            onError(err)
+        })
+}
+
+export function handlePlaceOrderWhatsapp({cart, subtotal, discount, billing, shipping, payment, from, mode, total, deliveryTime}, callback, onError){
+    const id = uniqueId()
+        const data = {
+            id,
+            cart,
+            subtotal,
+            discount,
+            shipping,
+            payment,
+            mode,
+            from,
+            billing,
+            total,
+            deliveryTime,
+            orderAt: Date.now(),
+            status: 'new',
+            paymentStatus: 'unpaid',
+        };
+        return (dispatch) => firebase
+        .firestore()
+        .collection('orders')
+        .doc(id)
+        .set(data)
+        .then(()=>{
+                dispatch(addOrder(data))
+                callback(id)
+                sendMessage({phone: from.phoneNumber, message: formattedMessage(from.name, cart)})
         })
         .catch((err)=>{
             onError(err)

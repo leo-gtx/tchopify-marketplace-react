@@ -53,3 +53,7 @@ export function withdraw({amount, wallet, service}){
     }))
     
 }
+
+export function sendMessage({phone, message}){
+    return window.open(`https://api.whatsapp.com/send/?phone=${phone}&text=${message}`, '_blank');
+}

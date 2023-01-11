@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useJsApiLoader, GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
 import { Card, CardHeader, CardContent, Skeleton } from '@material-ui/core';
@@ -29,23 +29,20 @@ export default function MapRoute({ origin, destination }){
           }
     },[])
 
-    const {maps} = window.google;
-     const directionService = useMemo(()=>new window.google.maps.DirectionsService(),[maps]);
-     const getDirection = async()=>{
-        directionService.route({
-        origin,
-        destination,
-        travelMode: maps.TravelMode.DRIVING
-    }, directionCallback)
-    }
+   
+     
+     
     useEffect(()=>{
+        const {maps} = window.google;
+        const directionService = new maps.DirectionsService();
         if(directionService){
-            getDirection()
+                directionService.route({
+                origin,
+                destination,
+                travelMode: maps.TravelMode.DRIVING
+            }, directionCallback)
         }   
-    },[origin, destination, directionCallback, directionService])
-
-
-
+    },[origin, destination, directionCallback])
 
     if(!isLoaded){
         return <Skeleton variant="rectangular" height={365} sx={{ borderRadius: 2 }} />
