@@ -80,7 +80,6 @@ export default function CheckoutPayment({coupon}) {
   const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId, mode  } = checkout;
   const { enqueueSnackbar } = useSnackbar();
   const isMobile = useIsMobile();
-
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
   },[dispatch, setFrom, cart])
@@ -151,8 +150,8 @@ export default function CheckoutPayment({coupon}) {
             enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
           };
           const onSuccess = (orderId)=>{
+            dispatch(setOrderId(orderId))
             enqueueSnackbar(t('flash.orderPlaced'), {variant: 'success'});
-            handleCloseDialog();
             setSubmitting(false);
             handleNextStep();
           };
@@ -194,9 +193,10 @@ export default function CheckoutPayment({coupon}) {
     }
   });
 
-  const { isSubmitting, handleSubmit, setFieldValue, values, errors } = formik;
+  const { isSubmitting, handleSubmit, setFieldValue, values } = formik;
 
   const storeOpen = from ? isStoreOpen(from?.businessHours) : true;
+  const paymentOptions = PAYMENT_OPTIONS.filter((item)=>from?.paymentOptions?.includes(item.value));
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
@@ -239,7 +239,7 @@ export default function CheckoutPayment({coupon}) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <CheckoutPaymentMethods formik={formik}  paymentOptions={PAYMENT_OPTIONS.filter((item)=>from?.paymentOptions.includes(item.value))} />
+            <CheckoutPaymentMethods formik={formik}  paymentOptions={paymentOptions} />
             <Button
               type="button"
               size="small"

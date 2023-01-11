@@ -78,6 +78,11 @@ export default {
     tableRequired: 'Table is required',
     amountLabel: 'Amount',
     addressRequired: 'Your address is required for delivery',
-    whatsappDescription: 'Order on whatsapp'
-
+    whatsappDescription: 'Order on whatsapp',
+    addAddress: 'Press the button below to add your address',
+    addPrecision: 'Add some precision',
+    addressLabel: 'Address',
+    home: 'Home',
+    away: 'Away',
+    office: 'Office'
 }

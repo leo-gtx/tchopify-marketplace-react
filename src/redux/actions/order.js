@@ -66,7 +66,7 @@ export function handlePlaceOrder({cart, subtotal, discount, billing, shipping, p
         })
 }
 
-export function handlePlaceOrderWhatsapp({cart, subtotal, discount, billing, shipping, payment, from, mode, coupon, total, deliveryTime}, callback, onError){
+export function handlePlaceOrderWhatsapp({cart, subtotal, discount, billing, shipping, payment, from, mode, total, deliveryTime}, callback, onError){
     const id = uniqueId()
         const data = {
             id,
