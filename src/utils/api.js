@@ -54,6 +54,17 @@ export function withdraw({amount, wallet, service}){
     
 }
 
-export function sendMessage({phone, message}){
-    return window.open(`https://api.whatsapp.com/send/?phone=${phone}&text=${message}`, '_blank');
+export function sendMessage(recipient, parameters, lang){
+    return axios({
+        url: `https://us-central1-tchopify.cloudfunctions.net/api/notification/new-order-placed`,
+        method: 'post',
+        headers: {
+                'Content-Type': 'application/json',
+        },
+        data: {
+            recipient,
+            parameters,
+            lang
+        }
+    })
 }

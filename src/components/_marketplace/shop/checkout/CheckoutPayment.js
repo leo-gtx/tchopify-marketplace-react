@@ -70,7 +70,8 @@ CheckoutPayment.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function CheckoutPayment({coupon}) {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
   const [from, setFrom] = useState();
   const dispatch = useDispatch();
   const [text, setText] = useState('');
@@ -126,6 +127,7 @@ export default function CheckoutPayment({coupon}) {
         subtotal,
         from,
         deliveryTime: Math.round(deliveryTime / 60),
+        language
       }
         if(coupon) data.coupon = coupon;
         const paymentOption = PAYMENT_OPTIONS.find((item)=> item.value === data.payment);

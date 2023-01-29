@@ -294,3 +294,12 @@ export function formattedMessage(shop,cart){
     })
  return message;
 }
+
+export function getInitial(name){
+    if(!name) return null;
+    const splittedName = name.split(' ');
+    return splittedName.length > 1 ? 
+    `${splittedName[0][0].toUpperCase()}${splittedName[1][0].toUpperCase()}`:
+    `${splittedName[0][0].toUpperCase()}`
+    
+}
