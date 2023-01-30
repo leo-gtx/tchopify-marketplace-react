@@ -1,5 +1,5 @@
 import firebase from '../../firebase';
-import { formattedOrders, RequestTimeout, uniqueId, formattedMessage, getInitial, jsUcfirst} from '../../utils/utils';
+import { formattedOrders, RequestTimeout, uniqueId, formattedMessage, getInitial} from '../../utils/utils';
 import { pay, sendMessage } from '../../utils/api';
 
 export const ADD_ORDER = 'ADD_ORDER';
@@ -66,7 +66,7 @@ export function handlePlaceOrder({cart, subtotal, discount, billing, shipping, p
         })
 }
 
-export function handlePlaceOrderWhatsapp({language, cart, subtotal, discount, billing, shipping, payment, from, mode, total, deliveryTime}, callback, onError){
+export function handlePlaceOrderOnly({language, cart, subtotal, discount, billing, shipping, payment, from, mode, total, deliveryTime}, callback, onError){
     const id = `${getInitial(from.name)}${uniqueId()}`
         const data = {
             id,
@@ -95,7 +95,8 @@ export function handlePlaceOrderWhatsapp({language, cart, subtotal, discount, bi
                 const parameters = {
                     name: billing.receiver,
                     phone: billing.phone,
-                    orderId: `#${id}`
+                    description: formattedMessage(cart),
+                    orderId: id
                 }
                 sendMessage(from.phoneNumber, parameters, language)
         })

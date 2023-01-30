@@ -25,5 +25,9 @@ export default {
     sorry2 : "Le restaurant n'est pas en mesure d'accepter votre commande pour le moment",
     waitingRestaurant: 'SVP attendez de la confirmation du restaurant...',
     description: 'Nous vous enverrons une notification dès qu\'il sera prêt.\n Si vous avez des questions ou des demandes, n\'hésitez pas à nous contacter.\n Tous les meilleurs voeux',
-    rejectedDescription: "Désolé, le restaurant n'est actuellement pas en mesure de satisfaire votre commande.\n Si vous avez des questions ou des demandes, n'hésitez pas à nous contacter.\n Tous les meilleurs voeux"
+    rejectedDescription: "Désolé, le restaurant n'est actuellement pas en mesure de satisfaire votre commande.\n Si vous avez des questions ou des demandes, n'hésitez pas à nous contacter.\n Tous les meilleurs voeux",
+    cash: 'Paiement à la livraison',
+    eu_mobile_money: 'EU Mobile Money',
+    mobile_money: 'Mobile Money',
+    orange_money: 'Orange Money'
 }

@@ -287,10 +287,10 @@ export function uniqueId(){
     return dateString + randomness;
 };
 
-export function formattedMessage(shop,cart){
-    let message=`Commande chez: ${shop}, `;
+export function formattedMessage(cart){
+    let message='';
     cart.forEach((item)=>{
-        message += `${item.name} x${item.quantity} \n` 
+        message += `${item.quantity} ${item.name} ` 
     })
  return message;
 }
