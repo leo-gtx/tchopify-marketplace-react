@@ -261,7 +261,7 @@ export default function CheckoutBillingAddress() {
     dispatch(createBilling(value));
     firebase.analytics().logEvent('add_shipping_info',{
       currency: 'USD',
-      value: 7.77,
+      value: deliveryCost,
       shipping_tier: 'Groud',
     })
   };
