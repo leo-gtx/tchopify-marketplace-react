@@ -1,0 +1,18 @@
+[debug] [2023-01-18T12:49:30.025Z] ----------------------------------------------------------------------
+[debug] [2023-01-18T12:49:30.028Z] Command:       /usr/local/bin/firebase /home/leonel/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase emulators:start --only firestore,functions --import=./firestore --export-on-exit=./saved-data
+[debug] [2023-01-18T12:49:30.028Z] CLI Version:   11.12.0
+[debug] [2023-01-18T12:49:30.028Z] Platform:      linux
+[debug] [2023-01-18T12:49:30.029Z] Node Version:  v16.16.0
+[debug] [2023-01-18T12:49:30.096Z] Time:          Wed Jan 18 2023 13:49:30 GMT+0100 (West Africa Standard Time)
+[debug] [2023-01-18T12:49:30.097Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-01-18T12:49:30.102Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-01-18T12:49:30.338Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-01-18T12:49:30.341Z] > authorizing via signed-in user (nguefackleonel@gmail.com)
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[debug] [2023-01-18T12:49:35.372Z] Error: Timed out.
+    at Timeout._onTimeout (/home/leonel/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/utils.js:253:49)
+    at listOnTimeout (node:internal/timers:559:17)
+    at processTimers (node:internal/timers:502:7)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -78,14 +78,14 @@ export default function AccountPopover() {
                 fullWidth
                 loading={isPlacePredictionsLoading}
                 options={placePredictions}
-                getOptionLabel={(option)=>option.description}
+                getOptionLabel={(option)=>option?.description}
                 onSelect={(e)=>{
                         setLocation(e.target.value)  
                 }}
                 autoSelect
                 renderInput={(params)=> <TextField
                 {...params}
-                label={currentLocation || 'Find your location'}
+                label={currentLocation || t('common.findLocation')}
                 onChange={(evt) => {
                         getPlacePredictions({ input: evt.target.value })
                 }}

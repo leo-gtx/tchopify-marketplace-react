@@ -287,10 +287,19 @@ export function uniqueId(){
     return dateString + randomness;
 };
 
-export function formattedMessage(shop,cart){
-    let message=`Commande chez: ${shop}, `;
+export function formattedMessage(cart){
+    let message='';
     cart.forEach((item)=>{
-        message += `${item.name} x${item.quantity} \n` 
+        message += `${item.quantity} ${item.name} ` 
     })
  return message;
+}
+
+export function getInitial(name){
+    if(!name) return null;
+    const splittedName = name.split(' ');
+    return splittedName.length > 1 ? 
+    `${splittedName[0][0].toUpperCase()}${splittedName[1][0].toUpperCase()}`:
+    `${splittedName[0][0].toUpperCase()}`
+    
 }

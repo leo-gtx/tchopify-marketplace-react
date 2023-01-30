@@ -193,7 +193,7 @@ export function handleChangePassword({newPassword}, callback){
 }
 
 
-export function handleAddAddress({userId, receiver, fullAddress, addressType }, callback, onError){
+export function handleAddAddress({userId, receiver, phone, fullAddress, addressType }, callback, onError){
 const id = uuidv4()
 const data = {
   id,
@@ -201,6 +201,7 @@ const data = {
   fullAddress,
   addressType,
   userId,
+  phone
 };
 return (dispatch) =>  firebase
   .firestore()

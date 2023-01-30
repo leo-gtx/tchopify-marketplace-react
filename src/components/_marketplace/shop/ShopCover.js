@@ -130,7 +130,7 @@ export default function ShopCover({ myShop, deliveryLocation }) {
           
         </Box>
       </InfoStyle>
-      <CoverImgStyle alt="profile cover" src={image || '/static/illustrations/illustration_empty_content.svg'} />
+      <CoverImgStyle alt="profile cover" src={image || '/static/illustrations/illustration_no_store_image.jpg'} />
     </RootStyle>
   );
 }

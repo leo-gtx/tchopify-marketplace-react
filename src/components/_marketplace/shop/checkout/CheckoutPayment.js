@@ -12,7 +12,7 @@ import { LoadingButton } from '@material-ui/lab';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { gotoStep, onBackStep, onNextStep, setOrderId } from '../../../../redux/actions/app';
-import { handlePlaceOrder, handlePayOrder, GetOrder, handlePlaceOrderWhatsapp } from '../../../../redux/actions/order';
+import { handlePlaceOrder, handlePayOrder, GetOrder, handlePlaceOrderOnly } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
 // hooks
 import useIsMobile from '../../../../hooks/useIsMobile';
@@ -33,7 +33,7 @@ import firebase from '../../../../firebase';
 const PAYMENT_OPTIONS = [
   {
     value: 'mobile_money',
-    title: 'Mobile Money',
+    title: 'checkout.mobile_money',
     service: '1',
     description: 'forms.momoDescription',
     note: 'forms.momoNote',
@@ -41,7 +41,7 @@ const PAYMENT_OPTIONS = [
   },
   {
     value: 'orange_money',
-    title: 'Orange Money',
+    title: 'checkout.orange_money',
     service: '2',
     description: 'forms.omDescription',
     note: 'forms.omNote',
@@ -49,17 +49,17 @@ const PAYMENT_OPTIONS = [
   },
   {
     value: 'eu_mobile_money',
-    title: 'EU Mobile Money',
+    title: 'checkout.eu_mobile_money',
     service: '5',
     description: 'forms.euDescription',
     icons: ['/static/icons/ic_eu_mobile_money.png']
   },
   {
-      value: 'whatsapp',
-      title: 'Whatsapp',
+      value: 'cash',
+      title: 'checkout.cash',
       service: '0',
-      description: 'forms.whatsappDescription',
-      icons: ['/static/icons/whatsapp.svg']
+      description: 'forms.cashDescription',
+      icons: ['/static/icons/ic_payment.svg']
   }
 ];
 
@@ -70,7 +70,8 @@ CheckoutPayment.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function CheckoutPayment({coupon}) {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
   const [from, setFrom] = useState();
   const dispatch = useDispatch();
   const [text, setText] = useState('');
@@ -108,7 +109,7 @@ export default function CheckoutPayment({coupon}) {
   });
   const formik = useFormik({
     initialValues: {
-      payment: '',
+      payment: 'cash',
       phoneNumber: ''
     },
     validationSchema: PaymentSchema,
@@ -126,6 +127,7 @@ export default function CheckoutPayment({coupon}) {
         subtotal,
         from,
         deliveryTime: Math.round(deliveryTime / 60),
+        language
       }
         if(coupon) data.coupon = coupon;
         const paymentOption = PAYMENT_OPTIONS.find((item)=> item.value === data.payment);
@@ -156,7 +158,7 @@ export default function CheckoutPayment({coupon}) {
             handleNextStep();
           };
            // placed order on whatsapp
-          dispatch(handlePlaceOrderWhatsapp(data, onSuccess, onError));
+          dispatch(handlePlaceOrderOnly(data, onSuccess, onError));
         }
         else if(order?.status === 'accepted'){
           const onError = (error)=>{
