@@ -235,7 +235,6 @@ export default function CheckoutBillingAddress() {
   [
     shop?.location, 
     values.address, 
-    deliveryCost, 
     isMountedRef, 
     service, 
     distanceMatrixCallback
@@ -257,14 +256,14 @@ export default function CheckoutBillingAddress() {
     dispatch(onBackStep());
   };
 
-  const handleCreateBilling = (value) => {
+  const handleCreateBilling = useCallback((value) => {
     dispatch(createBilling(value));
     firebase.analytics().logEvent('add_shipping_info',{
-      currency: 'USD',
+      currency: 'XAF',
       value: deliveryCost,
       shipping_tier: 'Groud',
     })
-  };
+  },[dispatch, deliveryCost]);
 
   const handleDelete = (value)=>{
     dispatch(handleDeleteAddress(value))

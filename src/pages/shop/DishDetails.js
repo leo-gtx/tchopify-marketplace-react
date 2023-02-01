@@ -118,7 +118,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
       onToggleModal(false);
     // Analytic Event
     firebase.analytics().logEvent('add_to_cart', {
-      currency: 'USD',
+      currency: 'XAF',
       value: product?.price,
       items: [{
         item_id: product?.id,
@@ -130,7 +130,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
   }
   // Analytics Event
   firebase.analytics().logEvent('view_item',{
-    currency: 'USD',
+    currency: 'XAF',
     value: product?.price,
     items: [{
       item_id: product?.id,
