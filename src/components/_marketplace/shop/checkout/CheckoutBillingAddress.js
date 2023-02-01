@@ -252,6 +252,7 @@ export default function CheckoutBillingAddress() {
     dispatch(onBackStep());
   };
 
+  // eslint-disable-next-line
   const handleCreateBilling = useCallback((value) => {
     dispatch(createBilling(value));
     firebase.analytics().logEvent('add_shipping_info',{
