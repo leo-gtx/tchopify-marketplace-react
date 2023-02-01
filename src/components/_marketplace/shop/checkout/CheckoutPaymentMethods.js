@@ -68,7 +68,7 @@ export default function CheckoutPaymentMethods({ paymentOptions, formik }) {
                       control={<Radio checkedIcon={<Icon icon={checkmarkCircle2Fill} />} />}
                       label={
                         <Box sx={{ ml: 1 }}>
-                          <Typography variant="subtitle2">{title}</Typography>
+                          <Typography variant="subtitle2">{t(title)}</Typography>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             {t(description)}
                           </Typography>

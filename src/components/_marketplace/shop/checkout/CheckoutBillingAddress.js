@@ -123,9 +123,9 @@ export default function CheckoutBillingAddress() {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const { checkout } = useSelector((state) => state.app);
-  const { total, discount, subtotal, cart, deliveryTime, shipping, mode, billing } = checkout;
+  const { total, discount, subtotal, cart, deliveryTime, deliveryCost, shipping, mode, billing } = checkout;
   const authedUser = useSelector((state)=>state.authedUser);
-  const {addresses, id} = authedUser;
+  const {addresses, id, phoneNumber} = authedUser;
   const [shop, setShop] = useState();
   const isMobile = useIsMobile();
 //  const [isLoading, setLoading] = useState(true);
@@ -144,7 +144,7 @@ export default function CheckoutBillingAddress() {
     },
     validationSchema: BillingSchema,
     onSubmit: (values, { setSubmitting }) => {
-      handleCreateBilling(values.address);
+      handleCreateBilling(values.address || {phone: phoneNumber});
       dispatch(createMode(values.delivery));
       handleNextStep();
       setSubmitting(false);
@@ -252,11 +252,12 @@ export default function CheckoutBillingAddress() {
     dispatch(onBackStep());
   };
 
+  
   const handleCreateBilling = (value) => {
     dispatch(createBilling(value));
     firebase.analytics().logEvent('add_shipping_info',{
-      currency: 'USD',
-      value: 7.77,
+      currency: 'XAF',
+      value: deliveryCost,
       shipping_tier: 'Groud',
     })
   };

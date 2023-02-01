@@ -35,6 +35,7 @@ export default function CheckoutNewAddressForm({ open, onClose })
 {
   const dispatch = useDispatch();
   const {authedUser} = useSelector((state)=>state);
+  const { id, phoneNumber } = authedUser;
   const {t} = useTranslation();
   const NewAddressSchema = Yup.object().shape({
     receiver: Yup.string().required(t('forms.firstnameRequired')),
@@ -66,11 +67,11 @@ export default function CheckoutNewAddressForm({ open, onClose })
     onSubmit: (values, { setSubmitting }) => {
       const data = {
         receiver: values.receiver,
-        phone: authedUser.phoneNumber,
+        phone: phoneNumber,
         fullAddress: values.address,
         note: values.note,
         addressType: values.addressType,
-        userId: authedUser.id
+        userId: id
       }
       const onSuccess = ()=>{
         onClose();

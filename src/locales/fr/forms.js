@@ -84,5 +84,6 @@ export default {
     addressLabel: 'Adresse',
     home: 'Domicile',
     away: 'Extérieur',
-    office: 'Bureau'
+    office: 'Bureau',
+    cashDescription: 'Vous payerez quand vous serez livrer.'
 }

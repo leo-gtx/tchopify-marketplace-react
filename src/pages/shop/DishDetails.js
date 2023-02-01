@@ -118,8 +118,8 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
       onToggleModal(false);
     // Analytic Event
     firebase.analytics().logEvent('add_to_cart', {
-      currency: 'USD',
-      value: 7.77,
+      currency: 'XAF',
+      value: product?.price,
       items: [{
         item_id: product?.id,
         item_name: product?.name,
@@ -130,8 +130,8 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
   }
   // Analytics Event
   firebase.analytics().logEvent('view_item',{
-    currency: 'USD',
-    value: 5,
+    currency: 'XAF',
+    value: product?.price,
     items: [{
       item_id: product?.id,
       item_name: product?.name,
@@ -199,6 +199,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
                   </Card>
             </Grid>
 
+            {/*
             <Grid container sx={{ my: 8 }}>
               {PRODUCT_DESCRIPTION.map((item) => (
                 <Grid item xs={12} key={item.title}>
@@ -214,6 +215,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
                 </Grid>
               ))}
             </Grid>
+              */}
             
           </Box>
         )}

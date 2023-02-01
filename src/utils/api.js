@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-
 // Payment API
 
 export function pay({amount, wallet, currency, service}){
@@ -54,6 +52,58 @@ export function withdraw({amount, wallet, service}){
     
 }
 
-export function sendMessage({phone, message}){
-    return window.open(`https://api.whatsapp.com/send/?phone=${phone}&text=${message}`, '_blank');
+export function sendMessage(recipient, parameters, lang){
+    const WHATSAPP_TOKEN = 'EAAHzShgUGNsBAOWIOXThSXaZCXxr3d8zHG8MdwDyP8YoDf0LIUvnJ9bGx72ISvRR5Qvb0SCBM4FLbZA0UrCRjBixCzGTBk4TMe7Ncpbr8ykZCzjElrY4BNb1OeTT1XiXtDCBovpIeRXHUbahHUhtHZBfcMBQ3FCoBZCdEsgKQmabTgCdMWR8ORXZBtRNsdOCZCrKfpZBXZAeogwZDZD';
+    const { name, phone, description, orderId } = parameters;
+    return axios({
+        url: `https://graph.facebook.com/v15.0/113095531677116/messages`,
+        method: 'post',
+        headers: {
+                'Authorization': `Bearer ${WHATSAPP_TOKEN}`,
+                'Content-Type': 'application/json',
+        },
+        data: {
+            messaging_product: 'whatsapp',
+            recipient_type: 'individual',
+            to: recipient,
+            type:  'template',
+            template : {
+                name: 'new_order_details',
+                language: {
+                    code: lang
+                },
+                components: [
+                    {
+                        type: 'body',
+                        parameters: [
+                            {
+                                type: 'text',
+                                text: name || ','
+                            },
+                            {
+                                type: 'text',
+                                text: phone
+                            },
+                            {
+                                type: 'text',
+                                text: description
+                            }
+                        ]
+                    },
+                    {
+                        type: 'button',
+                        sub_type: 'url',
+                        index: '0',
+                        parameters: [
+                            {
+                                type: 'payload',
+                                payload: `https://restaurant.tchopify.com/dashboard/order/delivery-orders?orderId=${orderId}`
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        
+    });
 }
