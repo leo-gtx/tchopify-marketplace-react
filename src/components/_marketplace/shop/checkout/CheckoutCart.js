@@ -85,8 +85,8 @@ export default function CheckoutCart({handleGetCoupon}) {
   const totalItems = sum(values.products.map((item) => item.quantity));
   // Analytic event
   firebase.analytics().logEvent('view_cart',{
-    currency: 'USD',
-    value: 7.77,
+    currency: 'XAF',
+    value: total,
     items: cart.map((item)=>({
       item_id: item.id,
       item_name: item.name,

@@ -188,8 +188,8 @@ export default function CheckoutPayment({coupon}) {
         }
         // Analytic Event
         firebase.analytics().logEvent('purchase',{
-          currency: 'USD',
-          value: 12.21,
+          currency: 'XAF',
+          value: total,
           coupon
         })
     }
@@ -221,8 +221,8 @@ export default function CheckoutPayment({coupon}) {
 
   // Analytics Event
   firebase.analytics().logEvent('add_payment_info', {
-    currency: 'USD',
-    value: 7.77,
+    currency: 'XAF',
+    value: total,
     coupon,
     payment_type: PAYMENT_OPTIONS.find((item)=> item.value === values.payment)
   });
