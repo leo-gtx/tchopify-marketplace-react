@@ -199,6 +199,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
                   </Card>
             </Grid>
 
+            {/*
             <Grid container sx={{ my: 8 }}>
               {PRODUCT_DESCRIPTION.map((item) => (
                 <Grid item xs={12} key={item.title}>
@@ -214,6 +215,7 @@ export default function DishDetails({dishId, shopId, onToggleModal}) {
                 </Grid>
               ))}
             </Grid>
+              */}
             
           </Box>
         )}

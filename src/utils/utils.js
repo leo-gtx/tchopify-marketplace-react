@@ -178,10 +178,11 @@ export function getNextOpenDay(schedules){
     let currentDay = new Date().getDay();
     const now = new Date()
     for (let index = 0; index <= 6; index+=1) {
-        if(currentDay >= 6) currentDay = 0 
+        if(currentDay > 6) currentDay = 0 
         else currentDay+=1;
         if(schedules[currentDay].isOpen){
-            now.setDate(currentDay)
+            // now.setDate(currentDay)
+            now.setDate(now.getDate() + index + 1)
             return {
                 t: 'common.openAt',
                 day: new Date(`${now.toDateString()} ${schedules[currentDay].startTime}`).toLocaleTimeString(localStorage.getItem('i18nextLng'), options)
@@ -285,3 +286,20 @@ export function uniqueId(){
     const randomness = Math.floor(Math.random() * 10000).toString().substr(0, 4);
     return dateString + randomness;
 };
+
+export function formattedMessage(cart){
+    let message='';
+    cart.forEach((item)=>{
+        message += `${item.quantity} ${item.name} ` 
+    })
+ return message;
+}
+
+export function getInitial(name){
+    if(!name) return null;
+    const splittedName = name.split(' ');
+    return splittedName.length > 1 ? 
+    `${splittedName[0][0].toUpperCase()}${splittedName[1][0].toUpperCase()}`:
+    `${splittedName[0][0].toUpperCase()}`
+    
+}

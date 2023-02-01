@@ -77,6 +77,13 @@ export default {
     tableLabel: 'Nom / numéro de table',
     tableRequired: 'Table requise',
     amountLabel: 'Montant',
-    addressRequired: 'Votre adresse est requise pour la livraison'
-
+    addressRequired: 'Votre adresse est requise pour la livraison',
+    whatsappDescription: 'Commander par whatsapp',
+    addAddress: 'Pressez le boutton ci-dessous pour ajouté votre adresse',
+    addPrecision: 'Ajouter une précision',
+    addressLabel: 'Adresse',
+    home: 'Domicile',
+    away: 'Extérieur',
+    office: 'Bureau',
+    cashDescription: 'Vous payerez quand vous serez livrer.'
 }

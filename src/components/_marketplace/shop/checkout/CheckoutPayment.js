@@ -12,8 +12,10 @@ import { LoadingButton } from '@material-ui/lab';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { gotoStep, onBackStep, onNextStep, setOrderId } from '../../../../redux/actions/app';
-import { handlePlaceOrder, handlePayOrder, GetOrder } from '../../../../redux/actions/order';
+import { handlePlaceOrder, handlePayOrder, GetOrder, handlePlaceOrderOnly } from '../../../../redux/actions/order';
 import {  handleGetRestaurant } from '../../../../redux/actions/restaurant';
+// hooks
+import useIsMobile from '../../../../hooks/useIsMobile';
 // utils
 import { isStoreOpen } from '../../../../utils/utils';
 // components
@@ -31,7 +33,7 @@ import firebase from '../../../../firebase';
 const PAYMENT_OPTIONS = [
   {
     value: 'mobile_money',
-    title: 'Mobile Money',
+    title: 'checkout.mobile_money',
     service: '1',
     description: 'forms.momoDescription',
     note: 'forms.momoNote',
@@ -39,7 +41,7 @@ const PAYMENT_OPTIONS = [
   },
   {
     value: 'orange_money',
-    title: 'Orange Money',
+    title: 'checkout.orange_money',
     service: '2',
     description: 'forms.omDescription',
     note: 'forms.omNote',
@@ -47,10 +49,17 @@ const PAYMENT_OPTIONS = [
   },
   {
     value: 'eu_mobile_money',
-    title: 'EU Mobile Money',
+    title: 'checkout.eu_mobile_money',
     service: '5',
     description: 'forms.euDescription',
     icons: ['/static/icons/ic_eu_mobile_money.png']
+  },
+  {
+      value: 'cash',
+      title: 'checkout.cash',
+      service: '0',
+      description: 'forms.cashDescription',
+      icons: ['/static/icons/ic_payment.svg']
   }
 ];
 
@@ -61,7 +70,8 @@ CheckoutPayment.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function CheckoutPayment({coupon}) {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
   const [from, setFrom] = useState();
   const dispatch = useDispatch();
   const [text, setText] = useState('');
@@ -70,10 +80,10 @@ export default function CheckoutPayment({coupon}) {
   const { checkout } = useSelector((state) => state.app);
   const { total, discount, subtotal, billing, cart, deliveryTime, shipping, orderId, mode  } = checkout;
   const { enqueueSnackbar } = useSnackbar();
-
+  const isMobile = useIsMobile();
   useEffect(()=>{
     handleGetRestaurant(cart[0].shop, (data)=>setFrom(data))
-  },[dispatch, setFrom, from?.mode, cart])
+  },[dispatch, setFrom, cart])
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -92,12 +102,14 @@ export default function CheckoutPayment({coupon}) {
 
   const PaymentSchema = Yup.object().shape({
     payment: Yup.mixed().required(t('forms.paymentRequired')),
-    phoneNumber: Yup.string().required(t('forms.phoneNumberRequired'))
+    phoneNumber: Yup.string().when('payment',{
+      is: (payment)=>payment.includes('money'),
+      then: Yup.string().required(t('forms.phoneNumberRequired'))
+    })
   });
-
   const formik = useFormik({
     initialValues: {
-      payment: '',
+      payment: 'cash',
       phoneNumber: ''
     },
     validationSchema: PaymentSchema,
@@ -115,13 +127,14 @@ export default function CheckoutPayment({coupon}) {
         subtotal,
         from,
         deliveryTime: Math.round(deliveryTime / 60),
+        language
       }
         if(coupon) data.coupon = coupon;
         const paymentOption = PAYMENT_OPTIONS.find((item)=> item.value === data.payment);
         data.wallet = values.phoneNumber;
         data.service = paymentOption.service;
 
-        if(!order){
+        if(!order && data.service !== '0'){
           const onError = ()=>{
             setSubmitting(false);
             enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
@@ -133,9 +146,22 @@ export default function CheckoutPayment({coupon}) {
           };
            // placed order
           dispatch(handlePlaceOrder(data, onSuccess, onError))
-        }else if(order?.status === 'accepted'){
+        }else if(!order && data.service ==='0'){
+          const onError = ()=>{
+            setSubmitting(false);
+            enqueueSnackbar(t('flash.orderFailure'), {variant: 'error'})
+          };
+          const onSuccess = (orderId)=>{
+            dispatch(setOrderId(orderId))
+            enqueueSnackbar(t('flash.orderPlaced'), {variant: 'success'});
+            setSubmitting(false);
+            handleNextStep();
+          };
+           // placed order on whatsapp
+          dispatch(handlePlaceOrderOnly(data, onSuccess, onError));
+        }
+        else if(order?.status === 'accepted'){
           const onError = (error)=>{
-            console.error(error);
             const errorMessage = error?.code ? t(`request.${error.code}`): error.message;
             setSubmitting(false);
             setErrors({ phoneNumber: errorMessage});
@@ -170,7 +196,9 @@ export default function CheckoutPayment({coupon}) {
   });
 
   const { isSubmitting, handleSubmit, setFieldValue, values } = formik;
+
   const storeOpen = from ? isStoreOpen(from?.businessHours) : true;
+  const paymentOptions = PAYMENT_OPTIONS.filter((item)=>from?.paymentOptions?.includes(item.value));
   useEffect(()=>{
     if(orderId) GetOrder(orderId, (data)=>{
       setOrder(data)
@@ -213,7 +241,7 @@ export default function CheckoutPayment({coupon}) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <CheckoutPaymentMethods formik={formik}  paymentOptions={PAYMENT_OPTIONS} />
+            <CheckoutPaymentMethods formik={formik}  paymentOptions={paymentOptions} />
             <Button
               type="button"
               size="small"
@@ -249,11 +277,37 @@ export default function CheckoutPayment({coupon}) {
                 </Backdrop>
               )
             }
-            <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
-              {storeOpen && !order && t('actions.completeOrder')}
-              {!storeOpen && t('actions.shopClosed')}
-              {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
-            </LoadingButton>
+            {!isMobile && (
+              <LoadingButton fullWidth size="large" disabled={!storeOpen} type="submit" variant="contained" loading={isSubmitting || order?.status === 'new'}>
+                {storeOpen && !order && t('actions.completeOrder')}
+                {!storeOpen && t('actions.shopClosed')}
+                {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
+              </LoadingButton>
+            )}
+            {
+              isMobile && (
+                <LoadingButton 
+                  size="large" 
+                  disabled={!storeOpen} 
+                  type="submit" 
+                  variant="contained" 
+                  loading={isSubmitting || order?.status === 'new'}
+                  sx={{
+                    width: `${window.screen.width - 40}px`,
+                    top: 'auto',
+                    bottom: 20,
+                    left: '50%',
+                    marginLeft: `-${(window.screen.width - 40)/2}px`,
+                    position: 'fixed',
+                  }}
+                >
+                  {storeOpen && !order && t('actions.completeOrder')}
+                  {!storeOpen && t('actions.shopClosed')}
+                  {storeOpen &&  order?.status === 'accepted' && t('actions.payOrder') }
+                </LoadingButton>
+              )
+            }
+            
           </Grid>
         </Grid>
       </Form>

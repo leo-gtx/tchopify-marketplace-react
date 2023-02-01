@@ -25,5 +25,9 @@ export default {
     sorry2: 'The restaurant is unable to accept your order at this time',
     waitingRestaurant: 'Please wait for restaurant\'s confirmation...',
     description: 'We will send you a notification when it will be ready.\n If you have any question or queries then fell to get in contact us.\n All the best',
-    rejectedDescription: "Sorry the restaurant is currently unable to meet your order.\n If you have any question or queries then fell to get in contact us.\n All the best,"
+    rejectedDescription: "Sorry the restaurant is currently unable to meet your order.\n If you have any question or queries then fell to get in contact us.\n All the best,",
+    cash: 'Cash at delivery',
+    eu_mobile_money: 'EU Mobile Money',
+    mobile_money: 'Mobile Money',
+    orange_money: 'Orange Money'
 }

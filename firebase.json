@@ -11,14 +11,15 @@
       "rewrites": [
         {
           "source": "**",
-          "destination": "/index.html"
+          "destination": "/index.html",
+          "function": "api"
         }
       ],
       "headers": [{
         "source": "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
         "headers": [{
           "key": "Cache-Control",
-          "value": "max-age=31536000"
+          "value": "no-cache"
         }]
       },
       {
@@ -32,7 +33,7 @@
         "source": "index.html",
         "headers": [{
           "key": "Cache-Control",
-          "value": "max-age=300"
+          "value": "no-cache"
         }]
       }]
     }

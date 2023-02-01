@@ -6,9 +6,11 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useTranslation } from 'react-i18next';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 // material
-import { Grid, Card, Button, CardHeader, Typography } from '@material-ui/core';
+import { Grid, Card, Button, CardHeader, Typography} from '@material-ui/core';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
+// hooks
+import useIsMobile from '../../../../hooks/useIsMobile';
 // firebase
 import firebase from '../../../../firebase';
 import {
@@ -25,6 +27,7 @@ import EmptyContent from '../../../EmptyContent';
 import CheckoutSummary from './CheckoutSummary';
 import CheckoutProductList from './CheckoutProductList';
 
+
 // ----------------------------------------------------------------------
 CheckoutCart.propTypes = {
   handleGetCoupon: PropTypes.func
@@ -38,6 +41,7 @@ export default function CheckoutCart({handleGetCoupon}) {
   const { authedUser } = useSelector((state)=>state);
   const { cart, total, discount, subtotal } = checkout;
   const isEmptyCart = cart.length === 0;
+  const isMobile = useIsMobile();
 
   const handleDeleteCart = (productId, options) => {
     dispatch(deleteCart(productId, options));
@@ -66,7 +70,7 @@ export default function CheckoutCart({handleGetCoupon}) {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { products: cart },
-    onSubmit: async ({ setErrors, setSubmitting }) => {
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
         setSubmitting(true);
         handleNextStep();
@@ -145,9 +149,35 @@ export default function CheckoutCart({handleGetCoupon}) {
               onGetCoupon={handleGetCoupon}
               uid={authedUser.id}
             />
-            <Button fullWidth size="large" type="submit" variant="contained" disabled={values.products.length === 0}>
-              {t('actions.checkout')}
-            </Button>
+            {!isMobile && 
+              <Button 
+                fullWidth 
+                size="large" 
+                type="submit" 
+                variant="contained" 
+                disabled={values.products.length === 0}
+              >
+                {t('actions.checkout')}
+              </Button>
+            }
+            {isMobile && 
+              <Button 
+                size="large" 
+                type="submit" 
+                variant="contained" 
+                disabled={values.products.length === 0}
+                sx={{
+                  width: `${window.screen.width - 40}px`,
+                  top: 'auto',
+                  bottom: 20,
+                  left: '50%',
+                  marginLeft: `-${(window.screen.width - 40)/2}px`,
+                  position: 'fixed',
+                }}
+              >
+                {t('actions.checkout')}
+              </Button>
+            }
           </Grid>
         </Grid>
       </Form>

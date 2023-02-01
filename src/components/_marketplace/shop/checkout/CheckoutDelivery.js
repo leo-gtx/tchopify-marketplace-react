@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 import { useTranslation } from 'react-i18next';
+import plusFill from '@iconify/icons-eva/plus-fill';
 // material
 import { styled } from '@material-ui/core/styles';
 import {
@@ -17,6 +18,7 @@ import {
   FormControlLabel,
   Skeleton,
   Collapse,
+  Button,
 } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -37,11 +39,11 @@ CheckoutDelivery.propTypes = {
   formik: PropTypes.object,
   deliveryOptions: PropTypes.array,
   onApplyShipping: PropTypes.func,
-  cardsAddress: PropTypes.func,
-  btnAddAddress: PropTypes.func
+  cardsAddress: PropTypes.array,
+  onAddAddress: PropTypes.func
 };
 
-export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, cardsAddress, btnAddAddress, ...other }) {
+export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipping, cardsAddress, onAddAddress, ...other }) {
   const { values, setFieldValue, errors, touched } = formik;
   const {t} = useTranslation();
   return (
@@ -54,6 +56,7 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
           onChange={(event) => {
             const { value } = event.target;
             setFieldValue('delivery', value);
+            if(value==='DELIVERY' && cardsAddress.length <=0) onAddAddress();
             onApplyShipping(Number(deliveryOptions.find((item)=>item.id === value).value));
           }}
         >
@@ -120,7 +123,9 @@ export default function CheckoutDelivery({ formik, deliveryOptions, onApplyShipp
           </FormHelperText>
         ) }
           {cardsAddress}
-          {btnAddAddress}
+          <Button size="small" onClick={onAddAddress} startIcon={<Icon icon={plusFill} />}>
+            {t('actions.addAddress')}
+          </Button>
         </Collapse>
       </CardContent>
     </Card>
