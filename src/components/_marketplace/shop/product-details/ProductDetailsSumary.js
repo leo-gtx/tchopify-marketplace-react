@@ -132,6 +132,7 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
     image,
     cookingTime,
     options,
+    isSingleOption,
     rating,
     totalReview,
   } = product;
@@ -140,8 +141,8 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
   const onAddCart = (product) => {
     dispatch(addCart({...product, shop: shopId}));
     firebase.analytics().logEvent('add_to_cart', {
-      currency: 'USD',
-      value: 7.77,
+      currency: 'XAF',
+      value: product?.price * product?.quantity,
       items: [{
         item_id: product?.id,
         item_name: product?.name,
@@ -201,7 +202,6 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
       setSubscribed(false)
     } 
   },[isSubscribed, onToggleModal, isCheckoutViolation])
-
   return (
     <RootStyle>
       <FormikProvider value={formik}>
@@ -236,14 +236,17 @@ export default function ProductDetailsSumary({product, shopId, onToggleModal}) {
              <TextField
                select
                SelectProps={{
-                 multiple: true,
+                 multiple: !isSingleOption,
                  displayEmpty: true
                }}
                size="small"
                {...getFieldProps('options')}
                onChange={(e)=>{
-                setFieldValue('options', e.target.value)
-                setFieldValue('price', price + getOptionsPrice(e.target.value))
+                setFieldValue('options', isSingleOption ? [e.target.value]:e.target.value)
+                const totalPrice = isSingleOption ? 
+                  price + getOptionsPrice([e.target.value]):
+                  price + getOptionsPrice(e.target.value);
+                setFieldValue('price', totalPrice);
                }}
                FormHelperTextProps={{
                  sx: {

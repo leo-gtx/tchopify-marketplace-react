@@ -5,4 +5,5 @@ export default{
     logout: 'Logout',
     signin: 'Sign In',
     seeAccount: 'See account',
+    findLocation: 'Find my location'
 }

@@ -70,12 +70,12 @@ export default function ShopProductCard({ product }) {
             <Typography variant="subtitle1" noWrap>
               {name}
             </Typography>
-          { rating && rating > 0 &&
+          { rating && rating > 0 ?
           (
             <Stack direction="column" justifyContent="flex-start">
               <Rating name='small' value={rating} precision={0.1} emptyIcon={<Icon/>} readOnly />
             </Stack>
-          )}
+          ):null}
           
         </Stack>
       </Card>
