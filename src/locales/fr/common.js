@@ -4,5 +4,6 @@ export default{
     closedAlways: 'Fermé toute la semaine',
     logout: 'Déconnexion',
     signin: 'Connexion',
-    seeAccount: 'Voir le compte'
+    seeAccount: 'Voir le compte',
+    findLocation: 'Rechercher votre ville'
 }

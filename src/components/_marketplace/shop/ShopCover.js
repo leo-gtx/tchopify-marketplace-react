@@ -58,11 +58,10 @@ ShopCover.propTypes = {
 
 export default function ShopCover({ myShop, deliveryLocation }) {
   const { t } = useTranslation();
-  const { image, name, businessHours, rating, location, kmCost} = myShop;
+  const { image, name, businessHours, rating, location, kmCost, mode} = myShop;
   const [distance, setDistance] = useState();
   const [duration, setDuration] = useState();
-  const {maps} = window.google;
-  const service = useMemo(()=>new maps.DistanceMatrixService(),[maps]);
+  
   
   const distanceMatrixCallback = useCallback((result, status) => {
     if (status === "OK" ) {
@@ -72,21 +71,18 @@ export default function ShopCover({ myShop, deliveryLocation }) {
   },[]);
 
   useEffect(()=>{
-    if(service && location && deliveryLocation){
-       service.getDistanceMatrix({
+    if(location && deliveryLocation && window.google?.maps){
+      const {maps} = window.google;
+      const service = new maps.DistanceMatrixService();
+      service.getDistanceMatrix({
       origins: [location],
       destinations: [deliveryLocation],
       travelMode: 'DRIVING'
       }, distanceMatrixCallback)
     }
    
-  },[location, deliveryLocation, distanceMatrixCallback, service])
+  },[location, deliveryLocation, distanceMatrixCallback])
 
-  
-
-  if(!image){
-    return <Skeleton variant='rectangular' height='100%' />
-  }
 
   return (
     <RootStyle>
@@ -115,13 +111,25 @@ export default function ShopCover({ myShop, deliveryLocation }) {
               {rating && rating > 0 && <Rating size='small' value={rating || 0} emptyIcon={<Icon/>} readOnly/>}
               <Stack direction='row' justifyContent='center'>
                 <Stack direction='row'  alignItems='center'>
-                  <Icon icon='ic:baseline-delivery-dining' width={24} height={24} opacity={0.72} />
-                  { !duration || !distance ?
-                    <Skeleton variant='text' width={200} />
-                    :
-                    <Typography sx={{ opacity: 0.72 }}>{`${duration?.text} • ${fCurrency(shippingCost(distance?.value, kmCost))}`}</Typography>
+                  { mode?.includes('DELIVERY') && (
+                    <>
+                      <Icon icon='ic:baseline-delivery-dining' width={24} height={24} opacity={0.72} />
+                      { !duration || !distance ?
+                        <Skeleton variant='text' width={200} />
+                        :
+                        <Typography sx={{ opacity: 0.72 }}>{`${duration?.text} • ${fCurrency(shippingCost(distance?.value, kmCost))} ${mode?.includes('TAKEAWAY') && ' • '}`}</Typography>
+                      }
+                    </>
+                    )
                   }
-                  
+                  {
+                    mode?.includes('TAKEAWAY') && (
+                      <>
+                      <Icon icon='ic:sharp-takeout-dining' width={24} height={24} opacity={0.72} />
+                        <Typography sx={{ opacity: 0.72 }}>{t('checkout.takeawayTitle')}</Typography>
+                      </>
+                    )
+                  }
                 </Stack>
               </Stack>
             </>

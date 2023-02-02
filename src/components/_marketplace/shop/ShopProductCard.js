@@ -48,9 +48,14 @@ export default function ShopProductCard({ product }) {
                 {name}
               </Typography>
             </Grid>
-            <Grid>
-               <Rating value={rating} readOnly/>
-            </Grid>
+              { rating && rating > 0 ? (
+                <Grid>
+                  <Rating name='small' value={rating}  emptyIcon={<Icon/>} readOnly />
+                </Grid>
+                ):
+                null
+              }
+            
           </Grid>
            
           <Grid container direction="row" alignItems="center" justifyContent="space-between">
