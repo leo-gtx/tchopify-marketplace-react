@@ -218,7 +218,7 @@ export default function CheckoutBillingAddress() {
   const shopLocation = shop?.location;
   const fullAddress = values.address?.fullAddress;
   useEffect(()=>{
-    if(isMountedRef.current){
+    if(isMountedRef.current && window.google?.maps){
       const {maps} = window.google;
       const service = new maps.DistanceMatrixService();
       if(shopLocation && fullAddress){

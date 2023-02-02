@@ -33,15 +33,18 @@ export default function MapRoute({ origin, destination }){
      
      
     useEffect(()=>{
-        const {maps} = window.google;
-        const directionService = new maps.DirectionsService();
-        if(directionService){
-                directionService.route({
-                origin,
-                destination,
-                travelMode: maps.TravelMode.DRIVING
-            }, directionCallback)
-        }   
+        if(window.google?.maps){
+            const {maps} = window.google;
+            const directionService = new maps.DirectionsService();
+            if(directionService){
+                    directionService.route({
+                    origin,
+                    destination,
+                    travelMode: maps.TravelMode.DRIVING
+                }, directionCallback)
+            }   
+        }
+       
     },[origin, destination, directionCallback])
 
     if(!isLoaded){
